@@ -1,7 +1,4 @@
-/* Custom page CSS
--------------------------------------------------- */
-/* Not required for template or sticky footer method. */
+.tp-nl{
 
-main > .container {
-  padding: 60px 15px 0;
+top: 20px;
 }
