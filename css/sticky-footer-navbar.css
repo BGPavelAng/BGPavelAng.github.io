@@ -1,3 +1,7 @@
 main > .container {
   padding: 60px 15px 0;
 }
+
+.bg-col{
+	background-color: rgba(2,2,2,0.7);
+}
