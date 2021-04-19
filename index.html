@@ -1,195 +1,101 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=width-device initial-scale-1.0">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<title></title>
-</head>
-<body>
-		
-	<nav class="navbar navbar-color navbar-expand-md navbar-dark">
-		<a id="lkbluesh" class="navbar-brand" href="index.html">VR|AR</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Mnu" arial-controls=Mnu arial-expanded="false" arial-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
+<html class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Aprendiendo sobre seguridad con hacks</title>
 
-		<div class="collapse navbar-collapse justify-content-md-center" id="Mnu">
-			<ul class="navbar-nav">
-				<li class="dropdown">
-					<a href="#" data-toggle="dropdown" class="dropdown-toggle">
-						<ul class="dropdown-menu submenu">
-							<li><a href="#">Algo</a></li>
-						</ul>
-					
-			</li>
-			</ul>
-			
-		</div>
-			
-		</div>
-		
-	</nav>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
-	<div id="info">
-			<a id="bt" href="index.html">
-				<span></span>
-				<span></span>
-				<span></span>
-				Principal
-			</a>
-
-			<a id="bt" onclick="linc();">
-				<span></span>
-				<span></span>
-				<span></span>
-				Realidad Virtual
-			</a>
-			<a id="bt" href="Raumentada.html">
-				<span></span>
-				<span></span>
-				<span></span>
-				Realidad Aumentada
-			</a>
-			<a id="bt" href="webglex.html">
-				<span></span>
-				<span></span>
-				<span></span>
-				WEBGL
-			</a>
-			<a id="bt" href="ventas.html">
-				<span></span>
-				<span></span>
-				<span></span>
-				Ventas
-			</a>
-			<a id="bt" href="Nosotros.html">
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
-				Nosotros
-			</a>
-		</div>
+        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
 
 
-	<script type="module">
-		
-		import * as THREE from './build/three.module.js';
-		import { Water } from './Water2.js';
-		import { OrbitControls } from './OrbitControls.js';
+    
+  </head>
+  <body class="d-flex flex-column h-100">
+    
+<header>
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+        <ul class="navbar-nav">
+        <li class="dropdown">
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+            <ul class="dropdown-menu submenu">
+              <li><a href="#">Algo</a></li>
+            </ul>
+          
+      </li>
+      </ul>
+        
+      </div>
+    </div>
+  </nav>
+</header>
 
-		var escena, dlight, water, waterGeo, camara, renderone, cont1, cont2, cubo, matone, meshone, control, amlight, reloj, delta;
+<!-- Begin page content -->
 
-		var params = {
-			color: '#ffffff',
-			scale: 4,
-			flowX: 1,
-			flowY: 1
-		};
+<div class="container mt-5" >
+  <div class="mt-5 row">
+    <div class="col-3">
+      <img src="img/pavs.jpg">
+    </div>
+    <div class="col-9 mt-5">
+    <p class="mt-5"> <b>Aprende a encontrar vulnerabilidades con CTF (Capture The Flag) en Webs y Pwn practicando con retos que se encuentran en la red. El objetivo es pensar fuera de la caja e intentarlo hasta lograrlo (tryharder).</b></p>
+    </div>
+  </div>
+</div>
 
+<div class="container ">
+  <div class="row justify-content-start">
+    <div class="col-3 bg-col">
+      <p class="fs-6 lh-sm">
 
-		function ini(){
+    <p><b>#BelialGrimoire</b></p>
 
-			escena = new THREE.Scene();
-			escena.background = new THREE.Color('black');
+    Lic. Diseño y Comunicación Visual.<br>
+    Ingeniería Trunca. xD<br><br>
 
-			camara = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight);
+    Amante del Diseño y de la tecnología.<br><br>
 
-			camara.position.set(10, 0, 10);
+    Mis inicios en seguridad informática comenzó en los foros, en la época donde las personas compartían, ayudaban y preguntaban sin miedo sus dudas.<br><br>
 
+    Extraño esos foros, porque aprendía el que preguntaba, aprendía el que enseñaba y aprendían todos los que no conocían el tema.<br><br>
+  </p>
+    </div>
+    <div class="col-9">
+      <b>¿Qué es un CTF?</b><br><br>
+      <b>CTF</b> son las siglas de (Capture The Flag) o (Captura la bandera), son retos sobre seguridad informática donde el objetivo es encontrar errores que puedas utilizar para tener acceso a un sistema, cada vez que logras un avance encuentras una bandera que es señal de que estas logrando el objetivo. Estos retos son un hobby divertido, pero también te ayuda a descubrir "bugs" comunes y no tan comunes que pueden vulnerar un sistema, ya que muchos de estos "bugs" pueden ser utilizados en la vida real.<br><br>
 
-			cubo = new THREE.BoxGeometry( 3, 1, 256, 32 );
-			matone = new THREE.MeshNormalMaterial();
-			meshone = new THREE.Mesh(cubo, matone);
-			meshone.scale.set(0.5, 0.5, 0.5);
+      <b>¿Porqué Web y Pwn?</b><br><br>
+      <b>Web y Pwn</b> son los más comunes de utilizar, y para mí, los que más me interesan aprender todo el tiempo, Vulnhub tiene retos muy buenos sobre retos Web, ahí es donde me voy a centrar al igual que <b>"Exploit Education"</b> con la explotación de software, donde mi meta es encontrar vulnerabilidades para realizar exploits. Sólo abarcaré esos dos, porque son temas muy extensos, pero si quieres aprender más, ¡hazlo!, no te limites, igual aquí abrá de todo un poco.<br><br>
 
-			escena.add(meshone);
+      <b>¿Para qué sirve esto?</b><br><br>
+      Aprende a mejorar la seguridad de tus sistemas, páginas y sotware.<br><br>
+      Conseguir alguna certificación como CEH (Certified Ethical Hacker), cuanto más practiques y aprendas en estos retos gratuitos, pagar la certificación después te será más sencillo conseguirlo.<br><br>
+      Quitar el aburrimiento. xD<br><br>
 
-			camara.lookAt(cubo);
+    </div>
 
-			reloj = new THREE.Clock();
-
-			waterGeo = new THREE.PlaneBufferGeometry(40, 40);
-
-
-			water = new Water(waterGeo, {
-				color: params.color,
-				scale: params.scale,
-				flowDirection: new THREE.Vector2(params.flowX, params.flowY),
-				textureWidth: 1024,
-				textureHeight: 1024
-			});
-
-			water.position.y = 1;
-			water.position.x = Math.PI * -0.5;
-			escena.add(water);
-
-			amlight = new THREE.AmbientLight(0xcccccc, 0.4);
-			escena.add(amlight);
-
-			dlight = new THREE.DirectionalLight(0xffffff, 0.6);
-			dlight.position.set(-1, 1, 1);
-			escena.add(dlight);
-
-			
-
-			renderone = new THREE.WebGLRenderer({antialias: true});
-			renderone.setPixelRatio(window.devicePixelRatio);
-			renderone.setSize(window.innerWidth, window.innerHeight);
-
-			control = new OrbitControls(camara, renderone.domElement);
-			control.minDistance = 5;
-			control.maxDistance = 50;
-
-			document.body.appendChild(renderone.domElement);
-
-
-		}
-
-		function anima(){
-
-			requestAnimationFrame(anima);
-			render();
-		}
-
-		function render(){
-
-			delta = reloj.getDelta();
-			meshone.rotation.x += delta;
-			meshone.rotation.y = delta * 0.2;
-			renderone.render(escena, camara);
-
-			camara.aspect = window.innerWidth/window.innerHeight;
-			camara.updateProjectionMatrix();
-
-			renderone.setSize(window.innerWidth, window.innerHeight);
-		}
-
-		ini();
-		anima();
-
-	</script>
-
-	<script>
-
-		function linc(){
-			if(confirm("El dispositivo podría alentarse o detenerse si no se cuenta con una buena señal y/o buena capacidad de hardware. ¿Desea continuar?")){
-				window.open('Rvirtual.html', '_self');
-
-				}else{
-					window.open('index.html', '_self');
-			}
-		}
-	</script>
+  </div>
+</div>
 
 
+<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
 
-	<script src="./js/jquery-3.5.1.slim.min.js"></script>
-<script src="./js/popper.min.js"></script>
-<script src="./js/bootstrap.min.js"></script>
 
-</body>
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+      
+  </body>
 </html>
 
