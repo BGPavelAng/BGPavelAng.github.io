@@ -40,13 +40,13 @@
 	<div class="container mt-5">
 		<div class="row mt-5">
 			<div class="col">
-				El objetivo de la prueba es sobreescribir parte de la memoria (stack) para sobreescribir alguna variable, es este caso, la variable buffer<br><br>
+				El objetivo de la prueba es sobreescribir parte de la memoria (stack), en este caso, la variable buffer puede sobreescribirse sobrepasando la cantidad de bytes permitidos<br><br>
 
 				 <div id=show style="display: none;">
-				  <div class="text-center col bg-col">struct {<br>
+				  <div class="text-center col bg-cod"><b>struct {<br>
 				  	char buffer[64];<br>
 				  	volatile int changeme;<br>
-				  } locals;<br></div>
+				  } locals;<br></b></div>
 				  </div>
 				  <input type="button" onclick="document.getElementById('show').style.display='block'"value="Mostrar">
 			</div>
