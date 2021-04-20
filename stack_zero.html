@@ -70,6 +70,9 @@
 
 				  	<p>Los dos ultimos puts tienen cadena de caracteres, y el primero es el que nos interesa, hace un push en la pila (0x80485ac) e invoca un call a puts. <br> También podemos obervar que para llegar a esa dirección, gets mete a eax algunos bytes cuando escibimos el mensaje que nos pide, pero justo después mete en eax un 0x0, que anteriormente se guardo en [ebp-0xc],0x0... lo que significa que el primer push mete a la pila bytes, después pone a eax en 0 y al hacer la comparación siempre será negativa la respuesta 1 != 0</p><br><br>
 
+				  	<img src="img/blog1_3.png"><br><br>
+				  	<img src="img/blog1_4.png"><br><br>
+
 
 
 
