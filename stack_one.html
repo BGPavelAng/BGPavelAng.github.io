@@ -68,12 +68,16 @@
 
 				  	<img src="img/blog2_2.png"><br><br>
 
-				  	<p>Los dos ultimos puts tienen cadena de caracteres, y el primero es el que nos interesa, hace un push en la pila <b>(0x80485ac)</b> e invoca un call a puts seguido de un jmp para llegar a exit y terminar el programa. <br> También podemos obervar que para llegar a esa dirección, gets mete a eax algunos bytes cuando escibimos el mensaje que nos pide, pero justo después mete en <b>eax un 0x0</b>, que anteriormente se guardo en <b>[ebp-0xc],0x0</b>... lo que significa que el primer push mete a la pila bytes, después pone a eax en 0 y al hacer la comparación siempre será negativa la respuesta <b>1 != 0</b></p><br><br>
+				  	<p>Nuevamente hay puts que tienen cadena de caracteres, hay dos interesantes, <b>(0x8048670)</b> que es el objetivo y <b>(0x80486b4)</b> donde nos muestra un mensaje pidiendo hexadecimales <b>(0x496c5962)</b>, eso significa que si lo igualamos podríamos lograr el objetivo.
 
-				  	<img src="img/blog1_3.png"><br><br>
-				  	<img src="img/blog1_4.png"><br><br>
+				  	<img src="img/blog2_3.png"><br><br>
 
-				  	<p>¿Y qué pasa si modificamos a eax antes de que haga la comparación y le ponemos 1</p><br><br>
+				  	<br> También podemos obervar que para llegar a esa dirección, esta vez hay un strcpy que copia bytes cuando escibimos el mensaje que nos pide, y repite el proceso donde mete a <b>eax un 0x0</b>... lo que significa la misma respuesta negativa <b>1 != 0</b></p><br><br>
+
+				  	
+				  	<img src="img/blog2_4.png"><br><br>
+
+				  	<p>¿Y qué pasa si modificamos a eax antes de que haga la comparación pero esta vez le colocamos los hexadecimales anteriores <b>(0x496c5962)</b></p><br><br>
 
 				  	<img src="img/blog1_5.png"><br><br>
 
