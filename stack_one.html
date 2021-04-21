@@ -51,7 +51,7 @@
 				El objetivo de la prueba es sobreescribir parte de la memoria (stack), en este caso, la variable buffer puede sobreescribirse pasando la cantidad de bytes permitidos.<br><br>
 
 				 <div id=show style="display: none;">
-				 	<p>https://exploit.education/phoenix/stack-zero/</p>
+				 	<p>https://exploit.education/phoenix/stack-one/</p>
 				  <div class="text-center col bg-cod"><b>struct {<br>
 				  	char buffer[64];<br>
 				  	volatile int changeme;<br>
@@ -62,11 +62,11 @@
 
 				  	<p>Utilizamos GDB para debuggearlo, podemos intentar entender como funciona y si es explotable</p>
 
-				  	<img src="img/blog1_1.png"><br><br>
+				  	<img src="img/blog2_1.png"><br><br>
 
 				  	<p>Podemos observar varios detalles interesantes</p><br><br>
 
-				  	<img src="img/blog1_2.png"><br><br>
+				  	<img src="img/blog2_2.png"><br><br>
 
 				  	<p>Los dos ultimos puts tienen cadena de caracteres, y el primero es el que nos interesa, hace un push en la pila <b>(0x80485ac)</b> e invoca un call a puts seguido de un jmp para llegar a exit y terminar el programa. <br> También podemos obervar que para llegar a esa dirección, gets mete a eax algunos bytes cuando escibimos el mensaje que nos pide, pero justo después mete en <b>eax un 0x0</b>, que anteriormente se guardo en <b>[ebp-0xc],0x0</b>... lo que significa que el primer push mete a la pila bytes, después pone a eax en 0 y al hacer la comparación siempre será negativa la respuesta <b>1 != 0</b></p><br><br>
 
