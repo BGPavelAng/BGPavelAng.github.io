@@ -6,7 +6,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
         <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
-	<title>Stack_one</title>
+	<title>Stack_two</title>
 </head>
 <body class="d-flex flex-column h-100">
 
@@ -51,7 +51,7 @@
 				El objetivo de la prueba es sobreescribir parte de la memoria (stack), en este caso, la variable buffer puede sobreescribirse pasando la cantidad de bytes permitidos.<br><br>
 
 				 <div id=show style="display: none;">
-				 	<p>https://exploit.education/phoenix/stack-one/</p>
+				 	<p>https://exploit.education/phoenix/stack-two/</p>
 				  <div class="text-center col bg-cod"><b>struct {<br>
 				  	char buffer[64];<br>
 				  	volatile int changeme;<br>
@@ -60,33 +60,32 @@
 				  <input type="button" onclick="document.getElementById('show').style.display='block'"value="Mostrar"><br><br>
 
 
-				  	<p>Utilizamos GDB para debuggearlo, podemos intentar entender como funciona y si es explotable</p>
+				  	<p>Esta prueba es diferente, al ejecutar el programa, aparece un mensaje distinto.</p>
 
-				  	<img src="img/blog2_1.png"><br><br>
+				  	<img src="img/blog3_1.png"><br><br>
 
-				  	<p>Podemos observar varios detalles interesantes</p><br><br>
+				  	<p>Creamos una variable de entorno como nos lo pide.</p><br><br>
 
-				  	<img src="img/blog2_2.png"><br><br>
+				  	<img src="img/blog3_2.png"><br><br>
 
-				  	<p>Nuevamente hay puts que tienen cadena de caracteres, hay dos interesantes, <b>(0x8048670)</b> que es el objetivo y <b>(0x80486b4)</b> donde nos muestra un mensaje pidiendo hexadecimales <b>(0x496c5962)</b>, eso significa que si lo igualamos podríamos lograr el objetivo.<br><br>
+				  	<p>Verificamos que realmente se haya hecho la variable y lo volvemos a ejecutar.<br><br>
 
-				  	<img src="img/blog2_3.png"><br><br>
+				  	<img src="img/blog3_3.png"><br>
+				  	<img src="img/blog3_4.png"><br><br>
 
-				  	<br> También podemos obervar que para llegar a esa dirección, esta vez hay un strcpy que copia bytes de argv, y repite el proceso donde mete  <b>eax = 0x0</b>... lo que significa la misma respuesta negativa <b>1 != 0</b></p><br><br>
+				  	<p>Procedemos a ejecutar la variable de entorno con datos para ver que hace ahora, ya es inecesario debuggearlo, ya que sabemos que el buffer es de 64.</p></p><br><br>
 
 				  	
-				  	<img src="img/blog2_4.png"><br><br>
+				  	<img src="img/blog3_5.png"><br><br>
 
-				  	<p>¿Y qué pasa si modificamos a eax antes de que haga la comparación pero esta vez le colocamos los hexadecimales anteriores <b>(0x496c5962).</b></p><br><br>
+				  	<p>Como se puede observar, se ha hecho un overflow <b>(0x00000041)</b>.</p><br><br>
 
-				  	<img src="img/blog2_5.png"><br><br>
+				  	<p>Bueno, hagamos una prueba, escribamos "BBBB" para ver si recibimos <b>0x42424242</b>.</p><br>
+				  	<img src="img/blog3_6.png"><br><br>
 
-				  	<p>Bueno, llevemoslo a la práctica.</p>
-				  	<p>Nuevamente si observan, en la base (EBP) se encuentra <b>[ebp-0xc], 0x0 </b> y luego se encuentra un <b>lea eax,[ebp-0x4c]</b> que es un espacio, entonces <b>0x4c - 0xc = 40hex o (64 decimal).</b></p>
+				  	<p>Metamos entonces los hexadecimales que nos pide. </p><br>
 
-				  	<p>eso significa que con 64 bytes más el hexadecimal logramos el objetivo, ya que al final se sobreescribe ese <b>eax=0 por eax=0x496c5962</b>, veamos. </p><br>
-
-				  	<img src="img/blog2_6.png"><br><br>	
+				  	<img src="img/blog3_7.png"><br><br>	
 
 				  	<p>Listo.</p><br><br>	     
 
