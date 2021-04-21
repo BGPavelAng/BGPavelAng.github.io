@@ -77,14 +77,14 @@
 				  	
 				  	<img src="img/blog2_4.png"><br><br>
 
-				  	<p>¿Y qué pasa si modificamos a eax antes de que haga la comparación pero esta vez le colocamos los hexadecimales anteriores <b>(0x496c5962)</b></p><br><br>
+				  	<p>¿Y qué pasa si modificamos a eax antes de que haga la comparación pero esta vez le colocamos los hexadecimales anteriores <b>(0x496c5962).</b></p><br><br>
 
 				  	<img src="img/blog2_5.png"><br><br>
 
-				  	<p>Bueno, llevemoslo a la práctica</p><br>
-				  	<p>Nuevamente si observan, en la base (EBP) se encuentra <b>[ebp-0xc], 0x0 </b> y luego se encuentra un <b>lea eax,[ebp-0x4c]</b> que es un espacio, entonces <b>0x4c - 0xc = 40hex o (64 decimal)</b></p>
+				  	<p>Bueno, llevemoslo a la práctica.</p>
+				  	<p>Nuevamente si observan, en la base (EBP) se encuentra <b>[ebp-0xc], 0x0 </b> y luego se encuentra un <b>lea eax,[ebp-0x4c]</b> que es un espacio, entonces <b>0x4c - 0xc = 40hex o (64 decimal).</b></p>
 
-				  	<p>eso significa que con 64 bytes más el hexadecimal logramos el objetivo, ya que al final se sobreescribe ese eax=0 por eax=0x496c5962 veamos </p><br><br>
+				  	<p>eso significa que con 64 bytes más el hexadecimal logramos el objetivo, ya que al final se sobreescribe ese <b>eax=0 por eax=0x496c5962</b>, veamos. </p><br>
 
 				  	<img src="img/blog2_6.png"><br><br>	
 
