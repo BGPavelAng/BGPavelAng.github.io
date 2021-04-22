@@ -63,7 +63,7 @@
 				  <input type="button" onclick="document.getElementById('show').style.display='block'"value="Mostrar"><br><br>
 
 
-				  	<p>Esta prueba tiene algo diferente, ahora es <b>saved return pointer overwrite</b> al parecer cada vez nos van complicando más las cosas, vamos a revisar el código con GDB.</p>
+				  	<p>Esta prueba tiene algo diferente, ahora es <b>saved return pointer overwrite</b> y al parecer cada vez nos van complicando más las cosas, vamos a revisar el código con GDB.</p>
 
 				  	<img src="img/blog5_1.png"><br><br>
 
@@ -71,7 +71,7 @@
 
 				  	<img src="img/blog5_2.png"><br><br>
 
-				  	<p>Bueno, después de esa explicación, vamos a desamblar la función que nos aparece ahí <b>start_level</b>.<br><br>
+				  	<p>Bueno, después de esa explicación, vamos a desamblar la función que nos aparece ahí... <b>"start_level"</b>.<br><br>
 
 				  	<img src="img/blog5_3.png"><br>
 
@@ -80,13 +80,11 @@
 				  	
 				  	<img src="img/blog5_4.png"><br><br>
 
-				  	<p>Podemos ver como hay un printf que no menciona sobre un return y al continuar la ejecución nos muestra una dirección <b>(0x00000041)</b>, que va hacia main nuevamente, seguro está protegido.</p><br>
+				  	<p>Podemos ver como hay un printf que nos menciona sobre un return y al continuar la ejecución nos muestra una dirección <b>(0x0804855c)</b>, que va hacia main nuevamente, seguro está protegido.</p><br>
 
 				  	<img src="img/blog5_5.png"><br><br>
 
-				  	<p>Vamos a poner a prueba lo anterior mencionado sobre modificar ret, esta vez hay un cambio en <b>ebp</b>, ahora es <b>ebp-0x4</b>, y <b>ebp-0x4c</b> lo que da <b>72</b>, pero no olvidemos que hay que sobreescribir la variable <b>ret y ebp</b>, entonces ahora serían 80 bytes + 1 para overflow.</p><br>
-
-				  	<img src="img/blog5_5.png"><br><br>
+				  	<p>Vamos a poner a prueba lo anterior mencionado sobre modificar ret, esta vez hay un cambio en <b>ebp</b>, ahora es <b>(ebp-0x4)</b>, y <b>(ebp-0x4c)</b> lo que da <b>72</b>, pero no olvidemos que hay que sobreescribir la variable <b>ret y ebp</b>, entonces ahora serían 80 bytes + 1 para overflow.</p><br>
 
 				  	<p>Borremos los breaks.</p></p><br>
 
@@ -96,10 +94,10 @@
 
 				  	<img src="img/blog5_7.png"><br><br>
 
-				  	<p>Bueno, hagamos una prueba, escribamos "BBBB" para ver si recibimos <b>0x42424242</b>.</p><br>
+				  	<p>Bueno, hagamos una segunda prueba, escribamos "BBBB" para ver si recibimos <b>0x42424242</b>.</p><br>
 				  	<img src="img/blog5_8.png"><br><br>
 
-				  	<p>Hagamos una segunda prueba, escribamos "CCCC" para ver si recibimos <b>0x43434343</b>, ya que si funciono y se sobreescribio el primer ret, entonces el segundo ret tiene que sobreescribirse.</p><br>
+				  	<p>Hagamos una tercera prueba, escribamos "CCCC" para ver si recibimos <b>0x43434343</b>, ya que si funcionó y se sobreescribe el primer ret, entonces el segundo ret tiene que sobreescribirse, pero hay que recordar que tenemos que colocar el un ret que no esté protegido, y el programa nos mostró el ret de main <b>(0x08048568)</b>.</p><br>
 				  	<img src="img/blog5_9.png"><br><br>
 
 				  	<p>Perfecto, busquemos la dirección de la función. </p><br>
