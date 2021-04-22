@@ -15,5 +15,5 @@ main > .container {
 
 	width: 100%;
 	height: 100%;
-	background: --webkit-linear-gradient(left, black, #0672d0)
+	background: --webkit-linear-gradient(left, black, #0672d0);
 }
