@@ -70,14 +70,26 @@
 				  	<p>Voy a explicar en que consiste el return overwrite.</p><br>
 
 				  	<div id=show-2 style="display: none;">
-				 	<p>https://exploit.education/phoenix/stack-four/</p>
-				  <div class="text-center col bg-cod"><b>struct {<br>
-				  	char buffer[64];<br>
-				  	void *ret;<br>
-				  	gets(buffer);<br><br>
 
-				  	ret = __builtin_return_address(0);<br>
-				  	printf("and will be returning to %p\n", ret);<br></b></div>
+				  <div class="text-center col bg-cod"><b>struct {<br>
+				  	<p>Esté método no es difícil de entender, pero sí de explicar, intentaré ser los más detallista posible.</p><br>
+
+				  	<b>RET</b> es un puntero hacía la siguiente instrucción que la maquina debe ejecutar, a veces puede haber restricciones o ser reutilizados para llegar a una instrucción nueva o diferente a la que está escrito en el código original.<br><br>
+
+				  	Este tipo de exploit aprovecha el sistema <b>LIFO (Last In, First Out), para poner un ejemplo, imaginen que tienen hojas de papel, normalmente las personas podrían una hoja sobre una superficie, encima pondrían otra y encima otra, pero en el lenguaje máquina es al revés.</b><br><br>
+
+				    La máquina, primero pone la hoja, y debajo de esa hoja pone la siguiente, y debajo la siguiente, por eso se llama <b>el último entra y primero sale</b>.</b><br><br>
+
+				    <img src="img/"><br>
+
+				    Cuando logramos sobreescribir ret, se crea un fallo de segmento, pero si intentamos colocar directamente la dirección a usar, la protección no lo permite y te manda directamente a donde se salvó ret anteriormente, o simplemente no te permite la ejecución del programa.<br><br>
+
+				    Entonces utilizamos LIFO a nuestro favor, sobreescribimos <b>RET</b>, y no permitimos que la aplicación te mande al destino normal, sino que sobreescribimos ese ret, con otro que no este protegido, en otras palabras, <b>usamos un ret para brincar a otro ret</b> y LIFO mete el primer ret a la pila, después al brincar al segundo ret, saca de la pila el primer ret y mete a la pila el segundo y de ahí podemos brincar al inicio de alguna instrucción que nos interese.<br><br>
+
+				    <img src="img/"><br>
+				    <img src="img/"><br>
+				    <img src="img/"><br>
+
 				  </div>
 				  <input type="button" onclick="document.getElementById('show-2').style.display='block'"value="Mostrar explicación"><br><br>
 
