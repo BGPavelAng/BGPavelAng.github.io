@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html class="h-100">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
+	<title>Stack_four</title>
+</head>
+<body class="d-flex flex-column h-100">
+
+<header>
+
+  <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active"><a class="nav-link text-primary" href="https://bgpavelang.github.io">HOME</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="#">Nebula</a></li>
+            </ul>
+           
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Vulnhub</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html"></a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="#"></a></li>
+            </ul>
+           
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+</header>
+
+	<div class="container mt-5">
+		<div class="row mt-5">
+			<div class="col">
+				El objetivo de la prueba es sobreescribir parte de la memoria (stack), en este caso, la variable buffer puede sobreescribirse pasando la cantidad de bytes permitidos.<br><br>
+
+				 <div id=show style="display: none;">
+				 	<p>https://exploit.education/phoenix/stack-four/</p>
+				  <div class="text-center col bg-cod"><b>struct {<br>
+				  	char buffer[64];<br>
+				  	void *ret;<br>
+				  	gets(buffer);<br><br>
+
+				  	ret = __builtin_return_address(0);<br>
+				  	printf("and will be returning to %p\n", ret);<br></b></div>
+				  </div>
+				  <input type="button" onclick="document.getElementById('show').style.display='block'"value="Mostrar"><br><br>
+
+
+				  	<p>Esta prueba tiene algo diferente, ahora es <b>saved return pointer overwrite</b> al parecer cada vez nos van complicando más las cosas, vamos a revisar el código con GDB.</p>
+
+				  	<img src="img/blog5_1.png"><br><br>
+
+				  	<p>Voy a explicar en que consiste el return overwrite.</p><br>
+
+				  	<img src="img/blog5_2.png"><br><br>
+
+				  	<p>Bueno, después de esa explicación, vamos a desamblar la función que nos aparece ahí <b>start_level</b>.<br><br>
+
+				  	<img src="img/blog5_3.png"><br>
+
+				  	<p>Metemos un break ahí para ver que esta haciendo realmente.</p></p><br>
+
+				  	
+				  	<img src="img/blog5_4.png"><br><br>
+
+				  	<p>Podemos ver como hay un printf que no menciona sobre un return y al continuar la ejecución nos muestra una dirección <b>(0x00000041)</b>, que va hacia main nuevamente, seguro está protegido.</p><br>
+
+				  	<img src="img/blog5_5.png"><br><br>
+
+				  	<p>Vamos a poner a prueba lo anterior mencionado sobre modificar ret, esta vez hay un cambio en <b>ebp</b>, ahora es <b>ebp-0x4</b>, y <b>ebp-0x4c</b> lo que da <b>72</b>, pero no olvidemos que hay que sobreescribir la variable <b>ret y ebp</b>, entonces ahora serían 80 bytes + 1 para overflow.</p><br>
+
+				  	<img src="img/blog5_5.png"><br><br>
+
+				  	<p>Borremos los breaks.</p></p><br>
+
+				  	<img src="img/blog5_6.png"><br><br>
+
+				  	<p>Coloquemos los bytes para ver si funciona el overflow.</p></p><br>
+
+				  	<img src="img/blog5_7.png"><br><br>
+
+				  	<p>Bueno, hagamos una prueba, escribamos "BBBB" para ver si recibimos <b>0x42424242</b>.</p><br>
+				  	<img src="img/blog5_8.png"><br><br>
+
+				  	<p>Hagamos una segunda prueba, escribamos "CCCC" para ver si recibimos <b>0x43434343</b>, ya que si funciono y se sobreescribio el primer ret, entonces el segundo ret tiene que sobreescribirse.</p><br>
+				  	<img src="img/blog5_9.png"><br><br>
+
+				  	<p>Perfecto, busquemos la dirección de la función. </p><br>
+
+				  	<img src="img/blog5_10.png"><br><br>
+
+				    <p>LLevemoslo a la práctica. </p><br>	
+
+				  	<img src="img/blog5_11.png"><br><br>
+
+				  	<p>Listo.</p><br><br>	     
+
+			</div>
+
+		</div>
+	</div>
+
+	<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
+      
