@@ -84,7 +84,7 @@
 
 				    Cuando logramos sobreescribir ret, se crea un fallo de segmento, pero si intentamos colocar directamente la dirección a usar, la protección no lo permite y te manda directamente a donde se salvó ret anteriormente, o simplemente no te permite la ejecución del programa.<br><br>
 
-				    Entonces utilizamos LIFO a nuestro favor, sobreescribimos <b>RET</b>, y no permitimos que la aplicación te mande al destino normal, sino que sobreescribimos ese ret, con otro que no este protegido, en otras palabras, <b>usamos un ret para brincar a otro ret</b> y LIFO mete el primer ret a la pila, después al brincar al segundo ret, saca de la pila el primer ret y mete a la pila el segundo y de ahí podemos brincar al inicio de alguna instrucción que nos interese.<br><br>
+				    Entonces utilizamos LIFO a nuestro favor, sobreescribimos <b>RET</b>, y no permitimos que la aplicación te mande al destino normal, sino que sobreescribimos ese ret, con otro que no esté protegido, en otras palabras, <b>usamos un ret para brincar a otro ret</b> y LIFO mete el primer ret a la pila, después al brincar al segundo ret, saca de la pila el primer ret y mete a la pila el segundo y de ahí podemos brincar al inicio de alguna instrucción que nos interese.<br><br>
 
 				    <img src="img/"><br>
 				    <img src="img/"><br>
