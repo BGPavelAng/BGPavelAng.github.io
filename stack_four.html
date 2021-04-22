@@ -69,7 +69,7 @@
 
 				  	<p>Voy a explicar en que consiste el return overwrite.</p><br>
 
-				  	<div id=show style="display: none;">
+				  	<div id=show-2 style="display: none;">
 				 	<p>https://exploit.education/phoenix/stack-four/</p>
 				  <div class="text-center col bg-cod"><b>struct {<br>
 				  	char buffer[64];<br>
@@ -79,7 +79,7 @@
 				  	ret = __builtin_return_address(0);<br>
 				  	printf("and will be returning to %p\n", ret);<br></b></div>
 				  </div>
-				  <input type="button" onclick="document.getElementById('show').style.display='block'"value="Mostrar explicación"><br><br>
+				  <input type="button" onclick="document.getElementById('show-2').style.display='block'"value="Mostrar explicación"><br><br>
 
 				  	<p>Bueno, después de esa explicación, vamos a desamblar la función que nos aparece ahí... <b>"start_level"</b>.<br><br>
 
