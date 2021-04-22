@@ -11,10 +11,6 @@ main > .container {
 	background-color: rgb(240, 240, 240);
 }
 
-.container{
-	position: relative;
-}
-
 .container-portada{
 
 	width: 100%;
