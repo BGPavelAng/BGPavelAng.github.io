@@ -1,9 +1,6 @@
 
 
 
-.bg-cod{
-	background-color: rgb(240, 240, 240);
-}
 
 .container-portada{
 
@@ -16,6 +13,7 @@
 .Up-text {
   color: darkgrey;
   white-space: nowrap;
+  overflow: hidden;
  
  
   transform: translate(0%, 0%);
@@ -42,8 +40,5 @@
 		visibility: hidden;
 	}
 
-	.hid{
-		visibility: hidden;
-	}
 
 }
