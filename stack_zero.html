@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
-        
+        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
 	<title>Stack_zero</title>
 </head>
 <body class="d-flex flex-column h-100">
@@ -47,7 +47,7 @@
 
 	<div class="container mt-5">
 		<div class="row mt-5">
-			<div class="col mt-5">
+			<div class="col">
 				El objetivo de la prueba es sobreescribir parte de la memoria (stack), en este caso, la variable buffer puede sobreescribirse pasando la cantidad de bytes permitidos.<br><br>
 
 				 <div id=show style="display: none;">
@@ -62,29 +62,29 @@
 
 				  	<p>Utilizamos GDB para debuggearlo, podemos intentar entender como funciona y si es explotable</p>
 
-				  	<img src="img/blog1_1.png"><br><br>
+				  	<img class="img-fluid" src="img/blog1_1.png"><br><br>
 
 				  	<p>Podemos observar varios detalles interesantes</p><br><br>
 
-				  	<img src="img/blog1_2.png"><br><br>
+				  	<img class="img-fluid" src="img/blog1_2.png"><br><br>
 
 				  	<p>Los dos ultimos puts tienen cadena de caracteres, y el primero es el que nos interesa, hace un push en la pila <b>(0x80485ac)</b> e invoca un call a puts seguido de un jmp para llegar a exit y terminar el programa. <br> También podemos obervar que para llegar a esa dirección, gets mete a eax algunos bytes cuando escibimos el mensaje que nos pide, pero justo después mete en <b>eax un 0x0</b>, que anteriormente se guardo en <b>[ebp-0xc],0x0</b>... lo que significa que el primer push mete a la pila bytes, después pone a eax en 0 y al hacer la comparación siempre será negativa la respuesta <b>1 != 0</b></p><br><br>
 
-				  	<img src="img/blog1_3.png"><br><br>
-				  	<img src="img/blog1_4.png"><br><br>
+				  	<img class="img-fluid" src="img/blog1_3.png"><br><br>
+				  	<img class="img-fluid" src="img/blog1_4.png"><br><br>
 
 				  	<p>¿Y qué pasa si modificamos a eax antes de que haga la comparación y le ponemos 1</p><br><br>
 
-				  	<img src="img/blog1_5.png"><br><br>
+				  	<img class="img-fluid" src="img/blog1_5.png"><br><br>
 
 				  	<p>Bueno, llevemoslo a la práctica</p><br>
 				  	<p>Hay que tener en cuenta algo, si observan, en la base (EBP) se encuentra <b>[ebp-0xc], 0x0 </b> y luego se encuentra un <b>lea eax,[ebp-0x4c]</b> que es un espacio para gets, entonces <b>0x4c - 0xc = 40hex o (64 decimal)</b></p><br><br>
 
-				  	<img src="img/blog1_6.png"><br><br>	
+				  	<img class="img-fluid" src="img/blog1_6.png"><br><br>	
 
 				  	<p>eso significa que con 65 logramos el objetivo, veamos </p>
 
-				  	<img src="img/blog1_7.png"><br><br>	
+				  	<img class="img-fluid" src="img/blog1_7.png"><br><br>	
 
 				  	<p>Listo.</p><br><br>	     
 
