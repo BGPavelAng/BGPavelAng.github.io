@@ -62,41 +62,41 @@
 
 				  	<p>Esta prueba tiene algo diferente, ahora es <b>volatile int(*fp)();</b>.</p>
 
-				  	<img src="img/blog4_1.png"><br><br>
+				  	<img class="img-fluid" src="img/blog4_1.png"><br><br>
 
 				  	<p>Otra vez vamos al debugger, y observamos el código.</p><br>
 
-				  	<img src="img/blog4_2.png"><br><br>
+				  	<img class="img-fluid" src="img/blog4_2.png"><br><br>
 
 				  	<p>Volvemos a encontrar algunos puts, sin embargo, no encontramos ningun mensaje de como lograr el objetivo, incluso si seguimos los registros hay jumps que van a <b>(0x080485bf)</b> y <b>(0x080485cf)</b> pero nada más.<br><br>
 
-				  	<img src="img/blog4_3.png"><br>
+				  	<img class="img-fluid" src="img/blog4_3.png"><br>
 
 				  	<p>Metemos algunos datos para ver que pasa si sobrepasamos el buffer.</p></p><br>
 
 				  	
-				  	<img src="img/blog4_4.png"><br><br>
+				  	<img class="img-fluid" src="img/blog4_4.png"><br><br>
 
 				  	<p>Como se puede observar, se ha hecho un overflow <b>(0x00000041)</b>.</p><br>
 
 				  	<p>Bueno, hagamos una prueba, escribamos "BBBB" para ver si recibimos <b>0x42424242</b>.</p><br>
-				  	<img src="img/blog4_5.png"><br><br>
+				  	<img class="img-fluid" src="img/blog4_5.png"><br><br>
 
 				  	<p>Podemos observar como logramos sobreescribir el buffer y return, pero no nos aparece nada sobre como pasar el objetivo, así que hagamosle caso a <b>calling function pointer</b> y busquemos con <b>info function</b> las funciones que utiliza, tambien se puede utilizar objdump, pero ahora no será necesario, con GDB tenemos para esta prueba. </p><br>
 
-				  	<img src="img/blog4_6.png"><br><br>	
+				  	<img class="img-fluid" src="img/blog4_6.png"><br><br>	
 
 				  	<p>se listaron varias funciones, pero hay una interesante, <b>"complete_level"...</b> vamos a dirigirnos a esa dirección para ver que obtenemos. </p><br>
 
-				  	<img src="img/blog4_7.png"><br><br>
+				  	<img class="img-fluid" src="img/blog4_7.png"><br><br>
 
 				  	<p>Perfecto, ahora veamos que hay en el push que utilizará puts. </p><br>
 
-				  	<img src="img/blog4_8.png"><br><br>
+				  	<img class="img-fluid" src="img/blog4_8.png"><br><br>
 
 				  	<p>Allí se encuentra el mensaje que buscamos, vamos a la práctica para ver el resultado, pero antes anotamos la dirección que nos muestra ya sea <b>info function</b> o el inicio de la funcion <b>ebp</b>, y es <b>(0x08048535)</b>. </p><br>	
 
-				  	<img src="img/blog4_9.png"><br><br>
+				  	<img class="img-fluid" src="img/blog4_9.png"><br><br>
 
 				  	<p>Listo.</p><br><br>	     
 
