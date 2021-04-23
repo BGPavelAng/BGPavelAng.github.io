@@ -1,110 +1,16 @@
-<!DOCTYPE html>
-<html class="h-100">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aprendiendo sobre seguridad con hacks</title>
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+main > .container {
+  padding: 60px 15px 0;
+}
 
-        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
+.bg-cod{
+	background-color: rgb(240, 240, 240);
+}
 
+.container-portada{
 
-    
-  </head>
-  <body class="d-flex flex-column h-100 container-portada">
-    
-<header>
-
-  <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
-    <div class="container-fluid">
-      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
-        <ul class="navbar-nav">
-          <li class="nav-item active"><a class="nav-link text-primary" href="https://bgpavelang.github.io">HOME</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
-              <li><a class="dropdown-item nav-link text-primary" href="#">Nebula</a></li>
-            </ul>
-           
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Vulnhub</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html"></a></li>
-              <li><a class="dropdown-item nav-link text-primary" href="#"></a></li>
-            </ul>
-           
-          </li>
-        </ul>
-        
-      </div>
-    </div>
-  </nav>
-</header>
-
-<div class="container mt-5 " >
-  <div class="mt-5 row">
-    <div class="col-3">
-      <img src="img/pavs.jpg">
-    </div>
-    <div class="col-9 mt-5">
-    <p class="mt-5 text-white"> <b>Aprende a encontrar vulnerabilidades con CTF (Capture The Flag) en Web y Pwn practicando con retos que se encuentran en la red. El objetivo es pensar fuera de la caja e intentarlo hasta lograrlo (tryharder).</b></p>
-    </div>
-  </div>
-</div>
-
-<div class="container">
-  <div class="row justify-content-start">
-    <div class="col-3 text-white">
-      <p class="fs-6 lh-sm">
-
-    <p><b>#BelialGrimoire</b></p>
-
-    Lic. Diseño y Comunicación Visual.<br>
-    Ingeniería Trunca. xD<br><br>
-
-    Me encanta el Diseño y la Tecnología.<br><br>
-
-    Mis inicios en seguridad informática comenzó en los foros, en la época donde las personas compartían, ayudaban y preguntaban sin miedo sus dudas.<br><br>
-
-    Extraño esos foros, porque aprendía el que preguntaba, aprendía el que enseñaba y aprendían todos los que no conocían el tema.<br><br>
-  </p>
-    </div>
-    <div class="col-9 text-white">
-      <b>¿Qué es un CTF?</b><br><br>
-      <b>CTF</b> son las siglas de (Capture The Flag) o (Captura la bandera), son retos sobre seguridad informática donde el objetivo es encontrar errores que puedas utilizar para tener acceso a un sistema, cada vez que logras un avance encuentras una bandera que es señal de que estas logrando el objetivo. Estos retos son un hobby divertido, pero también te ayuda a descubrir "bugs" comunes y no tan comunes que pueden vulnerar un sistema, ya que muchos de estos "bugs" pueden ser utilizados en la vida real.<br><br>
-
-      <b>¿Porqué Web y Pwn?</b><br><br>
-      <b>Web y Pwn</b> son los más comunes de utilizar, y para mí, los que más me interesan aprender todo el tiempo, Vulnhub tiene retos muy buenos sobre retos Web, ahí es donde me voy a centrar al igual que <b>"Exploit Education"</b> con la explotación de software, donde mi meta es encontrar vulnerabilidades para realizar exploits. Sólo abarcaré esos dos, porque son temas muy extensos, pero si quieres aprender más, ¡hazlo!, no te limites, igual aquí abrá de todo un poco.<br><br>
-
-      <b>¿Para qué sirve esto?</b><br><br>
-      Aprende a mejorar la seguridad de tus sistemas, páginas y sotware.<br><br>
-      Conseguir alguna certificación como CEH (Certified Ethical Hacker), cuanto más practiques y aprendas en estos retos gratuitos, pagar la certificación después te será más sencillo conseguirlo.<br><br>
-      Quitar el aburrimiento. xD<br><br>
-
-    </div>
-
-  </div>
-</div>
-
-
-<footer class="footer mt-auto py-3 bg-light">
-  <div class="container">
-    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
-  </div>
-</footer>
-
-
-       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-
-      
-  </body>
-</html>
-
+	width: 100%;
+	height: 100%;
+	background: -webkit-linear-gradient(left, black, #0672d0);
+	opacity: 0.5;
+}
