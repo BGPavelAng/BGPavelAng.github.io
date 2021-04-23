@@ -1,6 +1,7 @@
 
-main > .container {
-  padding: 60px 15px 0;
+body{
+	margin: 0;
+	overflow: hidden;
 }
 
 .bg-cod{
