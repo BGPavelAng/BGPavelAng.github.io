@@ -36,6 +36,6 @@ main > .container {
   transform: scale(1.1)translate(-10%, -10%);
   text-shadow: 1px -1px 0 black, 1px -2px 0 black, 1px -3px 0 black,
     1px -2px 0 black, 1px -2px 0 black, 1px -2px 0 black, 1px -3px 0 black,
-    1px -2px 0 balck, 2px -3px 7px black, 5px -4px 7px #808080;
+    1px -2px 0 black, 2px -3px 7px black, 5px -4px 7px #808080;
 }
 
