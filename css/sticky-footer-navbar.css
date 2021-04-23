@@ -9,7 +9,12 @@
 
         <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
 
-        <header>
+
+    
+  </head>
+  <body class="d-flex flex-column h-100 container-portada">
+    
+<header>
 
   <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
     <div class="container-fluid">
@@ -43,11 +48,6 @@
     </div>
   </nav>
 </header>
-
-    
-  </head>
-  <body class="d-flex flex-column h-100">
-    
 
 <div class="container mt-5 " >
   <div class="mt-5 row">
