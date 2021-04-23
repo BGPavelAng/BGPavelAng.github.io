@@ -3,10 +3,6 @@ main > .container {
   padding: 60px 15px 0;
 }
 
-.bg-col{
-	background-color: rgba(0, 204, 255,0.3);
-}
-
 .bg-cod{
 	background-color: rgb(240, 240, 240);
 }
