@@ -44,5 +44,9 @@ body{
 	.Up-text{
 		visibility: hidden;
 	}
+	body{
+	margin: 0;
+	overflow: hidden;
+}
 
 }
