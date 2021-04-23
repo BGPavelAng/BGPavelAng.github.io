@@ -1,14 +1,9 @@
 
-
-
-
 .container-portada{
 
-	
 	background: -webkit-linear-gradient(left, #660066, #0672d0);
-
-	
 }
+
 
 .Up-text {
   color: darkgrey;
@@ -35,10 +30,3 @@
 }
 
 
-@media only screen and (max-width: 768px){
-	.Up-text{
-		visibility: hidden;
-	}
-
-
-}
