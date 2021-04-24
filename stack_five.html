@@ -94,7 +94,7 @@
 
 				  	<p>Listo. ¿pero qué más sigue?</p><br>     
 
-				  	<p>Pues hacer una shellcode y colocar los bytes de la shell dentro de los 120 bytes sobrantes, lo complicado es que funcione, ya que por la arquitectura del sistema puede hacer que funcione o no la shell programada; a mi preferencia es usar Nasm.<br>Por ejemplo, si la shell tiene 20 bytes, entonces tomas 20 de los 120 y al final quedaría algo como, <b>"\x90"*20 + "\x20bytesdelashellcode" + "A"*100 + "\x43\x43\x43\x43"</b>.<br> Si eres obervador, seguro te fijaste que puse <b>\x90</b>, esto es un <b>NOP</b>, que significa que la maquina debe de ignorar esos 20 NOPs y continuar su recorrido.</p><br><br>
+				  	<p>Pues hacer una shellcode y colocar los bytes de la shell dentro de los 120 bytes sobrantes, lo complicado es que funcione, ya que por la arquitectura del sistema puede hacer que funcione o no la shell programada; a mi preferencia es usar Nasm.<br><br>Por ejemplo, si la shell tiene 20 bytes, entonces tomas 20 de los 120 y al final quedaría algo como, <b>"\x90"*20 + "\x20bytesdelashellcode" + "A"*100 + "\x43\x43\x43\x43"</b>.<br><br> Si eres obervador, seguro te fijaste que puse <b>\x90</b>, esto es un <b>NOP</b>, que significa que la maquina debe de ignorar esos 20 NOPs y continuar su recorrido.</p><br><br>
 
 			</div>
 
