@@ -84,7 +84,7 @@
 
 				  	<img class="img-fluid" src="img/vuln_4.png"><br><br>
 
-				  	<p>Viendo cafa imagen, no hay nada raro, sin embargo hay dos con un nombre parecido a la prueba, podría ser una pista, <b>foxy.jpeg y foxy1.jpg</b>, aunque son la misma imagen, tienen una diferencia evidente, el peso <b>93K y 99K</b> </p><br><br>
+				  	<p>Viendo cada imagen, no hay nada raro, sin embargo hay dos con un nombre parecido a la prueba, podría ser una pista, <b>foxy.jpeg y foxy1.jpg</b>, aunque son la misma imagen, tienen una diferencia evidente, el peso <b>93K y 99K</b> </p><br><br>
 
 				  	
 				  	<img class="img-fluid" src="img/vuln_6.png"><br><br>
@@ -121,7 +121,7 @@
 
 				  	<img class="img-fluid" src="img/vuln_15.png"><br><br>
 
-				  	<p>Hay algo que puede ser una gran pista, hay un plt hacia system, lo que significa que hay una posibilidad de que ahí se ejecute una shell. Desde el mismo GDB colocamos los 516 bytes, más la dirección hacia la función secret pero no funciona, se termina la ejecución, pero hay un truco para eso y es utilizar <b>cat</b>, guardamos el registro en un lugar con permisos de escritura.</p><br>
+				  	<p>Hay algo que puede ser una gran pista, hay un system@plt, lo que significa que hay una posibilidad de que ahí se ejecute una shell. Desde el mismo GDB colocamos los 516 bytes, más la dirección hacia la función secret pero no funciona, se termina la ejecución, pero hay un truco para eso y es utilizar <b>cat</b>, guardamos el registro en un lugar con permisos de escritura.</p><br>
 
 				  	<img class="img-fluid" src="img/vuln_18.png"><br><br>
 
