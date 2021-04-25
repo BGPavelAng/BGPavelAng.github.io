@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html class="h-100">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
+	<title>Vulnhub - Foxhole</title>
+</head>
+<body class="d-flex flex-column h-100">
+
+<header>
+
+ 
+     <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active"><a class="nav-link text-primary" href="https://bgpavelang.github.io">HOME</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="#">Nebula</a></li>
+            </ul>
+           
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">CTFs</a>
+            <ul class="dropdown-menu">
+            	<li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+            </ul>
+           
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+</header>
+
+	<div class="container mt-5">
+		<div class="row mt-5">
+			<div class="col">
+				
+				<b>Herramientas utilizadas.</b><br><br>
+				netdiscover<br>
+				nmap<br>
+				gobuster<br>
+				nikto<br>
+				steghide<br>
+
+				<b>Para esto, programé una aplicación para automatizar el análisis, está en constante desarrollo y usa python3</b><br><br>
+
+				<div>
+					<a class="text-primary" href="https://github.com/BGPavelAng/SecurtyPython">Github: Security Python</a>
+				</div><br><br>
+
+				 
+
+
+				  	<p>Comenzamos buscando la ip con netdiscover.</p><br><br>
+
+				  	<p>Entramos a página con la dirección que obtuvimos en el explorador.</p><br><br>
+
+
+				  	<img class="img-fluid" src="img/vuln_2.png"><br><br>
+
+				  	<p>Al parecer solo es una web con fondo negro, revisamos el código a ver si hay algo relevante.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_3.png"><br><br>
+
+				  	<p>Hay algo raro, aunque no se ve nada en la página, se puede ver algunos links hacia unas imagenes en el código. Es hora de revisar posibles link escondidos, puesrtos abiertos y vulnerabilidades, para eso usaré la aplicación. <br><br>
+
+				  	<img class="img-fluid" src="img/vuln_7.png">
+
+				  	<p>Revisando lo archivos, no hubo nada fuera de lo común, sin embargo, hubo un link hacia las imagenes </p></p><br>
+
+				  	<img class="img-fluid" src="img/vuln_4.png"><br><br>
+
+				  	<p>Viendo cafa imagen, no hay nada raro, sin embargo hay dos con un nombre parecido a la prueba, podría ser una pista, <b>foxy.jpeg y foxy1.jpg</b>, aunque son la misma imagen, tienen una diferencia evidente, el peso <b>93K y 99K</b> </p><br><br>
+
+				  	
+				  	<img class="img-fluid" src="img/vuln_6.png"><br><br>
+
+				  	<p>Vamos a hacer Esteganografía, usaremos steghide, en la aplicación ya se encuentra, solo es darle enter cuando pide <b>salvoconducto</b>, y listo, nos salio un archivo <b>"msg.txt"</b>.
+				  	</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_8.png"><br><br>
+
+				  
+
+				  	<p>Nos aparece un mensaje cifrado, en consola se utiliza <b>base64 -d msg.txt</b> y nos aparece un mensaje, que parece ser una constraseña</p><br>  
+
+				  	<img class="img-fluid" src="img/vuln_9.png"><br><br>   
+
+				  	<p>Hagamos una prueba de acceso mediante ssh, se puede usar hydra para descubrir el usuario, pero antes hay que intentarlo con los nombres de las imagenes. Utilice como usuario... <b>foxy</b>, luego <b>fox</b>.</p><br><br>
+
+				  	<img class="img-fluid" src="img/vuln_10.png"><br><br> 
+
+				  	<p>Logramos el primer objetivo, por lo regular se empieza a investigar el servidor, con archivos escondidos, usuarios con acceso root, aplicaciones con permisos elevados, etc... pero al revisar con <b>ls -lah</b>, nos encontramos con una aplicación que dice <b> GiveMeRootPlz</b> y tiene permisos root. Creo está de sobra buscar más.</p><br><br>
+
+				  	<img class="img-fluid" src="img/vuln_11.png"><br><br>
+
+				  	<p>Abrimos la aplicación con <b>GDB</b>, y solo encontramos una funcion llamada <b>overflow</b>, creo es una pista, pero tampoco hay nada, sin embargo, se puede obervar un buffer de 512 si analizamos <b>ebp</b>, y obtenemos <b>0x41414141</b>.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_12.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_16.png"><br><br>
+
+				  	<p>Sin embargo con 512 bytes no se pudo sobreescribir ret, así que aumentamos a 516 bytes y metemos <b>"BBBB"</b> y logramos sobreescribirlo. Pero, ¿y después qué?</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_17.png"><br><br>
+
+				  	<p>Buscamos por información por algunas funciones, con <b>info function</b> y nos apareció algo interesante.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_15.png"><br><br>
+
+				  	<p>Hay algo que puede ser una gran pista, hay un plt hacia system, lo que significa que hay una posibilidad de que ahí se ejecute una shell. Desde el mismo GDB colocamos los 516 bytes, más la dirección hacia la función secret pero no funciona, se termina la ejecución, pero hay un truco para eso y es utilizar <b>cat</b>, guardamos el registro en un lugar con permisos de escritura.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_18.png"><br><br>
+
+				  	<p>Sin embargo, no funcionó, esto regularmente pasa y es tedioso, pero habrá que buscarlo manualmente.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_19.png"><br><br>
+
+				  	<p>Después de un rato, y de modificar los hexadecimales, al parecer solo es restarle 1 a los 516 y dejarlo en <b>515</b>.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_21.png"><br><br>
+
+				  	<p>Nos ayudamos con python para hacer un <b>spawn</b>.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_22.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_24.png"><br><br>
+
+				  	<p>Listo.</p><br>
+
+
+			</div>
+
+		</div>
+	</div>
+
+	<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
+      
