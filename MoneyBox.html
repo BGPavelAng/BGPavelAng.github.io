@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html class="h-100">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
+	<title>Vulnhub - MoneyBox</title>
+</head>
+<body class="d-flex flex-column h-100">
+
+<header>
+
+ 
+     <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active"><a class="nav-link text-primary" href="https://bgpavelang.github.io">HOME</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="#">Nebula</a></li>
+            </ul>
+           
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">CTFs</a>
+            <ul class="dropdown-menu">
+            	<li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+            </ul>
+           
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+</header>
+
+	<div class="container mt-5">
+		<div class="row mt-5">
+			<div class="col">
+				
+				<b>Herramientas utilizadas.</b><br><br>
+				netdiscover<br>
+				nmap<br>
+				gobuster<br>
+				nikto<br>
+				steghide<br>
+				hydra<br>
+
+				<b>Para esto, programé una aplicación para automatizar el análisis, está en constante desarrollo y usa python3</b><br><br>
+
+				<div>
+					<a class="text-primary" href="https://github.com/BGPavelAng/SecurtyPython">Github: Security Python</a>
+				</div><br><br>
+
+				 
+
+
+				  	<p>Comenzamos buscando la ip con <b>netdiscover</b>.</p><br>
+
+				  	<p>Entramos a página con la dirección que obtuvimos en el explorador.</p><br><br>
+
+
+				  	<img class="img-fluid" src="img/vuln_2_0.png"><br><br>
+
+				  	<p>Al parecer solo es una web con fondo negro, revisamos el código a ver si hay algo relevante, pero no hay nada, así que procedamos al analizar el servidor.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_2_4.png"><br><br>
+
+				  	<p>Encontramos algo interesante, un acceso a ftp, con usuario y password, anonymous. <br><br>
+
+				  	<img class="img-fluid" src="img/vuln_2_1.png">
+
+				  	<p>Entramos y tomamos la imagen que <b>trytofind.jpg</b>, parece otra estenografía.</p></p><br>
+
+				  	<img class="img-fluid" src="img/vuln_2_3.png"><br><br>
+
+				  	<p>Sin embargo, no muestra nada, hay dos posibilidades, una es que no hay nada o dos, se necesita una contraseña, así que veamos que dejó <b>Gobuster</b> </p><br><br>
+
+				  	
+				  	<img class="img-fluid" src="img/vuln_2_5.png"><br><br>
+
+				  	<p>Hay un link a <b>/blogs</b>, al entrar solo hay mensajes, pero en cada página hay un texto oculto al final, y al final nos muestra lo que buscabamos, una contraseña.
+				  	</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_2_6.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_2_7.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_2_8.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_2_9.png"><br><br>
+
+				  
+
+				  	<p>Metemos la contraseña y no aparece un archivo, donde nos dice que el usuario tiene un contraseña muy debil, pero nos da el usuario <b>renu</b>. Es momento de usar hydra para ver si tenemos acceso mediante ssh</p><br>  
+
+				  	<img class="img-fluid" src="img/vuln_2_10.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_2_12.png"><br><br> 
+
+				  	<p>Con paciencia, obtenemos la contraseña.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_2_13.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_2_14.png"><br><br>      
+
+				  	<p>Listo, el primer objetivo se logró.</p><br><br>
+
+				  	<img class="img-fluid" src="img/vuln_2_15.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_2_16.png"><br><br> 
+				  	<p>Obtenemos la primera bandera en <b>renu</b> y si vamos investigando hay un segundo usuario llamado <b>lily</b> y obtenemos 2 banderas.</p><br>
+
+				  	<p>Vamos investigando posibles accesos, programas y/o con acceso root o usuarios con provilegios e incluso archivos ocultos.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_2_20.png"><br><br>
+				    <img class="img-fluid" src="img/vuln_2_18.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_2_19.png"><br><br>
+
+				  	<p>Al no encontrar nada busqué algún exploit de kernel, pero abrí el archivo que se encuentra dentro de <b>.ssh</b> llamado <b>authorized_key</b>, y puedes observa como tiene referencia a <b>renu</b>, lo que significa que puedes conectarte con ssh a la cuenta lily con la misma contraseña de renu.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_2_21.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_2_24.png"><br><br>
+				  	
+
+				  	<p>Repetimos busqueda pero en <b>sudo -l</b>, encontramos que perl tiene permisos root, así que podemos hacer una shell a root.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_2_25.png"><br><br>
+
+				  	<p>Hay una página donde tienen registro de varias maneras de conseguir una shell de varias maneras, vamos a ver una para perl.</p>
+
+				  	<a href="https://gtfobins.github.io/">GTFObins</a><br><br>
+
+				  	<img class="img-fluid" src="img/vuln_2_27.png"><br><br>
+
+				  	<p>Logramos la shell, usamos <b>Spawn de python</b>.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_2_29.png"><br><br>
+
+				  	<p>Conseguimos bandera de <b>Root</b>.</p><br>
+
+				  	<p>Listo.</p><br>
+
+
+			</div>
+
+		</div>
+	</div>
+
+	<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
+      
