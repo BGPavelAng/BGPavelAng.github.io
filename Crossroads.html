@@ -109,7 +109,7 @@
 				  	<img class="img-fluid" src="img/vuln_3_11.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_3_12.png"><br><br>
 
-				  	<p>El segundo es un archivo binario, veamos su interior de manera sencilla para no ejecutarlo (por seguridad xD), encontramos un <b>setuid</b> y un <b>/bin/bash /root/beroot.sh</b>, al aprecer ese binario ejecuta un archivo llamado beroot.sh, pero no solo eso, el siguiente archivo dentro de la carpeta smbshare se encuentra un conf, al abrirlo se ve otro dato interesante en <b>magic script</b>, que se puede ejecutar un bash.
+				  	<p>El segundo es un archivo binario, veamos su interior de manera sencilla para no ejecutarlo (por seguridad xD), encontramos un <b>setuid</b> y un <b>/bin/bash /root/beroot.sh</b>, al parecer ese binario ejecuta un archivo llamado <b>beroot.sh</b>b, pero no solo eso, el siguiente archivo dentro de la carpeta smbshare se encuentra un <b>conf</b>, al abrirlo se ve otro dato interesante en <b>magic script</b>, que se puede ejecutar un bash.
 				  	</p>
 
 				  	<p>Al inicio intenté hacer un simple <b>l -lah</b>, pero se pasó nada, así que procedemos a usar un shell remota con netcat</p>
