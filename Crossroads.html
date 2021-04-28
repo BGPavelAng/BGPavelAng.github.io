@@ -76,7 +76,7 @@
 
 				  	<img class="img-fluid" src="img/vuln_3_0.png"><br><br>
 
-				  	<p>Parece un web normal, no tiene algun Form para  login, veamos que .</p><br>
+				  	<p>Parece un web normal, no tiene algun Form para  login, veamos que más podemos encontrar con un scaneo.</p><br>
 
 				  	<img class="img-fluid" src="img/vuln_2_4.png"><br><br>
 
@@ -84,13 +84,13 @@
 
 				  	<img class="img-fluid" src="img/vuln_3_1.png">
 
-				  	<p>En Gobuster encontramos 2 link, uno de <b>robost.txt</b> y otro de <b>note.txt</b>.</p><br>
+				  	<p>En Gobuster encontramos 2 links, uno de <b>robots.txt</b> y otro de <b>note.txt</b>.</p><br>
 				  	<img class="img-fluid" src="img/vuln_3_2.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_3_5.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_3_3.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_3_4.png"><br><br>
 
-				  	<p>Regresamos a <b>SMB</b> y se hizo el intento con hydra, con Ncrack, pero no hubo respuesta, sin embargo, se intento con <b>Metasploit</b> y se logró tener acceso, son esos momentos del hacking que nunca saber porque pasa eso. Talvez la versión de <b>SMB</b>.</p><br><br>
+				  	<p>Hay varios archivos, pero por el momento egresamos a <b>SMB</b> y se hizo el intentó de acceso con hydra y con Ncrack, pero no hubo respuesta, sin embargo, se intentó con <b>Metasploit</b> y se logró tener acceso, son esos momentos del hacking que nunca se sabe porque pasa esto, pero solo logramos encontrar la contraseña de la tercera manera. Talvez la versión de <b>SMB</b>.</p><br><br>
 
 				  	
 				  	<img class="img-fluid" src="img/vuln_3_6.png"><br><br>
@@ -98,18 +98,18 @@
 				  	<img class="img-fluid" src="img/vuln_3_8.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_3_9.png"><br><br>
 
-				  	<p>Dentro hay varios archivo. los descargamos y vamos viendo que tienen, talvez son pistas.
+				  	<p>Entramos y dentro hay varios archivos, los descargamos y vamos viendo que tienen, talvez son pistas.
 				  	</p><br>
 
 				  	<img class="img-fluid" src="img/vuln_3_10.png"><br><br>
 
-				  	<p>El primer es la primera bandera, al parecer estamos avanzando, pero los otros dos archivos tienen datos interesantes.
+				  	<p>El primero es la primera bandera, al parecer estamos avanzando, pero los otros dos archivos tienen datos interesantes.
 				  	</p><br>
 
 				  	<img class="img-fluid" src="img/vuln_3_11.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_3_12.png"><br><br>
 
-				  	<p>El segundo es un archivo binario, al extraer datos para no ejecutarlo (por seguridad xD), encontramos un <b>setuid</b> y un <b>/bin/bash /root/beroot.sh</b>, al aprecer ese binario ejecuta un archivo llamado beroot.sh, pero no los eso, el siguiente archivo dentro de la carpeta smbshare se encuentra un conf, al abrirlo se ve otro dato interesante en <b>magic script</b>, se puede ejecutar un bash.
+				  	<p>El segundo es un archivo binario, veamos su interior de manera sencilla para no ejecutarlo (por seguridad xD), encontramos un <b>setuid</b> y un <b>/bin/bash /root/beroot.sh</b>, al aprecer ese binario ejecuta un archivo llamado beroot.sh, pero no solo eso, el siguiente archivo dentro de la carpeta smbshare se encuentra un conf, al abrirlo se ve otro dato interesante en <b>magic script</b>, que se puede ejecutar un bash.
 				  	</p>
 
 				  	<p>Al inicio intenté hacer un simple <b>l -lah</b>, pero se pasó nada, así que procedemos a usar un shell remota con netcat</p>
@@ -124,15 +124,13 @@
 				  	<img class="img-fluid" src="img/vuln_3_16.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_3_17.png"><br><br>
 
-				  	<p>El unico es beroot, y al ejecutarlo nos pide una contraseña, no hay nada en el servidor que pueda darnos una señal, así que no olvidemos la estenografía, pero desafortunadamente, steghide no funciona con <b>PNG</b>, así que buscando por la red encontramos a <b>stegoveritas</b>, (raro nombre, lo sé xD)... y nos da varios archivos, al abrirlos con cat, resulta que son wordlists, posibles contraseñas, pero no hay acceso a ssh, el puerto está cerrado, así que lo llevamos al servidor </p><br> 
+				  	<p>El unico es <b>beroot</b>, y al ejecutarlo nos pide una contraseña, no hay nada en el servidor que pueda darnos una señal, así que mejor regresemos a los otros archivos y no olvidemos la estenografía con la imagen oculta, pero está vez desafortunadamente steghide no funciona con <b>PNG</b>, así que buscando por la red encontramos a <b>stegoveritas</b>, (raro nombre, lo sé xD)... y nos da varios archivos, al abrirlos con <b>cat</b>, resulta que son unos wordlists, posibles contraseñas, pero no hay acceso a ssh, el puerto está cerrado, así que lo llevamos al servidor </p><br> 
 
 				  	<img class="img-fluid" src="img/vuln_3_18.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_3_19.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_3_20.png"><br><br>      
 
-				  	<p>Son muchas las palabras para intentar, así que haré algo que siempre uso en un bash cuando quiero eliminar los ssh. Pero esta vez será para probar contraseñas en la aplicación beroot y será con un for</p>
-
-				  	<p>Vamos investigando posibles accesos, programas y/o con acceso root o usuarios con privilegios e incluso archivos ocultos.</p><br>
+				  	<p>Son muchas las palabras para intentar, así que haré algo que siempre uso en un bash cuando quiero eliminar los ssh. Pero esta vez será para probar contraseñas en la aplicación <b>beroot</b> y será con un <b>for</b>.</p>
 
 				  	<img class="img-fluid" src="img/vuln_3_21.png"><br><br>
 				    <img class="img-fluid" src="img/vuln_3_22.png"><br><br>
@@ -146,7 +144,7 @@
 
 				  	<img class="img-fluid" src="img/vuln_3_25.png"><br><br>
 
-				  	<p>Vamos a root y hay está le segunda bandera.</p>
+				  	<p>Vamos a root y ahí está le segunda bandera.</p>
 
 				  	<p>Listo.</p><br>
 
