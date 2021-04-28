@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html class="h-100">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
+	<title>Vulnhub - Crossroads</title>
+</head>
+<body class="d-flex flex-column h-100">
+
+<header>
+
+ 
+     <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active"><a class="nav-link text-primary" href="https://bgpavelang.github.io">HOME</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="#">Nebula</a></li>
+            </ul>
+           
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">CTFs</a>
+            <ul class="dropdown-menu">
+            	<li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+            </ul>
+           
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+</header>
+
+	<div class="container mt-5">
+		<div class="row mt-5">
+			<div class="col">
+				
+				<b>Herramientas utilizadas.</b><br><br>
+				netdiscover<br>
+				nmap<br>
+				gobuster<br>
+				nikto<br>
+				steghide<br>
+				hydra<br>
+				ncrack<br>
+				stegoveritas<br>
+				metasploit<br>
+
+				<b>Para esto, programé una aplicación para automatizar el análisis, está en constante desarrollo y usa python3</b><br><br>
+
+				<div>
+					<a class="text-primary" href="https://github.com/BGPavelAng/SecurtyPython">Github: Security Python</a>
+				</div><br><br>
+
+				 
+
+
+				  	<p>Comenzamos buscando la ip con <b>netdiscover</b>.</p><br>
+
+				  	<p>Entramos a página con la dirección que obtuvimos en el explorador.</p><br><br>
+
+
+				  	<img class="img-fluid" src="img/vuln_3_0.png"><br><br>
+
+				  	<p>Parece un web normal, no tiene algun Form para  login, veamos que .</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_2_4.png"><br><br>
+
+				  	<p>Hay un acceso mediante SMB, utilizamos smbmap o enum4linux. <br><br>
+
+				  	<img class="img-fluid" src="img/vuln_3_1.png">
+
+				  	<p>En Gobuster encontramos 2 link, uno de <b>robost.txt</b> y otro de <b>note.txt</b>.</p><br>
+				  	<img class="img-fluid" src="img/vuln_3_2.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_3_5.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_3_3.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_3_4.png"><br><br>
+
+				  	<p>Regresamos a <b>SMB</b> y se hizo el intento con hydra, con Ncrack, pero no hubo respuesta, sin embargo, se intento con <b>Metasploit</b> y se logró tener acceso, son esos momentos del hacking que nunca saber porque pasa eso. Talvez la versión de <b>SMB</b>.</p><br><br>
+
+				  	
+				  	<img class="img-fluid" src="img/vuln_3_6.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_3_7.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_3_8.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_3_9.png"><br><br>
+
+				  	<p>Dentro hay varios archivo. los descargamos y vamos viendo que tienen, talvez son pistas.
+				  	</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_3_10.png"><br><br>
+
+				  	<p>El primer es la primera bandera, al parecer estamos avanzando, pero los otros dos archivos tienen datos interesantes.
+				  	</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_3_11.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_3_12.png"><br><br>
+
+				  	<p>El segundo es un archivo binario, al extraer datos para no ejecutarlo (por seguridad xD), encontramos un <b>setuid</b> y un <b>/bin/bash /root/beroot.sh</b>, al aprecer ese binario ejecuta un archivo llamado beroot.sh, pero no los eso, el siguiente archivo dentro de la carpeta smbshare se encuentra un conf, al abrirlo se ve otro dato interesante en <b>magic script</b>, se puede ejecutar un bash.
+				  	</p>
+
+				  	<p>Al inicio intenté hacer un simple <b>l -lah</b>, pero se pasó nada, así que procedemos a usar un shell remota con netcat</p>
+
+				  	<img class="img-fluid" src="img/vuln_3_13.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_3_14.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_3_15.png"><br><br>
+				  
+
+				  	<p>Logramos entrar en el servidor, ahora hagamos un spawn y  una busqueda de aplicaciones con accesos root</p><br>  
+
+				  	<img class="img-fluid" src="img/vuln_3_16.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_3_17.png"><br><br>
+
+				  	<p>El unico es beroot, y al ejecutarlo nos pide una contraseña, no hay nada en el servidor que pueda darnos una señal, así que no olvidemos la estenografía, pero desafortunadamente, steghide no funciona con <b>PNG</b>, así que buscando por la red encontramos a <b>stegoveritas</b>, (raro nombre, lo sé xD)... y nos da varios archivos, al abrirlos con cat, resulta que son wordlists, posibles contraseñas, pero no hay acceso a ssh, el puerto está cerrado, así que lo llevamos al servidor </p><br> 
+
+				  	<img class="img-fluid" src="img/vuln_3_18.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_3_19.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_3_20.png"><br><br>      
+
+				  	<p>Son muchas las palabras para intentar, así que haré algo que siempre uso en un bash cuando quiero eliminar los ssh. Pero esta vez será para probar contraseñas en la aplicación beroot y será con un for</p>
+
+				  	<p>Vamos investigando posibles accesos, programas y/o con acceso root o usuarios con privilegios e incluso archivos ocultos.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_3_21.png"><br><br>
+				    <img class="img-fluid" src="img/vuln_3_22.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_3_23.png"><br><br>
+
+				  	<p>Al parecer el archivo se ejecuto y dejó otro archivo llamado <b>rootcreds</b> y al abrirlo parece ser lo que buscamos.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_3_24.png"><br><br>
+
+				  	<p>Accedemos mediante <b>su root</b>, y colocamos la contraseña.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_3_25.png"><br><br>
+
+				  	<p>Vamos a root y hay está le segunda bandera.</p>
+
+				  	<p>Listo.</p><br>
+
+
+			</div>
+
+		</div>
+	</div>
+
+	<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
+      
