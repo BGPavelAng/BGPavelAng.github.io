@@ -83,10 +83,10 @@
 				  	<img class="img-fluid" src="img/vuln_4_1.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_4_2.png"><br><br>
 
-				  	<p>Desafortunadamente Hydra no encontró nada, ni <b>hacknos y troubleshoot</b> no funcionaron, pero <b>admin</b> es básico, pero tampoco, volvamos a ftp a seguir buscando, pero hay algo interesante, hay un banner que dice <b>Security@hackNos</b>, se vuelve a intentar con los usuarios anteriores, y lo logró con <b>admin:Security@hackNos</b>.</p><br>
+				  	<p>Desafortunadamente Hydra no encontró nada, ni <b>hacknos y troubleshoot</b> nos funcionaron, y <b>admin</b> es básico, pero tampoco, volvamos a ftp a seguir buscando, pero hay algo interesante, hay un banner que dice <b>Security@hackNos</b>, se vuelve a intentar con los usuarios anteriores, y ya hubo acceso con <b>admin:Security@hackNos</b>.</p><br>
 				  	<img class="img-fluid" src="img/vuln_4_3.png"><br><br>
 
-				  	<p>Se hace un <b>PING</b>, así que intentemos con la ip local y nos dio resultado, pero hay una vulnerabilidad para esto y es colocar el signo <b>|</b> para darle otro comando, y cuando colocamos un <b>ls</b>, nos dio un buen resultado.</p><br><br>
+				  	<p>Se hace un <b>PING</b>, así que intentemos con la ip local y nos dio resultado, pero hay una vulnerabilidad para esto y es colocar el signo <b>"|"</b> para darle otro comando, y cuando colocamos un <b>ls</b>, nos dio un buen resultado.</p><br><br>
 
 				  	<img class="img-fluid" src="img/vuln_4_4.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_4_6.png"><br><br>
@@ -101,12 +101,12 @@
 				  	<img class="img-fluid" src="img/vuln_4_11.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_4_12.png"><br><br>
 
-				  	<p>Sin embargo no hay acceso, se puede intentat con <b>nc o nc.traditional, o algun bash</b>, pero no hubo suerte de hacer alguna conexión remota, así que veamos el archivo <b>out.php</b>, y nos muestra la razón de porque no se puede hacer nada más que ejecutar algunos comandos.
+				  	<p>Sin embargo no hay acceso, se puede intentar con <b>nc o nc.traditional, o algun bash</b>, pero no hubo suerte de hacer alguna conexión remota, así que veamos el archivo <b>out.php</b>, y nos muestra la razón de porque no se puede hacer nada más que ejecutar algunos comandos.
 				  	</p><br>
 
 				  	<img class="img-fluid" src="img/vuln_4_10.png"><br><br>
 
-				  	<p>Como dice el archivo, <b>Remove any of the charactars in the array (blacklist)</b>, osea, no se puede usar ningun comando que utilice los signos que esten en el array superior, así que veamos si podemos subir algun archivo en php.
+				  	<p>Como dice el archivo, <b>Remove any of the charactars in the array (blacklist)</b>, osea, no se puede usar ningun comando que utilice los signos que esten en el array superior, así que veamos si podemos subir algun archivo en php con <b>wget</b>.
 				  	</p>
 
 				  	<img class="img-fluid" src="img/vuln_4_13.png"><br><br>
@@ -117,11 +117,11 @@
 				  	<img class="img-fluid" src="img/vuln_4_15.png"><br><br>
 				  
 
-				  	<p>Logramos entrar en el servidor, ahora hagamos un spawn y  una busqueda de aplicaciones con accesos root y solo encontramos uno interesante <b>pkexec</b>, pero primero hagamos algo básico, entrar al usuario <b>recon</b> con la misma contraseña, ya que no hay nada en <b>passwd</b> y no hay acceso a <b>shadow</b></p><br>  
+				  	<p>Logramos entrar en el servidor, ahora hagamos un spawn y en una busqueda de aplicaciones con accesos root, solo encontramos uno interesante <b>pkexec</b>, pero primero hagamos algo básico, entrar al usuario <b>recon</b> con la misma contraseña, ya que no hay nada en <b>passwd</b> y no hay acceso a <b>shadow</b></p><br>  
 
 				  	<img class="img-fluid" src="img/vuln_4_16.png"><br><br>
 
-				  	<p>Revisamos si tiene algun privilegio de usuario y nos aparece algo muy bueno.</p><br> 
+				  	<p>Revisamos si tiene algun privilegio de usuario y nos aparece algo muy bueno, el usuario tiene permisos root.</p><br> 
 
 				  	<img class="img-fluid" src="img/vuln_4_17.png"><br><br>    
 
