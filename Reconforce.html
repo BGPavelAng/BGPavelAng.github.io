@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html class="h-100">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
+	<title>Vulnhub - Reconforce</title>
+</head>
+<body class="d-flex flex-column h-100">
+
+<header>
+
+ 
+     <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active"><a class="nav-link text-primary" href="https://bgpavelang.github.io">HOME</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="#">Nebula</a></li>
+            </ul>
+           
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">CTFs</a>
+            <ul class="dropdown-menu">
+            	<li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+            </ul>
+           
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+</header>
+
+	<div class="container mt-5">
+		<div class="row mt-5">
+			<div class="col">
+				
+				<b>Herramientas utilizadas.</b><br><br>
+				netdiscover<br>
+				nmap<br>
+				gobuster<br>
+				nikto<br>
+				hydra<br>
+
+				<b>Para esto, programé una aplicación para automatizar el análisis, está en constante desarrollo y usa python3</b><br><br>
+
+				<div>
+					<a class="text-primary" href="https://github.com/BGPavelAng/SecurtyPython">Github: Security Python</a>
+				</div><br><br>
+
+				 
+
+
+				  	<p>Comenzamos buscando la ip con <b>netdiscover</b>.</p><br>
+
+				  	<p>Entramos a página con la dirección que obtuvimos en el explorador.</p><br><br>
+
+
+				  	<img class="img-fluid" src="img/vuln_4_0.png"><br><br>
+
+				  	<p>Al parecer no hay nada, sin embargo, en medio hay un link, igual revisamos el código, y efectivamente, nos manda a un login, veamos que más podemos encontrar con un scaneo, mientras revisamos con <b>Hydra</b> algún acceso.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_2_4.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_4_5.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_4_7.png"><br><br>
+
+				  	<p>Por el momento solo hay un acceso a <b>Ftp</b>, entramos pero no hay nada. <br><br>
+
+				  	<img class="img-fluid" src="img/vuln_4_1.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_4_2.png"><br><br>
+
+				  	<p>Desafortunadamente Hydra no encontró nada, ni <b>hacknos y troubleshoot</b> no funcionaron, pero <b>admin</b> es básico, pero tampoco, volvamos a ftp a seguir buscando, pero hay algo interesante, hay un banner que dice <b>Security@hackNos</b>, se vuelve a intentar con los usuarios anteriores, y lo logró con <b>admin:Security@hackNos</b>.</p><br>
+				  	<img class="img-fluid" src="img/vuln_4_3.png"><br><br>
+
+				  	<p>Se hace un <b>PING</b>, así que intentemos con la ip local y nos dio resultado, pero hay una vulnerabilidad para esto y es colocar el signo <b>|</b> para darle otro comando, y cuando colocamos un <b>ls</b>, nos dio un buen resultado.</p><br><br>
+
+				  	<img class="img-fluid" src="img/vuln_4_4.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_4_6.png"><br><br>
+
+				  	<p>Hagamos un <b>cat</b> básico a <b>passwd</b> y perfecto.
+				  	</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_4_9.png"><br><br>
+
+				  	<p>Buscamos algo interesante en <b>HOME</b> y obtenemos la primera bandera.
+				  	</p><br>
+				  	<img class="img-fluid" src="img/vuln_4_11.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_4_12.png"><br><br>
+
+				  	<p>Sin embargo no hay acceso, se puede intentat con <b>nc o nc.traditional, o algun bash</b>, pero no hubo suerte de hacer alguna conexión remota, así que veamos el archivo <b>out.php</b>, y nos muestra la razón de porque no se puede hacer nada más que ejecutar algunos comandos.
+				  	</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_4_10.png"><br><br>
+
+				  	<p>Como dice el archivo, <b>Remove any of the charactars in the array (blacklist)</b>, osea, no se puede usar ningun comando que utilice los signos que esten en el array superior, así que veamos si podemos subir algun archivo en php.
+				  	</p>
+
+				  	<img class="img-fluid" src="img/vuln_4_13.png"><br><br>
+				  	<p>Se intentó con una shell normal, pero no funcionó, así que en la red circula una shell en <b>php</b>: <a href="https://github.com/pentestmonkey/php-reverse-shell">php-reverse-shell</a></p>
+
+				  	<img class="img-fluid" src="img/vuln_4_14.png"><br><br>
+
+				  	<img class="img-fluid" src="img/vuln_4_15.png"><br><br>
+				  
+
+				  	<p>Logramos entrar en el servidor, ahora hagamos un spawn y  una busqueda de aplicaciones con accesos root y solo encontramos uno interesante <b>pkexec</b>, pero primero hagamos algo básico, entrar al usuario <b>recon</b> con la misma contraseña, ya que no hay nada en <b>passwd</b> y no hay acceso a <b>shadow</b></p><br>  
+
+				  	<img class="img-fluid" src="img/vuln_4_16.png"><br><br>
+
+				  	<p>Revisamos si tiene algun privilegio de usuario y nos aparece algo muy bueno.</p><br> 
+
+				  	<img class="img-fluid" src="img/vuln_4_17.png"><br><br>    
+
+				  	<p>Recuerdan a <b>¿pkexec?</b>, pues ahora es el momento.</p>
+
+				  	<img class="img-fluid" src="img/vuln_4_18.png"><br><br>
+
+				  	<p>Vamos a root y ahí está le segunda bandera.</p>
+
+				  	<img class="img-fluid" src="img/vuln_4_19.png"><br><br>
+
+				  	<p>Listo.</p><br>
+
+
+			</div>
+
+		</div>
+	</div>
+
+	<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
+      
