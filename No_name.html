@@ -71,7 +71,7 @@
 
 				  	<img class="img-fluid" src="img/vuln_5_0.png"><br><br>
 
-				  	<p>Encontramos solo con un <b>texto box</b> que dice <b>fake query</b>, se puede hacer el intento de temer <b>127.0.0.1</b>, pero no hace nada, así que empezamos a analizar el servidor a ver que encontramos.</p><br>
+				  	<p>Encontramos solo con un <b>texto box</b> que dice <b>fake query</b>, se puede hacer el intento de meter <b>127.0.0.1</b>, pero no hace nada, así que empezamos a analizar el servidor a ver que encontramos.</p><br>
 
 				  	<img class="img-fluid" src="img/vuln_5_1.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_2_4.png"><br><br>
@@ -81,7 +81,7 @@
 				  	<img class="img-fluid" src="img/vuln_5_2.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_5_3.png"><br><br>
 
-				  	<p>Al parecer se necesita una contraseña, y buscando en el código fuente de la página, encontramos la contraseña solicitada <b>estenografía</b>. <br><br>
+				  	<p>Al parecer se necesita una contraseña, y buscando en el código fuente de la página, encontramos la contraseña solicitada <b>harder</b>. <br><br>
 
 				  	<img class="img-fluid" src="img/vuln_5_5.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_5_4.png"><br><br>
@@ -97,17 +97,20 @@
 
 				  	<img class="img-fluid" src="img/vuln_5_11.png"><br><br>
 
-				  	<p>Perfecto, ahora vemos si podemos meter <b>ls -lah</b>, para verificar que archivos hay, pero no pasa nada, intentamos con <b>wget y netcat</b> pero nada, así que hagamos un cat al archivo php y nos muestra lo siguiente.
+				  	<p>Perfecto, ahora vemos si podemos meter <b>ls -lah</b>, para verificar que archivos hay, pero no pasa nada, intentamos con <b>wget y netcat</b> pero nada, así que hagamos un <b>cat al archivo php</b> y nos muestra lo siguiente.
 				  	</p><br>
 
 				  	<img class="img-fluid" src="img/vuln_5_13.png"><br><br>
 
-				  	<p>Logramos listar los archivos, sin embargo, no logramos usar wget, ¿y porqué?, la respuesta está en el listado, neceitas permisos root, por esa razón subir un archivo es imposible.</p><br>
+				  	<p>Nuevamente nos encontramos otro <b>php</b> con restricciones. Hay un método para no ser detectado, y es cifrando las peticiones, hagamoslo sencillo, con base64</p><br>
 
 				  	<img class="img-fluid" src="img/vuln_5_25.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_5_27.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_5_26.png"><br><br>
 				  	<img class="img-fluid" src="img/vuln_5_28.png"><br><br>
+
+				  	<p>Logramos listar los archivos, sin embargo, no logramos usar wget, ¿y porqué?, la respuesta está en el listado, necesitas permisos root, por esa razón subir un archivo es imposible.</p><br>
+
 
 				  	<p>Usemos un <b>nc.traditional</b>, veamos que pasa.
 				  	</p><br>
@@ -128,7 +131,7 @@
 				  	<img class="img-fluid" src="img/vuln_5_19.png"><br><br>
 				  
 
-				  	<p>Como se puede ver, hay un archivo oculto, al revisarlo, vemos una contraseña, para cer para <b>haclabs</b>.</p><br>  
+				  	<p>Como se puede ver, hay un archivo oculto, al revisarlo, vemos una contraseña, parece ser de <b>haclabs</b>.</p><br>  
 
 				  	<img class="img-fluid" src="img/vuln_5_20.png"><br><br>
 
