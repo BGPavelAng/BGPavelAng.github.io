@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html class="h-100">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
+	<title>Vulnhub - vulnuni</title>
+</head>
+<body class="d-flex flex-column h-100">
+
+<header>
+
+ 
+     <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active"><a class="nav-link text-primary" href="https://bgpavelang.github.io">HOME</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="#">Nebula</a></li>
+            </ul>
+           
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">CTFs</a>
+            <ul class="dropdown-menu">
+            	<li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+            </ul>
+           
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+</header>
+
+	<div class="container mt-5">
+		<div class="row mt-5">
+			<div class="col">
+				
+				<b>Herramientas utilizadas.</b><br><br>
+				netdiscover<br>
+				nmap<br>
+				gobuster<br>
+				nikto<br>
+				sqlmap<br>
+
+				<b>Para esto, programé una aplicación para automatizar el análisis, está en constante desarrollo y usa python3</b><br><br>
+
+				<div>
+					<a class="text-primary" href="https://github.com/BGPavelAng/SecurtyPython">Github: Security Python</a>
+				</div><br><br>
+
+				 
+
+
+				  	<p>Comenzamos buscando la ip con <b>netdiscover</b>.</p><br>
+
+				  	<p>Entramos a página con la dirección que obtuvimos en el explorador.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_8_0.png"><br><br>
+
+				  	<p>Algo que debemos notar es que hay una dirección hacia <b>vulnuni.local</b>, es importante ya que debemos hacer una reedirección mediante <b>/etc/hosts... y colocar por ejemplo: 127.0.0.1 vulnuni.local</b>, para no salir a la red.</p>
+
+				  	<p>Vamos a revisar con la aplicación la seguridad básica para ver que encontramos, y al parecer lo más interesante fue algunos links encontrados por <b>gobuster</b>. <br>
+
+				  	<img class="img-fluid" src="img/vuln_2_4.png"><br><br>
+
+				  	<img class="img-fluid" src="img/vuln_8_1.png"><br><br>
+
+				  	<p>Vamos revisando todo y encontramos que nos lleva a varios lugares de la página y unos archivos de imagenes, afortunadamente, revisé antes el código ya que iba a empezar a hacer estenografía a las imagenes pero resulto que hay una pista.</p><br>
+				  	
+				  	<img class="img-fluid" src="img/vuln_8_2.png"><br><br>
+
+				  	<p>Encontramos una página oculta, vemos que nos lleva hacia un <b>login</b> e investigando hay un <b>admin admin</b>.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_8_4.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_8_5.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_8_7.png"><br><br>
+
+				  	<p>Esto no funcionó, pero hay aplicaciones como burpsuite que puede ayudar, pero también hay unos comandos básicos que pueden servir para ver que tan vulnerable es <b>'or '1'='1, "or "1"="1</b>, pero esta vez no funcionó, una simple inyección tampoco, creo será mejor automatizarlo para meterle velocidad a la prueba.</p><br>
+
+				  	<p>Sacamos los datos de la cabecera para ver como es la petición y la pasamos a sqlmap con un <b>nombre.req</b>.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_8_8.png"><br><br>
+				  	
+
+				  	<p>Logramos acceso y encontramos los usuarios a admin.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_8_9.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_8_10.png"><br><br>
+
+				  	<p>Encontramos algunos links, logramos obtener la contraseña de <b>phpmyadmin</b>.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_8_11.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_8_12.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_8_13.png"><br><br>
+
+				  	<p>Pero tambien encontramos un lugar donde al parecer podemos subir archivos, y eso hacemos pero hagamos una php, el primero no funcionó ya que pide descomprimir un archivo, así que lo comprimimos en un zip y al volverlo a subir funcionó, y menciona que se queda en courses.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_8_14.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_8_15.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_8_18.png"><br><br>
+
+				  	<p>Hacemos click sobre el archivo y logramos una shell remota y logramos obtener la primera bandera.</p><br>
+				  	<img class="img-fluid" src="img/vuln_8_17.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_8_19.png"><br><br>
+
+				  	<p>Buscamos entre los archivo y enontramos 2 pero parecen ser solo backups, tambien en archivos ocultos, con privilegios pero nada que nos ayude entrar como el usuario <b>vulnuni</b>.</p><br>
+
+				  	<img class="img-fluid" src="img/vuln_8_21.png"><br><br>
+
+				  	<p>Pero por suerte utiliza un kernel vulnerable, buscando en <b>duckduckgo</b>, se encuentra un exploit, solo hace falta compilarlo, mandarlo al servidor y ejecutarlo.
+				  	</p>
+
+				  	<img class="img-fluid" src="img/vuln_8_20.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_8_22.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_8_23.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_8_24.png"><br><br>
+
+				  	<p>Conseguimos la ultima bandera.
+				  	</p>
+				  	<img class="img-fluid" src="img/vuln_8_25.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_8_26.png"><br><br>
+
+				  	<p>Listo.</p><br>
+
+
+			</div>
+
+		</div>
+	</div>
+
+	<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
+      
