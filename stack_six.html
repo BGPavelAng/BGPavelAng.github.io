@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html class="h-100">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
+	<title>Stack_six</title>
+</head>
+<body class="d-flex flex-column h-100">
+
+<header>
+
+ 
+     <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active"><a class="nav-link text-primary" href="https://bgpavelang.github.io">HOME</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="#">Nebula</a></li>
+            </ul>
+           
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">CTFs</a>
+            <ul class="dropdown-menu">
+            	<li><a class="dropdown-item nav-link text-primary" href="#">Vulnhub</a></li>
+            </ul>
+           
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+</header>
+
+	<div class="container mt-5">
+		<div class="row mt-5">
+			<div class="col">
+				El objetivo de la prueba es sobreescribir parte de la memoria (stack), en este caso hay un método llamado buffer overflow 1 byte (off-by-one vulnerability).<br><br>
+
+				 <div id=show style="display: none;">
+				 	<p>https://exploit.education/phoenix/stack-six/</p>
+				     <div class=" col bg-cod" style="margin-left: 30%;"><b>char *greet(char *who) {<br>
+				     	char buffer[128];<br>
+				     	int maxSize;<br>
+
+				     	maxSize = strlen(who);<br>
+				     	if (maxSize > (sizeof(buffer) - /* ensure null termination */ 1)) {<br>
+				     	maxSize = sizeof(buffer) - 1;<br>
+				     }<br>
+
+				     strcpy(buffer, what);<br>
+				     strncpy(buffer + strlen(buffer), who, maxSize);<br>
+				     return strdup(buffer);<br>
+				 }</b>
+				  <br><br>
+				      </div>
+				  </div>
+				  <input type="button" onclick="document.getElementById('show').style.display='block'"value="Mostrar"><br><br>
+
+
+				  	<p>Esta prueba es complicada, ya que no es siempre funcional, todo depende de el uso de memoria en sistema operativo que se esta utilizando.</p>
+
+				  	<p>Nota importante: Cada vez que hago esto, coloco intrucciones a gdb que creo son muy necesarios, ya que cada que el debugger abre una aplicación, lo hace en un espacio de memoria relativa y al colocarle, <b>unset env LINES y unset env COLUMNS</b>, GDB muestra el uso de memoria real o muy cercano al que usa realmente la aplicación, facilitando la explotación de la vulnerabilidad.</p>
+
+				  	<p>Hay una vulnerabilidad en el código, se puede sobreescribir el último byte que en este caso en null, ya que strcpy copia toda la cadena pero al final esta establecido que después de cierta cantidad de caracteres, se incluya un null para terminar, pero en este caso se puede sobreescribir, logrando meter en el buffer una posible shell.</p>
+
+				  	<p>Ejecutamos la aplicación para ver que hace.</p>
+
+
+
+				  	<img class="img-fluid" src="img/expl_s_0.png"><br><br>
+
+				  	<p>Como podemos ver, nos pide que haya una variable llamada <b>ExploitEducation</b>, escribirmos <b>export ExploitEducation="A"</b> y funciona, pero hay que ver con cuanto hace un overflow, revisemos el código, y en la función <b>GREET</b>, encontramos el buffer.</p><br>
+
+				  	<img class="img-fluid" src="img/expl_s_1.png"><br><br>
+
+				  	<p>Si calculamos el buffer <b>0x8c - 0xc = 80 (128 n decimal)</b>, lo que significa que vamos calculando el overflow hasta encontrar el error.</p>
+
+				  	<img class="img-fluid" src="img/expl_s_2.png"><br><br>
+
+				  	<p>Al parecer son 126, ya que el 127 es el null que inserta al final <b>if</b> si detecta que supera esa cantidad de caracteres, hay que debuggearlo y poner un break justo antes del strncpy para ver que pasa.</p>
+
+				  	<img class="img-fluid" src="img/expl_s_3.png"><br><br>
+
+				  	<p>Busquemos en donde empieza el buffer, para eso verificamos los registros, y vemos como en esp se encuentra lo que buscamos, vamos verificando los registros hasta que encontramos el inicio <b>"Welcome home, "</b>. </p>
+
+				  	
+				  	<img class="img-fluid" src="img/expl_s_4.png"><br><br>
+
+				  	<p>Nos movemos a la siguiente instrucción con <b>nexti</b> y volvemos a revisar, podemos notar que ahora ya se encuentra los bytes que metimos en la variable de entorno.</p>
+
+				  	<img class="img-fluid" src="img/expl_s_5.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_s_6.png"><br><br>
+
+				  	<p>Veamos que hay en la pila ahora, y podemos ver como después de los bytes de <b>"Welcome home, "</b>, se encuentra el hex de A <b>41</b>. </p>
+
+				  	<img class="img-fluid" src="img/expl_s_7.png"><br><br>
+
+				  
+
+				  	<p>Listo. Veamos que pasa si sobreescribimos el último byte.</p>
+
+				  	<img class="img-fluid" src="img/expl_s_8.png"><br><br>    
+
+				  	<p>No se si sea notable, pero se logra sobreescribir el ultimo byte, eso es bueno, ya que cuando cambie ebp a esp, podría ejecutar una shell.</p>
+
+				  	<img class="img-fluid" src="img/expl_s_9.1.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_s_9.png"><br><br>
+
+				  	<p>Si ponemos una <b>B</b> solo para diferenciarlo mejor, se puede notar.</p>
+
+				  	<img class="img-fluid" src="img/expl_s_10.png"><br><br>
+
+				  	<p>Veamos en los registros <b>info reg</b> a ver como es la pila.</p>
+
+				  	<img class="img-fluid" src="img/expl_s_12.png"><br><br>
+
+				  	<p>Si ponemos una <b>C</b> solo para diferenciar la parte de ebx, ebp y ecx, se puede notar de esta forma.</p>
+
+				  	<img class="img-fluid" src="img/expl_s_13.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_s_14.png"><br><br>
+
+				  	<p>Pero aquí nos surge un problema, no se sobreescribe bien ecx, si podemos ver, establece que mete la dirección a esp el registro ecx y le resta 4, <b>"ecx-0x4"</b>, pero al buscarlo, nos damos cuenta que no se logra el objetivo.</p>
+
+				  	<img class="img-fluid" src="img/expl_s_16.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_s_17.png"><br><br>
+
+				  	<p>Al no poderse modificar totalmente ecx, no hay un cambio a esp de manera correcta, si fuece así, unicamente se debe poner una dirección hacía el buffer, la shell, llenar el buffer con bytes sobrantes para llegar a los 126 y al final el ultimo byte necesario para que retorne a <b>[ecx-0x4]->buffer</b> y ejecute la shell.</p>
+
+				  	<p>Se tendrá que compilar en otra plataforma o seguir intentando hasta lograrlo, todo depende de lo protegido que este el sistema.</p>
+				  	
+
+			</div>
+
+		</div>
+	</div>
+
+	<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
+      
