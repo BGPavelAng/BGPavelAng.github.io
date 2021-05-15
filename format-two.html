@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html class="h-100">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
+	<title>Format_two</title>
+</head>
+<body class="d-flex flex-column h-100">
+
+<header>
+
+ 
+     <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active"><a class="nav-link text-primary" href="https://bgpavelang.github.io">HOME</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="#">Nebula</a></li>
+            </ul>
+           
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">CTFs</a>
+            <ul class="dropdown-menu">
+            	<li><a class="dropdown-item nav-link text-primary" href="#">Vulnhub</a></li>
+            </ul>
+           
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+</header>
+
+	<div class="container mt-5">
+		<div class="row mt-5">
+			<div class="col">
+				El objetivo de la prueba es modificar un format string no definido para lograr sobreescribir la pila.<br><br>
+
+				 <div id=show style="display: none;">
+				 	<p>https://exploit.education/phoenix/format-two/</p>
+				     <div class=" col bg-cod" style="margin-left: 30%;"><b>int changeme;</b><br><b>
+				     	char buf[256];<br>
+				     	printf("%s\n", BANNER);<br>
+
+				     	if (argc > 1) {<br>
+				     	memset(buf, 0, sizeof(buf));<br>
+				     	strncpy(buf, argv[1], sizeof(buf));
+				     bounce(buf);</b><br>
+				     	
+				      </div>
+				  </div>
+				  <input type="button" onclick="document.getElementById('show').style.display='block'"value="Mostrar"><br><br>
+
+
+				  	<p>Esta prueba muestra la vulnerabilidad que puede haber en cadenas de caracteres que no estan bien definidas y como se pueden modificar.</p>
+
+				  	<p>Nota importante: Cada vez que hago esto, coloco intrucciones a gdb que creo son muy necesarios, ya que cada que el debugger abre una aplicación, lo hace en un espacio de memoria relativa y al colocarle, <b>unset env LINES y unset env COLUMNS</b>, GDB muestra el uso de memoria real o muy cercano al que usa realmente la aplicación, facilitando la explotación de la vulnerabilidad.</p>
+
+				  	<p>Ejecutamos la aplicación para ver que hace.</p>
+
+
+
+				  	<img class="img-fluid" src="img/expl_f2_0.png"><br><br>
+
+				  	<p>Vamos mostrando los push de los printf y encontramos los mensajes de cada uno, y vamos encontrando los de interes.</p><br>
+
+				  	<img class="img-fluid" src="img/expl_f2_1.png"><br><br>
+
+				  	<p>Vemos que hay una comparativa, donde menciona que si <b>ebx es menos a 0x1 (jump if less o igual)</b>, lo que significa que saltará a una instrucción diferente si la cantidad es diferente a 1, eso significa que es argc, ya que por consiguiente se limpia un espacio de memoria con <b>memset</b>, seguido se hace uso de <b>strncpy</b>, y habre un bufer de <b>0x108 (264)</b>, si quitamos ret y ebp serían <b>256 bytes</b>, los que abarca el buffer establecido, lo mete a la pila e invoca a una función.</p>
+
+				  	<img class="img-fluid" src="img/expl_f2_2.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_f2_4.png"><br><br>
+
+				  	<p>Vemos que hay una comparativa y un puntero hacia unos datos o variables  <b>eax:ds0x8049868</b>, veamos cual es .</p>
+
+				  	
+				  	<img class="img-fluid" src="img/expl_f2_5.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_f2_6.png"><br><br>
+
+				  	<p>Perfecto, si contnuamos la instrucción vemos que <b>eax</b> se queda en cero, pero vamos a cambiarlo para ver que pasa.</p>
+
+				  	<img class="img-fluid" src="img/expl_f2_7.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_f2_8.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_f2_9.png"><br><br>
+
+				  	<p>Bien, pero ahora hagamoslo en ejecución, mandemos formatos al azar.</p>
+
+				  
+				  	<img class="img-fluid" src="img/expl_f2_10.png"><br><br>
+
+				  	<p>Ok, recibimos unos hexadecimales, colocando otros pero con un punto solo para separar cadenas y no confundirnos, veamos que pasa.</p>
+
+				  	<img class="img-fluid" src="img/expl_f2_11.png"><br><br>
+
+				  	<p>Hagamoslo con más.</p>
+
+				  	<img class="img-fluid" src="img/expl_f2_12.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_f2_13.png"><br><br>
+
+				  	<p>Bien nuevamente, al colocar AAAA's para buscar el overflow encontramos lo que buscabamos, si lo que pide es la variable <b>changeme</b>, pues mandemoslo ahí, la variable no esta definida desde el inicio, lo que significa que no vale cero, vamos a colocarlo en la zona de las AAAA's.</p>
+
+				  	<img class="img-fluid" src="img/expl_f2_14.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_f2_15.png"><br><br>
+
+				  	<p>Listo.</p>
+				  	
+				  	<p>Solo como dato curioso, sí ponemos un break justo en la variable, también se logra en modo debugger xD.</p>
+
+				  	<img class="img-fluid" src="img/expl_f2_16.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_f2_17.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_f2_18.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_f2_19.png"><br><br>
+
+			</div>
+
+		</div>
+	</div>
+
+	<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
