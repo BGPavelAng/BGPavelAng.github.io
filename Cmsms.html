@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html class="h-100">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
+	<title>Vulnhub - My cmsms</title>
+</head>
+<body class="d-flex flex-column h-100">
+
+<header>
+
+ 
+     <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active"><a class="nav-link text-primary" href="https://bgpavelang.github.io">HOME</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="#">Nebula</a></li>
+            </ul>
+           
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">CTFs</a>
+            <ul class="dropdown-menu">
+            	<li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+            </ul>
+           <li class="nav-item dropdown">
+            <a class="nav-link text-primary" href="shells.html">Shellcode</a>
+        </li>
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+</header>
+
+	<div class="container mt-5">
+		<div class="row mt-5">
+			<div class="col">
+				
+				<b>Herramientas utilizadas.</b><br><br>
+				netdiscover<br>
+				nmap<br>
+				gobuster<br>
+				nikto<br>
+				dirb<br>
+				mysql<br>
+
+				<b>Para esto, programé una aplicación para automatizar el análisis, está en constante desarrollo y usa python3</b><br><br>
+
+				<div>
+					<a class="text-primary" href="https://github.com/BGPavelAng/SecurtyPython">Github: Security Python</a>
+				</div><br><br>
+
+				 
+
+
+				  	<p>Comenzamos buscando la ip con <b>netdiscover</b>.</p>
+
+				  	<p>Entramos a la página con la dirección que obtuvimos en el explorador.</p>
+
+				  	<img class="img-fluid" src="img/vuln_cmsm_0.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_tc_0.png"><br><br>
+
+				  	<p>Revisamos los archivos y encontramos un acceso a mysql.</p>
+
+				  	<img class="img-fluid" src="img/vuln_cmsm_1.png"><br><br>
+
+				  	<p>Justo cuando iba a hacer un <b>bruteforce</b> con <b>hydra</b>, escribí <b>root: root</b> y tuve acceso.</p>
+
+				  	<img class="img-fluid" src="img/vuln_cmsm_3.png"><br><br>
+
+
+				  	<p>Vamos directamente con <b>show databases y show tables</b>, para ir a la zona de usuarios y con <b>select * from cm_users</b>, podemos ver que ahí un admin registrado.</p>
+
+				  	<img class="img-fluid" src="img/vuln_cmsm_4.png"><br><br>
+
+				  	<p>Al principio intenté meter un usuario extra con encriptación md5, pero resulta que <b>cms</b> encripta de otra forma, así que no hubo opción más que reemplazar la contraseña actual por otra para lograr accesar.</p>
+
+				  	<img class="img-fluid" src="img/vuln_cmsm_5.png"><br><br>
+
+				  	<p>Ya estando dentro, vamos buscando por alguna forma de subir un archivo o modificar un código, hasta que lo encontramos y metemos una shell con socket para conectarnos al servidor.</p>
+
+				  	<img class="img-fluid" src="img/vuln_cmsm_6.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_cmsm_7.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_cmsm_8.png"><br><br>
+
+				  	<p>Ya estando dentro, buscamos una forma de accesar, resulta que backups tiene permisos de usuario y encontramos una contraseña encriptada, y justo cuando empecé a buscar con <b>john</b>, encontré otro archivo <b>.htpasswd</b>, con un crifrado, que al intentar con base64 me dió un resultado, parece que lo cifrarón dos veces, pero me dió un error, así que lo intente con base32 y hay algo interesante.</p>	
+
+				  	<img class="img-fluid" src="img/vuln_cmsm_9.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_cmsm_10.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_cmsm_11.png"><br><br>	
+
+				  	<p>Metemos esa contraseña y vemos que logramos logearnos.</p>	
+
+				  	<img class="img-fluid" src="img/vuln_cmsm_12.png"><br><br>
+
+				  	<p>Revisamos si hay algo con permisos root antes de buscar por algo más y resulta que python tiene permisos root, así que hacemos una shell.</p>
+
+				  	<img class="img-fluid" src="img/vuln_cmsm_13.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_cmsm_14.png"><br><br>
+				  	<img class="img-fluid" src="img/vuln_cmsm_15.png"><br><br>	
+
+				  	<p>Listo.</p><br>
+
+
+			</div>
+
+		</div>
+	</div>
+
+	<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
+      
