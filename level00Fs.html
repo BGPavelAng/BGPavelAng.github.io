@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html class="h-100">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
+	<title>Level00</title>
+</head>
+<body class="d-flex flex-column h-100">
+
+<header>
+
+ 
+     <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active"><a class="nav-link text-primary" href="https://bgpavelang.github.io">HOME</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+            </ul>
+           
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">CTFs</a>
+            <ul class="dropdown-menu">
+            	<li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+            </ul>
+           <li class="nav-item dropdown">
+            <a class="nav-link text-primary" href="shells.html">Shellcode</a>
+        </li>
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+</header>
+
+	<div class="container mt-5">
+		<div class="row mt-5">
+			<div class="col">
+				Aprovechar vulnerabilidades del sistema para obtener acceso al sistema.<br><br>
+
+				 <div id=show style="display: none;">
+				 	<p>https://exploit.education/fusion/level00/</p>
+				     <pre class="brush: cpp; title: ; notranslate" title=""><b>#include "../common/common.c"    
+
+int fix_path(char *path)
+{
+  char resolved[128];
+  
+  if(realpath(path, resolved) == NULL) return 1; 
+  // can't access path. will error trying to open
+
+  strcpy(path, resolved);
+}
+
+char *parse_http_request()
+{
+  char buffer[1024];
+  char *path;
+  char *q;
+
+  printf("[debug] buffer is at 0x%08x :-)\n", buffer);
+
+  if(read(0, buffer, sizeof(buffer)) <= 0)
+    errx(0, "Failed to read from remote host");
+  if(memcmp(buffer, "GET ", 4) != 0) errx(0, "Not a GET request");
+
+  path = &buffer[4];
+  q = strchr(path, ' ');
+  if(! q) errx(0, "No protocol version specified");
+  *q++ = 0;
+  if(strncmp(q, "HTTP/1.1", 8) != 0) errx(0, "Invalid protocol");
+
+  fix_path(path);
+
+  printf("trying to access %s\n", path);
+
+  return path;
+}
+
+int main(int argc, char **argv, char **envp)
+{
+  int fd;
+  char *p;
+
+  background_process(NAME, UID, GID); 
+  fd = serve_forever(PORT);
+  set_io(fd);
+
+  parse_http_request(); 
+}</b></pre>
+				  </div>
+				  <input type="button" onclick="document.getElementById('show').style.display='block'"value="Mostrar"><br><br>
+
+
+				  	<p>Nota importante: Cada vez que hago esto, coloco intrucciones a gdb que creo son muy necesarios, ya que cada que el debugger abre una aplicación, lo hace en un espacio de memoria relativa y al colocarle, <b>unset env LINES y unset env COLUMNS</b>, GDB muestra el uso de memoria real o muy cercano al que usa realmente la aplicación, facilitando la explotación de la vulnerabilidad.</p>
+
+				  	<p>Ejecutamos la aplicación para ver que hace.</p>
+
+				  	<img class="img-fluid" src="img/expl_fs0_1.png"><br><br>
+
+				  	<p>Lo primero es ver el código, de igual forma se puede intentar crashear el programa, por primera información, es peticiones HTTP y aqupi hay detalles que hay que poner atención para poder mandar un exploit.</p>
+
+            <p><b>*Petición</b></p>
+            <p><b>*Datos</b></p>
+            <p><b>*Protocolo</b></p>
+
+            <p>Una petición general sería <b>GET /index.html HTTP/1.1</b></p>
+
+            <p>Podríamos hacer un escaneo a los puertos, pero tenemos un acceso al servidor, así que verifiquemos los procesos y busquemos <b>level00</b> junto con <b>aux</b> para detallar la información y usemos <b>grep</b> para solo mostrar la información más exacta.</p>
+
+				  	<img class="img-fluid" src="img/expl_fs0_0.png"><br><br>
+
+				  	<p>Dato interesante, puerto <b>20000</b>, proceso para atacar <b>1378</b>, esto puede cambiar dependiendo los intentos de acceso, lo que significa que utiliza un fork o threads para funcionar.</p>
+
+            <p>Mandemos una petición para ver si todo funciona bien, de preferencia con python2.</p>
+
+				  	<img class="img-fluid" src="img/expl_fs0_3.png"><br><br>
+            <img class="img-fluid" src="img/expl_fs0_4.png"><br><br>
+
+				  	<p>Pues bien, configuremos a <b>GDB</b> para que se vea en modo intel, haga un seguimiendo a los procesos child y ataquemos el proceso, recordar que esto puede cambiar dependiendo los intentos fallidos, lo recomendable es solo atacar el proceso, darle seguir con la tecla <b>c</b> y volver a atacar el mismo PID del proceso, sino, solo es cuestion de abrir otro <b>tty</b> y volver a buscar el proceso con <b>ps</b>.</p>
+
+				  	
+				  	<img class="img-fluid" src="img/expl_fs0_5.png"><br><br>
+
+            <p>Mandemos datos al azar, es recomendable usar metasploit para hacer más sencillo la busqueda del overflow, pero no lo tengo instalado, así que mande datos hasta atinarle al fallo.</p>
+
+            <img class="img-fluid" src="img/expl_fs0_7.png"><br><br>
+            <img class="img-fluid" src="img/expl_fs0_8.png"><br><br>
+            <img class="img-fluid" src="img/expl_fs0_9.png"><br><br>
+            <img class="img-fluid" src="img/expl_fs0_10.png"><br><br>
+            <img class="img-fluid" src="img/expl_fs0_11.png"><br><br>
+
+            <p>Ahora busquemos en donde inicia el buffer.</p>
+
+            <img class="img-fluid" src="img/expl_fs0_12.png"><br><br>
+
+            <p>Podemos ver donde inicia el overflow, veamos que pasa, hay que recordar agregarle al final <b>\xcc</b> para que se detenga la ejecución y nos muestre un <b>SIGTRAP</b>, al azar le puse <b>*90</b>... cometí el error de cerrar gdb, así que cambío un poco el buffer, pero no es mucho, solo una pequeña diferencia, no hay problema con la ubicación.</p>
+
+            <img class="img-fluid" src="img/expl_fs0_13.png"><br><br>
+
+            <p>Sin embargo, solo nos aparece un error de segmento, pero no lo que buscamos</p>
+
+            <img class="img-fluid" src="img/expl_fs0_14.png"><br><br>
+
+            <p>Pero, ¿cómo lo arreglamos?, sencillo, hay que recordar que mandamos datos que pueden sacar del buffer a <b>\xcc</b>, si quitamos los datos de <b>"GET "</b> son 4, porque es GET+espacio, menos los 139 A's, menos el offset, menos <b>"HTTP/1.1 "</b> que son 9... HTTP/1.1+espacio.</p>
+
+            <img class="img-fluid" src="img/expl_fs0_15.png"><br><br>
+
+            <p><b>156 en hexadecimal es = 9C.</b></p>
+
+            <img class="img-fluid" src="img/expl_fs0_16.png"><br><br>
+
+            <p>Volvamos a intentarlo.</p>
+
+            <img class="img-fluid" src="img/expl_fs0_17.png"><br><br>
+            <img class="img-fluid" src="img/expl_fs0_18.png"><br><br>
+
+				  	<p>Listo.</p>
+
+			</div>
+
+		</div>
+	</div>
+
+	<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
