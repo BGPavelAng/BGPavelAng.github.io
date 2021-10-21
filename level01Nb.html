@@ -77,14 +77,6 @@ int main(int argc, char **argv, char **envp)
 				  <input type="button" onclick="document.getElementById('show').style.display='block'"value="Mostrar"><br><br>
 
 
-				  	<p>Nota importante: Cada vez que hago esto, coloco intrucciones a gdb que creo son muy necesarios, ya que cada que el debugger abre una aplicación, lo hace en un espacio de memoria relativa y al colocarle, <b>unset env LINES y unset env COLUMNS</b>, GDB muestra el uso de memoria real o muy cercano al que usa realmente la aplicación, facilitando la explotación de la vulnerabilidad.</p>
-
-				  	<p>Ejecutamos la aplicación para ver que hace.</p>
-
-
-
-				  	<img class="img-fluid" src="img/expl_fs0_0.png"><br><br>
-
 				  	<p>Si miramos bien el código, podemos ver qu hay permisos de superusuario y que hay un printf donde dice... "/usr/bin/env echo now what?". Esto es importante, significa que puede ejecutarse con modificar enviroment.</p>
 
             <p>Hagamos que echo este ligado a getflag, usemos unca carpta libre y temporal <b>tmp</b>.</p>
