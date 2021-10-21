@@ -79,7 +79,7 @@ int main(int argc, char **argv, char **envp)
 
 				  	<p>Si miramos bien el código, podemos ver que hay permisos de superusuario y que hay un printf donde dice... "/usr/bin/env echo now what?". Esto es importante, significa que puede ejecutarse con modificar enviroment.</p>
 
-            <p>Hagamos que <b>echo</b> este ligado a getflag, usemos unca carpta libre y temporal <b>tmp</b>. Esto no es necesario igual puede funcionar si solo hacemos el archivo echo en /tmp con "/bin/sh"</p>
+            <p>Hagamos que <b>echo</b> este ligado a getflag, usemos unca carpta libre y temporal <b>/tmp</b>. Esto no es necesario, igual puede funcionar si solo hacemos un archivo <b>echo</b> en /tmp con la cadena <b>"/bin/sh"</b> dentro</p>
 
 				  	<img class="img-fluid" src="img/vuln_fl1_0.png"><br><br>
 
