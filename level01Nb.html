@@ -77,9 +77,9 @@ int main(int argc, char **argv, char **envp)
 				  <input type="button" onclick="document.getElementById('show').style.display='block'"value="Mostrar"><br><br>
 
 
-				  	<p>Si miramos bien el código, podemos ver qu hay permisos de superusuario y que hay un printf donde dice... "/usr/bin/env echo now what?". Esto es importante, significa que puede ejecutarse con modificar enviroment.</p>
+				  	<p>Si miramos bien el código, podemos ver que hay permisos de superusuario y que hay un printf donde dice... "/usr/bin/env echo now what?". Esto es importante, significa que puede ejecutarse con modificar enviroment.</p>
 
-            <p>Hagamos que echo este ligado a getflag, usemos unca carpta libre y temporal <b>tmp</b>.</p>
+            <p>Hagamos que <b>echo</b> este ligado a getflag, usemos unca carpta libre y temporal <b>tmp</b>. Esto no es necesario igual puede funcionar si solo hacemos el archivo echo en /tmp con "/bin/sh"</p>
 
 				  	<img class="img-fluid" src="img/vuln_fl1_0.png"><br><br>
 
@@ -98,6 +98,11 @@ int main(int argc, char **argv, char **envp)
 
 
 				  	<p>Listo.</p>
+					
+					<p>Si ejecutamos solo el archivo <b>echo</b> sin ligar getflag, puede funcionar así.</p>
+					
+					<img class="img-fluid" src="img/nb_exp_07.png"><br><br>
+					
 
 			</div>
 
