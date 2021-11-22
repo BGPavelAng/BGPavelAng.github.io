@@ -132,19 +132,23 @@ int main(int argc, char **argv, char **envp)
             <p>Como semuestra en la primera imagen todo funciona, ahora es momento de repetir la operación, con GDB.</p>
 
 				  	
-				  	<img class="img-fluid" src="img/expl_fs0_5.png"><br><br>
+				  	<img class="img-fluid" src="img/expl_fs1_2.png"><br><br>
 
             <p>Encontré en github una herramienta muy sencilla de utilizar, se llama "Python Exploit Pattern Tool" de Svenito.</p>
 
-            <img class="img-fluid" src="img/expl_fs1_2.png"><br><br>
+            <img class="img-fluid" src="img/expl_fs1_3.png"><br><br>
 
             <p>Al parecer obtuvimos lo que buscamos, ahora exploremos con GDB donde empieza en buffer overflow.</p>
 
-            <img class="img-fluid" src="img/expl_fs0_12.png"><br><br>
+            <img class="img-fluid" src="img/expl_fs1_4.png"><br><br>
+            <img class="img-fluid" src="img/expl_fs1_5.png"><br><br>
 
-            <p>Podemos ver donde inicia el overflow, hay que recordar agregarle al final <b>\xcc</b> para que se detenga la ejecución y nos muestre un <b>SIGTRAP</b>, al azar le puse <b>*90</b> y  restarle los bytes de .</p>
+            <p>Podemos ver donde inicia el overflow, el proceso es el mismo, encontrar el inicio del desbordamiendo, verificar si sobreescribe esp y encontrar donde pondremos una futura shell.</p>
 
-            <img class="img-fluid" src="img/expl_fs0_13.png"><br><br>
+           <img class="img-fluid" src="img/expl_fs1_6.png"><br><br>
+           <img class="img-fluid" src="img/expl_fs1_7.png"><br><br>
+           <img class="img-fluid" src="img/expl_fs1_8.png"><br><br>
+           <img class="img-fluid" src="img/expl_fs1_9.png"><br><br>
 
             <p>Sin embargo, solo nos aparece un error de segmento, pero no lo que buscamos</p>
 
@@ -160,8 +164,8 @@ int main(int argc, char **argv, char **envp)
 
             <p>Volvamos a intentarlo.</p>
 
-            <img class="img-fluid" src="img/expl_fs0_17.png"><br><br>
-            <img class="img-fluid" src="img/expl_fs0_18.png"><br><br>
+            <img class="img-fluid" src="img/expl_fs1_10.png"><br><br>
+            <img class="img-fluid" src="img/expl_fs1_11.png"><br><br>
 
 				  	<p>Listo.</p>
 
