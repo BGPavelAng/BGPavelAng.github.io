@@ -337,7 +337,7 @@ rdx = envp <-- 0</b><br><br></p>
 
 <p>¿Cual es la diferencia ahora con x64?, pues que hay más espacio en memoria, antes solo se podía usar 4 bytes, ahora con 64bits son 8 bytes</p>
 
-<p>mov rdi, 0x68732f6e69622f2f  ;//bin/sh</p>
+<p><b>mov rdi, 0x68732f6e69622f2f  ;//bin/sh</b></p>
 
 <p>Ese 0x68, es para modificarlo con un null, pueden mover los registros hacia la derecha con <b>shr, 8</b> o pueden ponerlo como null modificandolo directamente desde <b>(mov [rsp], byte 0)</b></p>
 
