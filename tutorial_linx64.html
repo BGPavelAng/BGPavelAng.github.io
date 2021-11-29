@@ -322,9 +322,9 @@ jns salto</b><br></p>
 <p>Te coloco un link con la explicación detallada sobre eso.</p>
 <a href="https://es.wikipedia.org/wiki/Endianness">Endiannes</a>
 
-<p>"0hs//nib/" <--- Encuentra los hexadecimales.</p>
+<p>"hs//nib/" <--- Encuentra los hexadecimales.</p>
 
-<p>El proceso es el mismo, coloca en rax, <b>execv</b>, después pushea "/bin/bash", colocale un null al final.</p>
+<p>El proceso es el mismo, coloca en rax, <b>execv</b>, después pushea "/bin/bash0", colocale un null al final.</p>
 
 <p>Parece difícil pero en realidad no lo es, observa.</p>
 
@@ -339,7 +339,7 @@ rdx = envp <-- 0</b><br><br></p>
 
 <p><b>mov rdi, 0x68732f6e69622f2f  ;//bin/sh</b></p>
 
-<p>Ese 0x68, es para modificarlo con un null, pueden mover los registros hacia la derecha con <b>shr, 8</b> o pueden ponerlo como null modificandolo directamente desde <b>(mov [rsp], byte 0)</b></p>
+<p>Ese 0x2f, es para modificarlo con un null, pueden mover los registros hacia la derecha con <b>shr, 8</b> o pueden ponerlo como null modificandolo directamente desde <b>(mov [rsp])</b></p>
 
 <p>Hay muchas formas, el objetivo no es que hagan lo mismo, sino que busquen su estilo para no caer en el copy-paste.</p>
 
