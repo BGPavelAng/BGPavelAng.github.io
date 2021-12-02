@@ -213,7 +213,7 @@ ld -o .exe .obj</b></p>
 } PEB_LDR_DATA, *PPEB_LDR_DATA;</b></pre><br>
 
 <p>Entonces cuales son lo pasos a seguir para encontrar las direcciones que necesitaremos para lograr cargar algunas librerías además de funciones.</p>
-<p><b>TEB<br>->PEB(0x30)<br>->Ldr(0xc)<br>->InMemoryOrderModuleList(0x14)->Flink</b></p>
+<p><b>TEB<br>->PEB(0x60)<br>->Ldr(0x18)<br>->InMemoryOrderModuleList(0x20)->Flink</b></p>
 
 <p>Lo podemos comprobar de esta forma.</p>
 <img class="img-fluid" src="img/tuto_x64_6.png"><br><br>
