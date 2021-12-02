@@ -43,7 +43,7 @@
              <ul class="dropdown-menu">
                <li><a class="nav-link text-primary" href="shells.html">Tutorial shellcode</a></li>
              <li><a class="nav-link text-primary" href="tutorial_win32.html">Tutorial Shellcode Win32</a></li>
-             <li><a class="nav-link text-primary" href="tutorial_win64.html">Tutorial Shellcode Win64(proximamente)</a></li>
+             <li><a class="nav-link text-primary" href="tutorial_win64.html">Tutorial Shellcode Win64</a></li>
              <li><a class="nav-link text-primary" href="tutorial_linx32.html">Tutorial Shellcode Linux86</a></li>
              <li><a class="nav-link text-primary" href="tutorial_linx64.html">Tutorial Shellcode Linux64</a></li>
                <li><a class="nav-link text-primary" href="tutorial_aarch64.html">Tutorial Shellcode aarch64(proximamente)</a></li>
@@ -306,7 +306,7 @@ add edx, ebx</pre>
 <img class="img-fluid" src="img/tuto_vuln_w32_10.png"><br><br>
 <img class="img-fluid" src="img/tuto_vuln_w32_11.png"><br><br>
 
-<p>Ahora solo queda empezar a cargar la librería sería algo así</p>
+<p>Ahora solo queda empezar a cargar la librería sería así.</p>
 <p><b>GetProcAddress(LoadLibrary(ws2_32.dll))</b></p>
 <p>El proceso es repetitivo excepto para los parámetros.</p>
 
@@ -322,7 +322,7 @@ call [ebp-4] - Aquí está guardado GetProcAddress
 
 mov [ebp-8], eax</pre>
 
-<p>Como se ve en el código, Se debe meter en la pila LoadLibraryA0, se une a la base de kernel32 y se invoca con GetProcAddress y guardamos.</p>
+<p>Como se ve en el código, se debe meter en la pila LoadLibraryA0, se une a la base de kernel32 y se invoca con GetProcAddress y guardamos.</p>
 <p>Ya que esta cargada la librería y tenemos la dirección, comenzamos a programar el socket.</p>
 
 <p><b>LoadLibraryA(WSAStartup)</b></p>
@@ -354,7 +354,7 @@ call [ebp-4]
 
 eax <-- mantiene el resultado</pre>
 
-<p>Ya que obtuvimos las direcciónes de WSAStartup, debeos empezar con los parámetros.</p>
+<p>Ya que obtuvimos las direcciones de WSAStartup, debemos empezar con los parámetros.</p>
 
 <p>Antes hay que observar la estructura.</p>
 
@@ -509,9 +509,9 @@ push word 0x5c11
 add cl, 2   
 push word cx  </pre>
 
-Guardamos eso en la pila y volvemos a repetir pero ahora para la estructura.<br><pre>      
+<p>Guardamos eso en la pila y volvemos a repetir pero ahora para la estructura.<br></p>  
 
-xor ecx, ecx
+<pre>xor ecx, ecx
 mov ecx, esp   <--sockaddr_in
 
 push byte 0x16  <--sizeof(sockaddre)
