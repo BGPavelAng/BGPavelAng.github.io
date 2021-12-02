@@ -196,7 +196,7 @@ ld -o .exe .obj</b></p>
 
 <p>Ya encontramos PEB, algo que debemos recordar es que hay un registro en ASM que guarda TEB (gs), esto hay que recordarlo para posteriomente usarlo.</p>
 
-<p>Busquemos la dirección para obervar que hay dentro de PEB</p>
+<p>Busquemos la dirección para observar que hay dentro de PEB</p>
 <img class="img-fluid" src="img/tuto_x64_3.png"><br><br>
 <img class="img-fluid" src="img/tuto_x64_4.png"><br><br>
 
@@ -219,9 +219,11 @@ ld -o .exe .obj</b></p>
 <img class="img-fluid" src="img/tuto_x64_6.png"><br><br>
 <img class="img-fluid" src="img/tuto_x64_7.png"><br><br>
 
+      <p>Se puede ver como rax es la misma que la dirección de la imagen</p>
+
 <p>Como mencionamos en el tutorial de win32, primero se encuentra ntdll y después kernel32, así que solo hay que repetir lo de win32 pero en x64.</p>
 
-<p>Un detalle que tiene win64 es que debes alinear la pila e dejar un espacio llamado "shadow space" para cada registro además de los extras que se vayan a usar, en el tutorial de patreon explico con más detalle.</p>
+<p>Un detalle que tiene win64 es que debes alinear la pila y dejar un espacio llamado "shadow space" para cada registro además de los extras que se vayan a usar, en el tutorial de patreon explico con más detalle.</p>
 
 <pre >xor ecx, ecx
 xor rcx, rcx
@@ -236,7 +238,7 @@ mov rbx, [rax+0x20]</b></pre><br>
 <p><b>lodsq</b> avanza 8 bytes del registro <b>rsi</b> a <b>rax</b> en una estructura, así que sería <b>InMemoryOrderModuleList+8 = flink(ntdll.dll)</b></p>
 <p>Después se hace un xchg para meter <b>rax</b> nuevamente a <b>rsi</b> y volvemos a recorrer 8 bytes para quedar <b>InMemoryOrderModuleList+8=flink+8=flink(kernel32.dll)</b> donde se encuentra la dirección que necesitamos para poder llegar a la base de <b>kernel32.dll</b>.</p>
 
-<p><b>rax+0x20</b>, es por un error en el entry al llegar a la dirección donde solo hay que hacer algo sencillo para solucionarlo, y es sumarle el 0x20.</p>
+<p><b>rax+0x20</b>, es por un error en el entry al llegar a la dirección donde solo hay que hacer algo sencillo para solucionarlo, y es sumarle 0x20.</p>
 
 <p>Logramos obtener la base base de kernerl32 ahora a investigar PE.</p>
 
@@ -380,7 +382,7 @@ call rax</pre>
 
 <p>Tenemos que definir el tamaño de la estructura y abrimos espacio y metemos en la pila la dirección inicial de wsaData <b>sizeof(struct wsaData)</b></p>
 
-<p>Ahora metemos <b>wVersionRequested</b> que es la mayor version 2.2 e invocamos lo guardado en eax.</p>
+<p>Ahora metemos <b>wVersionRequested</b> que es la mayor version 2.2 e invocamos lo guardado en rax.</p>
 
 <p>Volvemos a repetir todo.</p>
 
@@ -442,13 +444,10 @@ Tipo de datos<br>
   DWORD               dwFlags
 );</pre>
 
-<p>Pero antes debemos saber como meter todos esos datos. La mejor opción es meter todo a la pila, para eso sirven los push.</p>
 
 <p><b>xor</b>, hace una comparación tipo <b>not</b>, por ejemplo, si fuera rax=1, con xor podemos decir: rax=1 not rax=1; resultado = 0 </p>
 
 <p><b>inc</b>, incrementa +1 un registro, por ejemplo, si fuera rax=1, entonces, <b>inc rax</b>, sería ahora rax = 2</p>
-
-<p><b>pop</b>, saca de la pila el ultimo registro guardado, por ejemplo, push 0x1; push 0x2; entonces, <b>pop rax</b>, sería ahora rax = 2, <b>pop rax</b>, entonces ahora rax = 1</p>
 
 <pre>xor rcx, rcx
 mov [rsp+32], rcx
@@ -546,7 +545,7 @@ call rax          <--connect</pre>
 <pre>LPSTARTUPINFOA        lpStartupInfo,
 LPPROCESS_INFORMATION lpProcessInformation</pre>
 
-<pre>lpStartupInfo es la cantidad de bytes 104 bytes + 24 de pProcessInformation</pre>
+<p>lpStartupInfo es la cantidad de bytes 104 bytes + 24 de pProcessInformation</p>
 
 <p>En el tutorial de patreon pondré más detallado esto pero dejo la estructura para que puedan continuar.</p>
 
@@ -588,7 +587,7 @@ lea rdx, [rsp]    ;cmd</pre>
 
 <p>Listo.</p>
 
-<p>Si deseas el código completo puede apoyarme en patreon, ahí encontraras el código y más. <a href="https://www.patreon.com/BGPavelAng">Patreon</a></p>
+<p>Si deseas el código completo puede apoyarme en patreon, ahí encontraras el código y tutorial completo. <a href="https://www.patreon.com/BGPavelAng">Patreon</a></p>
 <p>En github se encuentra parte del código como referencia. <a href="https://github.com/BGPavelAng">Github</a></p>
       </div>
 
