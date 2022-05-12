@@ -1,0 +1,26 @@
+.navbar{
+	box-shadow: 0 8px 6px -6px #999;
+	-webkit-box-shadow: 0 8px -6px #999;
+	-moz-box-shadow: 0 8px -6px #999;
+}
+
+.img-portada{
+
+	margin-top: 1px;
+	padding: 298px 0 298px;
+	border: 2px solid black;
+}
+
+.dat-principal{
+
+	margin-top: 1px;
+	padding: 400px 0 400px;
+	border: 2px solid black;
+}
+
+.rrss{
+
+	margin-top: 1px;
+	padding: 100px 0 100px;
+	border: 2px solid black;
+}
