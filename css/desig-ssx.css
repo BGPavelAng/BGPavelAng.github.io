@@ -1,0 +1,12 @@
+.navbar{
+	box-shadow: 0 8px 6px -6px #999;
+	-webkit-box-shadow: 0 8px 6px -6px #999;
+	-moz-box-shadow: 0 8px 6px -6px #999;
+	-o-box-shadow: 0 8px 6px -6px #999;
+}
+
+.back-dis{
+	background: linear-gradient(left, #990099 0%, #990099 10%, #0000cc 100%);
+	background: -webkit-linear-gradient(left, #990099 0%, #990099 10%, #0000cc 100%);
+}
+
