@@ -4,35 +4,35 @@ const MoviltM = document.getElementById('lic2');
 MoviltM.addEventListener("click", () =>{
 	document.getElementById('coverM').style.display = 'block';
 
-	let count = 12;
+	let count = 10;
 	let countdw = setInterval(function(){
 		count--;
 
-	if(count === 11){
+	if(count === 9){
 		document.getElementById('consolM').style.display = 'block';
 	}
 
-	if(count === 10){
+	if(count === 8){
 		document.getElementById('consolM2').style.display = 'block';
 	}
 
-	if(count === 8){
+	if(count === 6){
 		document.getElementById('consolM3').style.display = 'block';
 	}
 
-	if(count === 6){
+	if(count === 4){
 		document.getElementById('consolM4').style.display = 'block';
 	}
 
-	if(count === 4){
+	if(count === 3){
 		document.getElementById('consolM5').style.display = 'block';
 	}
 
-	if(count === 3){
+	if(count === 2){
 		document.getElementById('consolM6').style.display = 'block';
 	}
 
-	if(count === 2){
+	if(count === 1){
 		document.getElementById('consolM7').style.display = 'block';
 	}
 
