@@ -189,7 +189,7 @@ p:hover{
 
 .redes{
 
-	color: red;
+	color: white;
 	font-size: 20px;
 	position: absolute;
 	margin-top: -180px;
@@ -198,7 +198,7 @@ p:hover{
 
 .fa{
 
-	margin: 10px 50px 100px 70px;
+	margin: 20px 0 100px 40px;
 }
 
 
@@ -288,11 +288,11 @@ p:hover{
 
 	.redes{
 
-	color: red;
-	font-size: 20px;
+	color: white;
+	font-size: 12px;
 	position: absolute;
 	margin-top: -180px;
-	padding-left: 30px;
+	padding-left: 8px;
 }
 
 .fa{
