@@ -190,16 +190,16 @@ p:hover{
 .redes{
 
 	color: white;
-	font-size: 20px;
+	font-size: 16px;
 	position: absolute;
-	margin-top: -180px;
-	padding-left: -20px;
+	margin-top: -130px;
 }
 
 .fa{
-
-	margin: 20px 0 100px 40px;
+	padding: 0 30px 0 180px;
 }
+
+
 
 
 .cover-principal-M{
@@ -284,20 +284,18 @@ p:hover{
 	padding: 20px;
 }
 
-@media only screen and (max-width:  540px){
+@media only screen and (max-width:  811px){
 
-	.redes{
+.redes{
 
 	color: white;
 	font-size: 12px;
 	position: absolute;
-	margin-top: -180px;
-	padding-left: 8px;
+	margin-top: -140px;
 }
 
 .fa{
-
-	margin: 30px 10px 20px 20px;
+	padding: 0 30px 0 22%;
 }
 
 }
