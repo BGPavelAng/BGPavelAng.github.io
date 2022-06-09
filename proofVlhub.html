@@ -3,272 +3,480 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-
-  <link rel="stylesheet" type="text/css" href="css/sticky-footer-navbar.css">
-
-        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
+  <link rel="stylesheet" type="text/css" href="css/secu-vulnh.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <title>Retos Vulnhub</title>
-</head>
-<body class="container-portada">
+  </head>
 
-<header>
+  
+<body class="backg-sc">
 
-   <nav class="navbar navbar-color navbar-expand-md navbar-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand text-white" href="https://bgpavelang.github.io">learn@hacks#</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
-        <ul class="navbar-nav">
-          <li class="nav-item active"><a class="nav-link text-white" href="https://bgpavelang.github.io">HOME</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle nav-link text-white" href="#" data-bs-toggle="dropdown">Exploit Education</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
-              <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
-              <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
-            </ul>
-           
-          </li>
+  <header>
+    <nav class="navbar navbar-expand-md navbar-dark shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-white" href="secur-home.html">learn@hacks#</a>
 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle nav-link text-white" href="#" data-bs-toggle="dropdown">CTFs</a>
-            <ul class="dropdown-menu">
-            	<li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
-            </ul>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-           <li class="nav-item dropdown">
-            <a class="dropdown-toggle nav-link text-white" href="#" data-bs-toggle="dropdown">Shellcode</a>
-             <ul class="dropdown-menu">
-               <li><a class="nav-link text-primary" href="shells.html">Tutorial shellcode</a></li>
-             <li><a class="nav-link text-primary" href="tutorial_win32.html">Tutorial Shellcode Win32</a></li>
-             <li><a class="nav-link text-primary" href="tutorial_win64.html">Tutorial Shellcode Win64</a></li>
-             <li><a class="nav-link text-primary" href="tutorial_linx32.html">Tutorial Shellcode Linux86</a></li>
-             <li><a class="nav-link text-primary" href="tutorial_linx64.html">Tutorial Shellcode Linux64</a></li>
-               <li><a class="nav-link text-primary" href="tutorial_aarch64.html">Tutorial Shellcode aarch64(proximamente)</a></li>
-               </ul>
-             <li class="nav-item dropdown">
-            <a class=" nav-link text-white" href="https://github.com/BGPavelAng">Github</a></i>
-             <li class="nav-item dropdown">
-            <a class=" nav-link text-white" href="https://www.patreon.com/BGPavelAng">Patreon</a></i>
-        </li>
-          </li>
-        </ul>
-        
-      </div>
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            <li class="nav-item active"><a class="nav-link text-white" href="index.html">HOME</a></li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-dark" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-dark" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-dark" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-dark" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-dark" href="proofVlhub.html">picoCTF</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" href="#">Shellcodes</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item nav-link text-dark" href="shells.html">Tutorial shellcode</a></li>
+                  <li><a class="dropdown-item nav-link text-dark" href="tutorial_win32.html">Tutorial Shellcode Win32</a></li>
+                  <li><a class="dropdown-item nav-link text-dark" href="tutorial_win64.html">Tutorial Shellcode Win64</a></li>
+                  <li><a class="dropdown-item nav-link text-dark" href="tutorial_linx32.html">Tutorial Shellcode Linux86</a></li>
+                  <li><a class="dropdown-item nav-link text-dark" href="tutorial_linx64.html">Tutorial Shellcode Linux64</a></li>
+                  <li><a class="dropdown-item nav-link text-dark" href="tutorial_aarch64.html">Tutorial Shellcode aarch64(proximamente)</a> 
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-white" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-white" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
     </div>
   </nav>
-</header>
+  </header>
 
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          <img class="img-fluid" src="img/brand.jpg">
+        </div>
+        <div class="img-portada">
+          <img class="img-fluid" src="img/portada-secu.jpg">
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <div class="container mt-5">
-    <div class="row mt-5">
-      <div class="col-4 mt-5">
+  <div class="container-fluid d-none d-sm-none d-md-block">
+    <div class="row cover-principal">
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid " src="img/foxhole.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="FoxHole.html">FoxHole</a>
+        <p class="text-white">Descripción: Analizar la web y encontrar una acceso al servidor y elevar privilegios mediante overflow.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/money.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="MoneyBox.html">MoneyBox</a>
+        <p class="text-white">Descripción: Analizar la web, utlizar estonografía y obtener acceso root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/crossroad.png">
+      </div>
+      <div class="col-2 upVlnh">
+         <a href="Crossroads.html">Crossroads</a>
+        <p class="text-white">Descripción: Analizar la web, obtener contraseña de acceso a smb y encontrar acceso a root.</p>
+      </div>
+    </div>
+    <div class="row cover-principal">
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid " src="img/reconforce.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="Reconforce.html">Reconforce</a>
+        <p class="text-white">Descripción: Analizar la web, obtener acceso a la página, encontrar la vulnerabilidad en PING y tener acceso root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/no_name.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="No_name.html">No_name</a>
+        <p class="text-white">Descripción: Analizar la web, encontrar vulnerabilidad en PING y tener acceso al servidor para ser root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/sun_set3.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="Sunset-dawn3.html">Sunset-dawn3</a>
+        <p class="text-white">Descripción: Explotar vulnerabilidad de un EXE de windows, lograr una shell remota y buscar ser root.</p>
+      </div>
+    </div>
+    <div class="row cover-principal">
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid " src="img/file_server.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="File_server.html">File_server</a>
+        <p class="text-white">Descripción: Analizar la web, encontrar acceso a al servidor mediante SMB y conseguir ser root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/vulnuni.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="Vulnuni.html">Vulnuni</a>
+        <p class="text-white">Descripción: Analizar la web, encontrar acceso mediante base de datos y obtener root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/CK_00.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="CK.html">CK:00</a>
+        <p class="text-white">Descripción: Analizar la web, encontrar acceso mediante wordpress y obtener root.</p>
+      </div>
+    </div>
+    <div class="row cover-principal">
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid " src="img/InfoWar.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="InfoWar.html">infosecwarrior</a>
+        <p class="text-white">Descripción: Analizar la web, buscar partes en la web escondidos y obtener root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/Escalate.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="Escalate.html">escalate-my-privileges</a>
+        <p class="text-white">Descripción: Analizar la web, buscar partes en la web escondidos y obtener root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/cloudav.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="Cloudav.html">CloudAV</a>
+        <p class="text-white">Descripción: Analizar la web, manejo de una shell local y obtener root.</p>
+      </div>
+    </div>
+    <div class="row cover-principal">
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid " src="img/victim.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="Victim.html">Victim1</a>
+        <p class="text-white">Descripción: Analizar la web, encontrar acceso a al servidor mediante SMB y conseguir ser root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/tomcat.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="Tomcat.html">Tomcat</a>
+        <p class="text-white">Descripción: Analizar la web, vulnerar con java y obtener root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/october.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="October.html">October</a>
+        <p class="text-white">Descripción: Analizar la web, vulnerar con php y obtener root.</p>
+      </div>
+    </div>
+   
+    <div class="row cover-principal">
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid " src="img/ganana.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="ganana.html">Ganana</a>
+        <p class="text-white">Descripción: Analizar la web, revisar tráfico de red y obtener root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/cmsms.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="Cmsms.html">My cmsms</a>
+        <p class="text-white">Descripción: Analizar la web, modificar mysql y obtener root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/decoys.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="Sunset-decoy.html">Sunset-decoy</a>
+        <p class="text-white">Descripción: Analizar la web, crackear archivo, obtener acceso al servidor y obtener root.</p>
+      </div>
+    </div>
+    <div class="row cover-principal">
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid " src="img/oscpV.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="oscpV.html">INFOSEC PREP: OSCP</a>
+        <p class="text-white">Descripción: Analizar la web, decifrar archivo, obtener acceso al servidor y obtener root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/Pwnd.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="Pwnd.html">Pwned</a>
+        <p class="text-white">Descripción: Analizar la web, obtener acceso al servidor y obtener root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/sosi.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="sosimpl.html">SoSimple</a>
+        <p class="text-white">Descripción: Analizar la web, obtener acceso al servidor mediante RFI y obtener root.</p>
+      </div>
+    </div>
+    <div class="row cover-principal">
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid " src="img/tw_vul.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="twilighT.html">Twilight</a>
+        <p class="text-white">Descripción: Analizar la web, obtener acceso al servidor mediante SMB y obtener root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        <img class="img-fluid" src="img/vfub.png">
+      </div>
+      <div class="col-2 upVlnh">
+        <a href="Vfunbox.html">Funbox</a>
+        <p class="text-white">Descripción: Analizar la web, obtener acceso al servidor y obtener root.</p>
+      </div>
+      <div class="col-2 justify-content-center upVlnh">
+        
+      <div class="col-2 upVlnh"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="container  d-sm-block d-md-none">
+    <div class="row mt-5 cover-principal">
+      <div class="col-4 upVlnh ">
         <ul>
           <img class="img-fluid" src="img/foxhole.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="FoxHole.html" >Reto Vulnhub: FoxHole</a><br><p class="text-white">Descripción: Analizar la web y encontrar una acceso al servidor y elevar privilegios mediante overflow.</p></li>
       </div>      
-       <div class="col-4 mt-5">
+       <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/money.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="MoneyBox.html" >Reto Vulnhub: MoneyBox</a><br><p class="text-white">Descripción: Analizar la web, utlizar estonografía y obtener acceso root.</p></li>
       </div>
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/crossroad.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="Crossroads.html" >Reto Vulnhub: Crossroads</a><br><p class="text-white">Descripción: Analizar la web, obtener contraseña de acceso a smb y encontrar contraseña para acceso a root.</p></li>
       </div>
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/reconforce.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="Reconforce.html" >Reto Vulnhub: ReconForce</a><br><p class="text-white">Descripción: Analizar la web, obtener acceso a la página, encontrar la vulnerabilidad en PING y tener acceso root.</p></li>
       </div>
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/no_name.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="No_name.html" >Reto Vulnhub: No_name</a><br><p class="text-white">Descripción: Analizar la web, encontrar vulnerabilidad en PING y tener acceso al servidor para ser root.</p></li>
       </div>
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/sun_set3.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="Sunset-dawn3.html" >Reto Vulnhub: Sunset: dawn3</a><br><p class="text-white">Descripción: Explotar vulnerabilidad de un EXE de windows, lograr una shell remota y buscar ser root.</p></li>
       </div>
 
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/file_server.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="File_server.html" >Reto Vulnhub: File_server</a><br><p class="text-white">Descripción: Analizar la web, encontrar acceso a al servidor mediante SMB y conseguir ser root.</p></li>
       </div>
 
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/vulnuni.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="Vulnuni.html" >Reto Vulnhub: Vulnuni</a><br><p class="text-white">Descripción: Analizar la web, encontrar acceso mediante base de datos y obtener root.</p></li>
       </div>
 
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/CK_00.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="CK.html" >Reto Vulnhub: CK:00</a><br><p class="text-white">Descripción: Analizar la web, encontrar acceso mediante wordpress y obtener root.</p></li>
       </div>
 
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/InfoWar.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="InfoWar.html" >Reto Vulnhub: infosecwarrior</a><br><p class="text-white">Descripción: Analizar la web, buscar partes en la web escondidos y obtener root.</p></li>
       </div>
 
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/Escalate.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="Escalate.html" >Reto Vulnhub: escalate-my-privileges</a><br><p class="text-white">Descripción: Analizar la web, buscar partes en la web escondidos y obtener root.</p></li>
       </div>
 
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/cloudav.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="Cloudav.html" >Reto Vulnhub: CloudAV</a><br><p class="text-white">Descripción: Analizar la web, manejo de una shell local y obtener root.</p></li>
       </div>
 
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/victim.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="Victim.html" >Reto Vulnhub: Victim1</a><br><p class="text-white">Descripción: Analizar la web, decifrar WPA y obtener root.</p></li>
       </div>
 
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/tomcat.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="Tomcat.html" >Reto Vulnhub: Tomcat</a><br><p class="text-white">Descripción: Analizar la web, vulnerar con java y obtener root.</p></li>
       </div>
 
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/october.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="October.html" >Reto Vulnhub: October</a><br><p class="text-white">Descripción: Analizar la web, vulnerar con php y obtener root.</p></li>
       </div>
 
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/ganana.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="ganana.html" >Reto Vulnhub: Ganana</a><br><p class="text-white">Descripción: Analizar la web, revisar tráfico de red y obtener root.</p></li>
       </div>
 
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/cmsms.png">
         </ul>
       </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="Cmsms.html" >Reto Vulnhub: My cmsms</a><br><p class="text-white">Descripción: Analizar la web, modificar mysql y obtener root.</p></li>
       </div>
       
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/decoys.png">
         </ul>
         </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="Sunset-decoy.html" >Reto Vulnhub: Sunset Decoy</a><br><p class="text-white">Descripción: Analizar la web, crackear archivo, obtener acceso al servidor y obtener root.</p></li>
       </div>
       
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/oscpV.png">
         </ul>
         </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="oscpV.html" >Reto Vulnhub: INFOSEC PREP: OSCP</a><br><p class="text-white">Descripción: Analizar la web, decifrar archivo, obtener acceso al servidor y obtener root.</p></li>
       </div>
       
-        <div class="col-4 mt-5">
+        <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/Pwnd.png">
         </ul>
         </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="Pwnd.html" >Reto Vulnhub: Pwned</a><br><p class="text-white">Descripción: Analizar la web, obtener acceso al servidor y obtener root.</p></li>
       </div>
       
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/sosi.png">
         </ul>
         </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="sosimpl.html" >Reto Vulnhub: SoSimple</a><br><p class="text-white">Descripción: Analizar la web, obtener acceso al servidor mediante RFI y obtener root.</p></li>
       </div>
       
-      <div class="col-4 mt-5">
+      <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/tw_vul.png">
         </ul>
         </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="twilighT.html" >Reto Vulnhub: Twilight</a><br><p class="text-white">Descripción: Analizar la web, obtener acceso al servidor mediante SMB y obtener root.</p></li>
       </div>
       
-       <div class="col-4 mt-5">
+       <div class="col-4 upVlnh">
         <ul>
           <img class="img-fluid" src="img/vfub.png">
         </ul>
         </div>
-      <div class="col-8 mt-5">
+      <div class="col-8 upVlnh">
         <li ><a class="text-white" href="Vfunbox.html" >Reto Vulnhub: Funbox</a><br><p class="text-white">Descripción: Analizar la web, obtener acceso al servidor y obtener root.</p></li>
       </div>
 
     </div>
   </div>
+
+
+  
 
   <footer class="footer mt-auto py-3 bg-light">
   <div class="container">
@@ -280,6 +488,8 @@
 
 
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+   <script src="js/upvlnh.js"></script>
 
 </body>
 </html>
