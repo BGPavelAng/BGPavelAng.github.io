@@ -1,103 +1,130 @@
 <!DOCTYPE html>
-<html class="h-100">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
 
-        <link rel="stylesheet" type="text/css" href="../../css/sticky-footer-navbar.css">
+ 
 	<title>Stack_zero</title>
 </head>
-<body class="d-flex flex-column h-100">
+<body>
 
 <header>
 
-  <nav class="navbar navbar-expand-md bg-white fixed-top navbar-light shadow-sm">
-    <div class="container-fluid">
-      <a class="navbar-brand text-primary" href="https://bgpavelang.github.io">learn@hacks#</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
-        <ul class="navbar-nav">
-          <li class="nav-item active"><a class="nav-link text-primary" href="https://bgpavelang.github.io">HOME</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
-              <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
-              <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
-            </ul>
-           
-          </li>
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">CTFs</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
-            </ul>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-           <li class="nav-item dropdown">
-            <a class="dropdown-toggle nav-link text-primary" href="#" data-bs-toggle="dropdown">Shellcode</a>
-             <ul class="dropdown-menu">
-               <li><a class="nav-link text-primary" href="shells.html">Tutorial shellcode</a></li>
-             <li><a class="nav-link text-primary" href="tutorial_win32.html">Tutorial Shellcode Win32</a></li>
-             <li><a class="nav-link text-primary" href="tutorial_win64.html">Tutorial Shellcode Win64</a></li>
-             <li><a class="nav-link text-primary" href="tutorial_linx32.html">Tutorial Shellcode Linux86</a></li>
-             <li><a class="nav-link text-primary" href="tutorial_linx64.html">Tutorial Shellcode Linux64</a></li>
-               <li><a class="nav-link text-primary" href="tutorial_aarch64.html">Tutorial Shellcode aarch64(proximamente)</a></li>
-               </ul>
-             <li class="nav-item dropdown">
-            <a class=" nav-link text-primary" href="https://github.com/BGPavelAng">Github</a></i>
-             <li class="nav-item dropdown">
-            <a class=" nav-link text-primary" href="https://www.patreon.com/BGPavelAng">Patreon</a></i>
-        </li>
-          </li>
-        </ul>
-        
-      </div>
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            <li class="nav-item active"><a class="nav-link text-primary" href="index.html">HOME</a></li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">Shellcodes</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item nav-link text-primary" href="shells.html">Tutorial shellcode</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_win32.html">Tutorial Shellcode Win32</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_win64.html">Tutorial Shellcode Win64</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_linx32.html">Tutorial Shellcode Linux86</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_linx64.html">Tutorial Shellcode Linux64</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_aarch64.html">Tutorial Shellcode aarch64(proximamente)</a> 
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-primary" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
     </div>
   </nav>
 </header>
 
-	<div class="container mt-5">
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          <img class="img-fluid" src="img/brand-sec.jpg">
+        </div>
+      </div>
+    </div>
+  </div>
+
+	<div class="container-fluid">
 		<div class="row mt-5">
 			<div class="col">
 				El objetivo de la prueba es sobreescribir parte de la memoria (stack), en este caso, la variable buffer puede sobreescribirse pasando la cantidad de bytes permitidos.<br><br>
 
-				 <div id=show style="display: none;">
+				 <div id="HdSw">
 				 	<p>https://exploit.education/phoenix/stack-zero/</p>
-				  <pre class="brush: cpp; title: ; notranslate" title=""><b>
+				  <pre class="brush: cpp"><b>
 				      struct {
 				  	char buffer[64];
 				  	volatile int changeme;
 				        } locals;</b>
 				  </pre>
 				  </div>
-				  <input type="button" onclick="document.getElementById('show').style.display='block'"value="Mostrar"><br><br>
+
+				  <input id="but" type="button" value="Mostrar">
+
+				</div>
+			</div>
 
 
-				  	<p>Utilizamos GDB para debuggearlo, podemos intentar entender como funciona y si es explotable</p>
+			<div class="row mt-5">
+				<div class="col">
 
-				  	<img class="img-fluid" src="img/blog1_1.png"><br><br>
+				  	<p>Utilizamos GDB para debuggearlo, podemos intentar entender como funciona y si es explotable.</p>
 
-				  	<p>Podemos observar varios detalles interesantes</p><br><br>
+				  	<p><img class="img-fluid" src="img/blog1_1.png"></p>
 
-				  	<img class="img-fluid" src="img/blog1_2.png"><br><br>
+				  	<p>Podemos observar varios detalles interesantes.</p>
 
-				  	<p>Los dos ultimos puts tienen cadena de caracteres, y el primero es el que nos interesa, hace un push en la pila <b>(0x80485ac)</b> e invoca un call a puts seguido de un jmp para llegar a exit y terminar el programa. <br> También podemos obervar que para llegar a esa dirección, gets mete a eax algunos bytes cuando escibimos el mensaje que nos pide, pero justo después mete en <b>eax un 0x0</b>, que anteriormente se guardo en <b>[ebp-0xc],0x0</b>... lo que significa que el primer push mete a la pila bytes, después pone a eax en 0 y al hacer la comparación siempre será negativa la respuesta <b>1 != 0</b></p><br><br>
+				  	<p><img class="img-fluid" src="img/blog1_2.png"></p>
 
-				  	<img class="img-fluid" src="img/blog1_3.png"><br><br>
-				  	<img class="img-fluid" src="img/blog1_4.png"><br><br>
+				  	<p>Los dos ultimos <b>puts</b> tienen cadena de caracteres, y el primero es el que nos interesa, hace un push en la pila <b>(0x80485ac)</b> e invoca un call a puts seguido de un jmp para llegar a exit y terminar el programa. </p>
 
-				  	<p>¿Y qué pasa si modificamos a eax antes de que haga la comparación y le ponemos 1</p><br><br>
+				  	<p>También podemos obervar que para llegar a esa dirección, gets mete a eax algunos bytes cuando escibimos el mensaje que nos pide, pero justo después mete en <b>eax un 0x0</b>, que anteriormente se guardo en <b>[ebp-0xc],0x0</b>... lo que significa que el primer push mete a la pila bytes, después pone a eax en 0 y al hacer la comparación siempre será negativa la respuesta <b>1 != 0.</b></p>
 
-				  	<img class="img-fluid" src="img/blog1_5.png"><br><br>
+				  	<p><img class="img-fluid" src="img/blog1_3.png"></p>
+				  	<p><img class="img-fluid" src="img/blog1_4.png"></p>
 
-				  	<p>Bueno, llevemoslo a la práctica</p><br>
-				  	<p>Hay que tener en cuenta algo, si observan, en la base (EBP) se encuentra <b>[ebp-0xc], 0x0 </b> y luego se encuentra un <b>lea eax,[ebp-0x4c]</b> que es un espacio para gets, entonces <b>0x4c - 0xc = 40hex o (64 decimal)</b></p><br><br>
+				  	<p>¿Y qué pasa si modificamos a eax antes de que haga la comparación y le ponemos 1.</p>
 
-				  	<img class="img-fluid" src="img/blog1_6.png"><br><br>	
+				  	<p><img class="img-fluid" src="img/blog1_5.png"></p>
+
+				  	<p>Bueno, llevemoslo a la práctica</p>
+				  	<p>Hay que tener en cuenta algo, si observan, en la base (EBP) se encuentra <b>[ebp-0xc], 0x0 </b> y luego se encuentra un <b>lea eax,[ebp-0x4c]</b> que es un espacio para gets, entonces <b>0x4c - 0xc = 40hex o (64 decimal)</b></p>
+
+				  	</p><img class="img-fluid" src="img/blog1_6.png"></p>	
 
 				  	<p>eso significa que con 65 logramos el objetivo, veamos </p>
 
@@ -110,6 +137,7 @@
 		</div>
 	</div>
 
+
 	<footer class="footer mt-auto py-3 bg-light">
   <div class="container">
     <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
@@ -117,6 +145,8 @@
 </footer>
 
 	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+	 <script src="js/rv_cod.js"></script>
 
 </body>
 </html>
