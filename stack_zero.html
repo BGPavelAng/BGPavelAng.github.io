@@ -261,7 +261,7 @@
 
 				  	<p>Para poder encontrar los <b>puts</b>, se debe hacer algo interesante, hay unos <b>adrp</b> que coloca <b>0x400000</b>, y en <b>add</b> coloca <b>#0x760</b>, eso se debe sumar y por eso queda <b>0x400760</b>.</p>
 
-				  	<p>Como se puede observar mete <b>0x0 a w0</b>, donde se ve que simplemente usa el registro wzr para usarlo en <b>[x29, #104]</b>, al parecer esta usando registros de 32bits, ya que inmediatamente lo mete en <b>w0</b> y eso lo compara y si efectivamente es <b>0x0</b>, entonces salta, así que hay que cambiarlo.</p>
+				  	<p>Como se puede observar mete <b>0x0 a w0</b>, donde se ve que simplemente usa wzr para asumir que en <b>[x29, #104]</b> tiene de valor 0, sería, llenar de ceros el registro x29, luego meterlo en el registro w0 para usarlo en <b>cmp w0, #0x0</b>, y eso lo compara y si efectivamente es <b>0x0</b>, entonces salta, así que hay que cambiarlo.</p>
 
 				  	<p>Hay que recordar que estamos usando 64bits, los registros son de x0-x30, y los de 32bits son d w0-w30</p>
 
