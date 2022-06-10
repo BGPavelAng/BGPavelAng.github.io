@@ -82,6 +82,35 @@
 	<div class="row">
 		<div id="HdSw">
 				 	<p>https://exploit.education/phoenix/stack-zero/</p>
+				 	<pre>
+
+#define BANNER \
+  "Welcome to " LEVELNAME ", brought to you by https://exploit.education"
+
+char *gets(char *);
+
+int main(int argc, char **argv) {
+  struct {
+    char buffer[64];
+    volatile int changeme;
+  } locals;
+
+  printf("%s\n", BANNER);
+
+  locals.changeme = 0;
+  gets(locals.buffer);
+
+  if (locals.changeme != 0) {
+    puts("Well done, the 'changeme' variable has been changed!");
+  } else {
+    puts(
+        "Uh oh, 'changeme' has not yet been changed. Would you like to try "
+        "again?");
+  }
+
+  exit(0);
+}
+				 	</pre>
 				  </div>
 
 				  <input id="but" type="button" value="Mostrar">
@@ -272,7 +301,7 @@
 				  	<p>Bueno, llevemoslo a la práctica.</p>
 				  	<p>Observa lo que sucede si le ponemos una cadena de 65.</p>
 
-				  	<p><img class="img-fluid" src="img/blog1_6_xrm64.png"></p>	
+				  	</p><img class="img-fluid" src="img/blog1_6_xrm64.png"></p>	
 
 				  	<p>Eso significa que con 65 logramos el objetivo, veamos </p>
 
@@ -293,8 +322,7 @@
   </div>
 </footer>
 
-	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	 <script src="js/rv_cod.js"></script>
 
 </body>
