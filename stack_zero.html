@@ -78,22 +78,31 @@
     </div>
   </div>
 
-	<div class="container">
-		<div class="row mt-5">
-			<div class="col">
-				El objetivo de la prueba es sobreescribir parte de la memoria (stack), en este caso, la variable buffer puede sobreescribirse pasando la cantidad de bytes permitidos.<br><br>
-
-				 <div id="HdSw">
+<div class="container mt-5">
+	<div class="row">
+		<div id="HdSw">
 				 	<p>https://exploit.education/phoenix/stack-zero/</p>
 				  </div>
 
 				  <input id="but" type="button" value="Mostrar">
+	</div>
+</div>
+
+<div class="container mt-5">
+	<div class="row">	
+			<p class="text-center">Version de 32bits</p>
+			<input id="show32" type="button" value="Mostrar x86">
+	</div>
+	<div class="container" id="x86">
+		<div class="row mt-5">
+			<div class="col">
+				El objetivo de la prueba es sobreescribir parte de la memoria (stack), en este caso, la variable buffer puede sobreescribirse pasando la cantidad de bytes permitidos.<br><br>
 
 				</div>
 			</div>
 
 
-			<div class="row mt-5">
+			<div class="row">
 				<div class="col">
 
 				  	<p>Utilizamos GDB para debuggearlo, podemos intentar entender como funciona y si es explotable.</p>
@@ -111,26 +120,172 @@
 				  	<p><img class="img-fluid" src="img/blog1_3.png"></p>
 				  	<p><img class="img-fluid" src="img/blog1_4.png"></p>
 
-				  	<p>¿Y qué pasa si modificamos a eax antes de que haga la comparación y le ponemos 1.</p>
+				  	<p>¿Y qué pasa si modificamos a eax antes de que haga la comparación y le ponemos 1?.</p>
 
 				  	<p><img class="img-fluid" src="img/blog1_5.png"></p>
 
-				  	<p>Bueno, llevemoslo a la práctica</p>
-				  	<p>Hay que tener en cuenta algo, si observan, en la base (EBP) se encuentra <b>[ebp-0xc], 0x0 </b> y luego se encuentra un <b>lea eax,[ebp-0x4c]</b> que es un espacio para gets, entonces <b>0x4c - 0xc = 40hex o (64 decimal)</b></p>
+				  	<p>Bueno, llevemoslo a la práctica.</p>
+				  	<p>Hay que tener en cuenta algo, si observan, en la base (EBP) se encuentra <b>[ebp-0xc], 0x0 </b> y luego se encuentra un <b>lea eax,[ebp-0x4c]</b> que es un espacio para gets, entonces <b>0x4c - 0xc = 40hex o (64 decimal).</b></p>
 
-				  	</p><img class="img-fluid" src="img/blog1_6.png"></p>	
+				  	<p><img class="img-fluid" src="img/blog1_6.png"></p>
 
-				  	<p>eso significa que con 65 logramos el objetivo, veamos </p>
+				  	<p>eso significa que con 65 logramos el objetivo, veamos... </p>
 
-				  	<img class="img-fluid" src="img/blog1_7.png"><br><br>	
+				  	<p><img class="img-fluid" src="img/blog1_7.png"></p>	
 
-				  	<p>Listo.</p><br><br>	     
+				  	<p>Listo.</p>   
 
 			</div>
 
 		</div>
 	</div>
 
+	<div class="row">
+			<p class="text-center mt-3">Version de 64bits</p>
+			<input id="show64" type="button" value="Mostrar x64">
+	</div>
+	<div class="container" id="x64">
+		<div class="row mt-5">
+			<div class="col">
+				El objetivo de la prueba es sobreescribir parte de la memoria (stack), en este caso, la variable buffer puede sobreescribirse pasando la cantidad de bytes permitidos.<br><br>
+
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col">
+
+				  	<p>Utilizamos GDB para debuggearlo, podemos intentar entender como funciona y si es explotable.</p>
+
+				  	<p><img class="img-fluid" src="img/blog1_1_x64.png"></p>
+
+				  	<p>Podemos observar varios detalles interesantes.</p>
+
+				  	<p><img class="img-fluid" src="img/blog1_2_x64.png"></p>
+
+				  	<p>El <b>puts</b> que nos interesa es <b>(0x4006d0)</b> y para poder llegar tenemos que lograr que eax se sobreescriba para que <b>je</b> no salte a <b>(0x400708)</b> y terminar el programa. </p>
+
+				  	<p>Como se puede observar mete <b>0x0 a rbp-0x10</b> eso lo compara y si es efectivamente es <b>0x0</b>, entonces salta, así que hay que cambiarlo.</p>
+
+				  	<p><img class="img-fluid" src="img/blog1_3_x64.png"></p>
+
+				  	<p>Se puede observar lo que sucede si le ponemos <b>1 a rax.</b></p>
+
+				  	<p>Bueno, llevemoslo a la práctica.</p>
+				  	<p>Observa lo que sucede si le ponemos una cadena de 64 letras y otra de 65.</p>
+
+				  	</p><img class="img-fluid" src="img/blog1_6_x64.png"></p>	
+
+				  	<p>Eso significa que con 65 logramos el objetivo, veamos </p>
+
+				  	<p>Listo.</p>    
+
+			</div>
+
+		</div>
+	</div>
+
+
+	<div class="row">
+			<p class="text-center mt-3">Version de ARM</p>
+			<input id="showrm" type="button" value="Mostrar ARM">
+	</div>
+	<div class="container" id="xrm">
+		<div class="row mt-5">
+			<div class="col">
+				El objetivo de la prueba es sobreescribir parte de la memoria (stack), en este caso, la variable buffer puede sobreescribirse pasando la cantidad de bytes permitidos.<br><br>
+
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col">
+
+				  	<p>Utilizamos GDB para debuggearlo, podemos intentar entender como funciona y si es explotable.</p>
+
+				  	<p><img class="img-fluid" src="img/blog1_1_xrm.png"></p>
+
+				  	<p>Podemos observar varios detalles interesantes.</p>
+
+				  	<p><img class="img-fluid" src="img/blog1_2_xrm.png"></p>
+
+				  	<p>El <b>puts</b> que nos interesa es <b>(0x10570)</b> y para poder llegar tenemos que lograr que r3 se sobreescriba para que <b>beq</b> no salte a <b>(0x10574)</b> y terminar el programa. </p>
+
+				  	<p>Como se puede observar mete <b>0x0 a r1</b> eso lo compara y si efectivamente es <b>0x0</b>, entonces salta, así que hay que cambiarlo.</p>
+
+				  	<p><img class="img-fluid" src="img/blog1_3_xrm.png"></p>
+
+				  	<p>Se puede observar lo que sucede si le ponemos <b>1 a r3.</b></p>
+
+				  	<p>Bueno, llevemoslo a la práctica.</p>
+				  	<p>Observa lo que sucede si le ponemos una cadena de 65.</p>
+
+				  	</p><img class="img-fluid" src="img/blog1_6_xrm.png"></p>	
+
+				  	<p>Eso significa que con 65 logramos el objetivo, veamos </p>
+
+				  	<p>Listo.</p>    
+
+			</div>
+
+		</div>
+	</div>
+
+	<div class="row">
+			<p class="text-center mt-3">Version de ARM64</p>
+			<input id="showrm64" type="button" value="Mostrar ARM64">
+	</div>
+	<div class="container" id="xrm64">
+		<div class="row mt-5">
+			<div class="col">
+				El objetivo de la prueba es sobreescribir parte de la memoria (stack), en este caso, la variable buffer puede sobreescribirse pasando la cantidad de bytes permitidos.<br><br>
+
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col">
+
+				  	<p>Utilizamos GDB para debuggearlo, podemos intentar entender como funciona y si es explotable.</p>
+
+				  	<p><img class="img-fluid" src="img/blog1_1_xrm64.png"></p>
+
+				  	<p>Podemos observar varios detalles interesantes, aquí hay uno muy importante que hay poner atención, antes de que leas el detalle, trata de encontrar la diferencia entre <b>ARM</b> y <b>ARM64</b> para encontrar el puts.</p>
+
+				  	<p><img class="img-fluid" src="img/blog1_2_xrm64.png"></p>
+
+				  	<p>El <b>puts</b> que nos interesa es <b>(0x7b0)</b> y para poder llegar tenemos que lograr que w0 se sobreescriba para que <b>b.eq</b> no salte a <b>(0x400708)</b> y terminar el programa. </p>
+
+				  	<p>Para poder encontrar los <b>puts</b>, se debe hacer algo interesante, hay unos <b>adrp</b> que coloca <b>0x400000</b>, y en <b>add</b> coloca <b>#0x760</b>, eso se debe sumar y por eso queda <b>0x400760</b>.</p>
+
+				  	<p>Como se puede observar mete <b>0x0 a w0</b>, donde se ve que simplemente usa el registro wzr para usarlo en <b>[x29, #104]</b>, al parecer esta usando registros de 32bits, ya que inmediatamente lo mete en <b>w0</b> y eso lo compara y si efectivamente es <b>0x0</b>, entonces salta, así que hay que cambiarlo.</p>
+
+				  	<p>Hay que recordar que estamos usando 64bits, los registros son de x0-x30, y los de 32bits son d w0-w30</p>
+
+				  	<p><img class="img-fluid" src="img/blog1_3_xrm64.png"></p>
+
+				  	<p>Se puede observar lo que sucede si le ponemos <b>1 a x0.</b></p>
+
+				  	<p>Bueno, llevemoslo a la práctica.</p>
+				  	<p>Observa lo que sucede si le ponemos una cadena de 65.</p>
+
+				  	</p><img class="img-fluid" src="img/blog1_6_xrm64.png"></p>	
+
+				  	<p>Eso significa que con 65 logramos el objetivo, veamos </p>
+
+				  	<p>Listo.</p>    
+
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+	
 
 	<footer class="footer mt-auto py-3 bg-light">
   <div class="container">
