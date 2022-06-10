@@ -10,8 +10,6 @@ window.addEventListener('scroll', () => {
 
 		if(vLW < vLH - vLP){
 			scV[i].classList.add('active');
-		}else{
-			scV[i].classList.remove('active');
 		}
 	}
 });
