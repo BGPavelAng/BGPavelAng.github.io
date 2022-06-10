@@ -2,7 +2,7 @@ window.addEventListener('scroll', () => {
 
 	let getRev = document.querySelectorAll('.road');
 	let getRevInfo = document.querySelectorAll('.dat-sec');
-	let getRevYnN = document.querySelectorAll('.INFO');
+	let getRevYnN = document.querySelectorAll('.roadP');
 
 	for(i = 0; i < getRev.length; i++){
 
