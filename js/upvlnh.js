@@ -6,7 +6,7 @@ window.addEventListener('scroll', () => {
 
 		let vLH = window.innerHeight;
 		let vLW = scV[i].getBoundingClientRect().top;
-		let vLP = 150;
+		let vLP = 50;
 
 		if(vLW < vLH - vLP){
 			scV[i].classList.add('active');
