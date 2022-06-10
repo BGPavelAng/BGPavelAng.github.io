@@ -8,7 +8,7 @@ window.addEventListener('scroll', () => {
 
 		let winH = window.innerHeight;
 		let winT = getRev[i].getBoundingClientRect().top;
-		let revP = 150;
+		let revP = 50;
 
 		if(winT < winH - revP){
 			getRev[i].classList.add('active');
@@ -22,7 +22,7 @@ window.addEventListener('scroll', () => {
 
 		let winHinfo = window.innerHeight;
 		let winTinfo = getRevInfo[i].getBoundingClientRect().top;
-		let revPinfo = 150;
+		let revPinfo = 50;
 
 		if(winTinfo < winHinfo - revPinfo){
 			getRevInfo[i].classList.add('active');
@@ -36,7 +36,7 @@ window.addEventListener('scroll', () => {
 
 		let winHinfo = window.innerHeight;
 		let winTinfo = getRevYnN[i].getBoundingClientRect().top;
-		let revPinfo = 150;
+		let revPinfo = 50;
 
 		if(winTinfo < winHinfo - revPinfo){
 			getRevYnN[i].classList.add('active');
@@ -47,10 +47,4 @@ window.addEventListener('scroll', () => {
 	}
 	
 });
-
-
-
-
-
-
 
