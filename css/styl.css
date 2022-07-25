@@ -154,6 +154,7 @@ body.dark{
 	-o-box-shadow: 4px 4px 2px 2px #999;
 }
 
+
 .frm2{
 
 	position: absolute;
@@ -175,6 +176,17 @@ body.dark{
 	justify-content: center;
 	margin-top: 25%;
 	font-size: 28px;
+	color: white;
+}
+
+.frm a{
+
+	text-decoration: none;
+}
+
+.frm2 a{
+
+	text-decoration: none;
 }
 
 .frmB{
@@ -266,5 +278,62 @@ body.dark{
 		-moz-box-shadow: 2px 2px 1px 1px #999;
 		-o-box-shadow: 2px 2px 1px 1px #999;
 	}
+
+	.frm{
+
+	position: absolute;
+	margin-left: 22%;
+	margin-top: 704px;
+	border-radius: 10px;
+	height: 100px;
+	width: 200px;
+	background-color: var(--back_wcolor);
+	box-shadow: 4px 4px 2px 2px #999;
+	-webkit-box-shadow: 4px 4px 2px 2px #999;
+	-moz-box-shadow: 4px 4px 2px 2px #999;
+	-o-box-shadow: 4px 4px 2px 2px #999;
+}
+
+.frm2{
+
+	position: absolute;
+	margin-left: 22%;
+	margin-top: 900px;
+	border-radius: 10px;
+	height: 100px;
+	width: 200px;
+	background-color: var(--back_wcolor);
+	box-shadow: 4px 4px 2px 2px #999;
+	-webkit-box-shadow: 4px 4px 2px 2px #999;
+	-moz-box-shadow: 4px 4px 2px 2px #999;
+	-o-box-shadow: 4px 4px 2px 2px #999;
+}
+
+.txtG{
+
+	display: flex;
+	justify-content: center;
+	margin-top: 22%;
+	font-size: 17px;
+	color: white;
+}
+
+.baseTx{
+	position: absolute;
+	margin-left: 8%;
+	margin-right: 6%;
+	margin-top: 1068px;
+	color: black;
+	padding-bottom: 40px;
+}
+
+.baseTxDk{
+	position: absolute;
+	margin-left: 8%;
+	margin-right: 6%;
+	margin-top: 1068px;
+	color: white;
+
+}
 
 }
