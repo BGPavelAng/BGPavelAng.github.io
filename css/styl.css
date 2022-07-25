@@ -118,7 +118,6 @@ body{
 	position: relative;
 	height: 22px;
 	width: 40px;
-	background-color: white;
 	display: inline-block;
 	border-radius: 25px;
 	background-color: #ff0000;
@@ -129,7 +128,6 @@ body{
 	position: relative;
 	height: 22px;
 	width: 40px;
-	background-color: white;
 	display: inline-block;
 	border-radius: 25px;
 	background-color: #66ff66;
@@ -215,6 +213,23 @@ body.dark{
 
 .frm2B:hover{
 	background: linear-gradient(#2f8ce1, #9030e1);
+}
+
+.baseTx{
+	position: absolute;
+	margin-left: 28%;
+	margin-right: 10%;
+	margin-top: 35%;
+	color: black;
+}
+
+.baseTxDk{
+	position: absolute;
+	margin-left: 28%;
+	margin-right: 10%;
+	margin-top: 35%;
+	color: white;
+
 }
 
 @media screen and (max-width: 768px){
