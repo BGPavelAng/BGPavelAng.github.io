@@ -38,8 +38,9 @@ body{
 	box-shadow: 4px 4px 2px 2px #999;
 	-webkit-box-shadow: 4px 4px 2px 2px #999;
 	-moz-box-shadow: 4px 4px 2px 2px #999;
-	-o-box-shadow: 4px 8px 2px 2px #999;
+	-o-box-shadow: 4px 4px 2px 2px #999;
 }
+
 
 .b_dark{
 
@@ -214,4 +215,21 @@ body.dark{
 
 .frm2B:hover{
 	background: linear-gradient(#2f8ce1, #9030e1);
+}
+
+@media screen and (max-width: 768px){
+
+	.barra_lateral{
+		position: fixed;
+		top: 10;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		background-color: var(--back_wcolor);
+		box-shadow: 2px 2px 1px 1px #999;
+		-webkit-box-shadow: 2px 2px 1px 1px #999;
+		-moz-box-shadow: 2px 2px 1px 1px #999;
+		-o-box-shadow: 2px 2px 1px 1px #999;
+	}
+
 }
