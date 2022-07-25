@@ -242,10 +242,11 @@ body.dark{
 }
 
 .baseTxDk{
+
 	position: absolute;
-	margin-left: 28%;
-	margin-right: 10%;
-	margin-top: 35%;
+	margin-left: 300px;
+	margin-right: 3%;
+	margin-top: 400px;
 	color: white;
 
 }
