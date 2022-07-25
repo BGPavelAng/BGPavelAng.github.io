@@ -29,10 +29,10 @@ body{
 
 .barra_lateral{
 
-	position: fixed;
-	top: 10;
+	position: absolute;
+	margin-top: 0px;
 	left: 0;
-	height: 100%;
+	height: 600px;
 	width: 240px;
 	background-color: var(--back_wcolor);
 	box-shadow: 4px 4px 2px 2px #999;
@@ -44,20 +44,20 @@ body{
 
 .b_dark{
 
-	position: fixed;
-	top: 10;
+	position: absolute;
+	margin-top: 0px: ;
 	left: 0;
-	height: 100%;
+	height: 600px;
 	width: 240px;
 	background: linear-gradient(bottom, rgba(9,13,0, 0.8) 0%, rgba(9,13,0, 0.8) 5%, rgba(51, 51, 255, 0.1) 50%, rgba(51, 51, 255, 0.2) 100%);
 	background: -webkit-linear-gradient(bottom, rgba(9,13,0, 0.8) 0%, rgba(9,13,0, 0.8) 5%, rgba(51, 51, 255, 0.1) 50%, rgba(51, 51, 255, 0.2) 100%);
 	background: -moz-linear-gradient(bottom, rgba(9,13,0, 0.8) 0%, rgba(9,13,0, 0.8) 5%, rgba(51, 51, 255, 0.1) 50%, rgba(51, 51, 255, 0.2) 100%);
 	background: -o-linear-gradient(bottom, rgba(9,13,0, 0.8) 0%, rgba(9,13,0, 0.8) 5%, rgba(51, 51, 255, 0.1) 50%, rgba(51, 51, 255, 0.2) 100%);
 	
-	box-shadow: 8px 8px 2px 2px #999;
-	-webkit-box-shadow: 8px 8px 2px 2px #999;
-	-moz-box-shadow: 8px 8px 2px 2px #999;
-	-o-box-shadow: 8px 8px 2px 2px #999;
+	box-shadow: 4px 4px 2px 2px #999;
+	-webkit-box-shadow: 4px 4px 2px 2px #999;
+	-moz-box-shadow: 4px 4px 2px 2px #999;
+	-o-box-shadow: 4px 4px 2px 2px #999;
 }
 
 .text-white{
@@ -232,10 +232,29 @@ body.dark{
 
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 1024px){
+	.baseTx{
+	position: absolute;
+	margin-left: 300px;
+	margin-right: 3%;
+	margin-top: 400px;
+	color: black;
+}
+
+.baseTxDk{
+	position: absolute;
+	margin-left: 28%;
+	margin-right: 10%;
+	margin-top: 35%;
+	color: white;
+
+}
+}
+
+@media screen and (max-width: 720px){
 
 	.barra_lateral{
-		position: fixed;
+		position: absolute;
 		top: 10;
 		left: 0;
 		height: 100%;
