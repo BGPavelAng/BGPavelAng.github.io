@@ -1,0 +1,131 @@
+*{
+   margin: 0;
+   padding: 0;
+   box-sizing: content-box;
+}
+
+body{
+    
+    background: linear-gradient(left, #37474F 0%,#37474F 60%, #455A64 80%, #455A64 100%);
+   background: -webkit-linear-gradient(left, #37474F 0%,#37474F 60%, #455A64 80%, #455A64 100%);
+   background: -moz-linear-gradient(left, #37474F 0%,#37474F 60%, #455A64 80%, #455A64 100%);
+   background: -o-linear-gradient(left, #37474F 0%,#37474F 60%, #455A64 80%, #455A64 100%);
+   padding: 100px 0px 100px 0px;
+}
+
+.form_im{
+
+   border-radius: 20px;
+}
+
+.tipogR{
+
+   margin-left: 4%;
+   margin-bottom: 30px;
+   font: 200 3em/1 'Lucida Console', Monaco, monospace;
+   letter-spacing: 3px;
+   color: #ffffff;
+   text-shadow: 0 0 22px rgba(255,255,255,.5);
+
+}
+
+.tipogR2{
+
+   margin-left: 4%;
+   margin-bottom: 20px;
+   font: 20 1.3em/1 'Lucida Console', Monaco, monospace;
+   letter-spacing: 3px;
+   color: #ffffff;
+   text-shadow: 0 0 22px rgba(255,255,255,.5);
+
+}
+.tipogR3{
+
+   margin-left: 4%;
+   margin-bottom: 20px;
+   font: 20 1.3em/1 'Lucida Console', Monaco, monospace;
+   letter-spacing: 3px;
+   color: #ffffff;
+   text-shadow: 0 0 22px rgba(255,255,255,.5);
+
+}
+.tipogR4{
+
+   margin-left: 4%;
+   margin-bottom: 20px;
+   font: 20 1.3em/1 'Lucida Console', Monaco, monospace;
+   letter-spacing: 3px;
+   color: #ffffff;
+   text-shadow: 0 0 22px rgba(255,255,255,.5);
+
+}
+
+.tipoTem{
+   color: #19ff19;
+   margin-top: -500px;
+   margin-left: -200px;
+   position: absolute;
+   z-index: 100px;
+   display: none;
+}
+
+.tipoTem2{
+   color: #19ff19;
+   margin-top: -446px;
+   margin-left: 5px;
+   position: absolute;
+   z-index: 100px;
+   display: none;
+}
+
+.tipoTem3{
+   color: #19ff19;
+   margin-top: -406px;
+   margin-left: -200px;
+   position: absolute;
+   z-index: 100px;
+   display: none;
+}
+
+.tipoTem4{
+   color: #19ff19;
+   margin-top: -362px;
+   margin-left: -60px;
+   position: absolute;
+   z-index: 100px;
+   display: none;
+}
+
+.tipoTem5{
+   color: #19ff19;
+   margin-top: -306px;
+   margin-left: -200px;
+   position: absolute;
+   z-index: 100px;
+   display: none;
+}
+
+.tipoTem6{
+   color: #19ff19;
+   margin-top: -280px;
+   margin-left: -200px;
+   position: absolute;
+   z-index: 100px;
+   display: none;
+}
+
+.tipoTem7{
+   color: #19ff19;
+   margin-top: -240px;
+   margin-left: -230px;
+   position: absolute;
+   z-index: 100px;
+   display: none;
+}
+
+.bt_cl{
+
+   font-size: 30px;
+
+}
+
