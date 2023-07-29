@@ -22,7 +22,7 @@ body{
 
    margin-left: 4%;
    margin-bottom: 30px;
-   font: 200 3em/1 'Lucida Console', Monaco, monospace;
+   font: 2em/1 'Lucida Console', Monaco, monospace;
    letter-spacing: 3px;
    color: #ffffff;
    text-shadow: 0 0 22px rgba(255,255,255,.5);
@@ -71,7 +71,7 @@ body{
 
 .tipoTem2{
    color: #19ff19;
-   margin-top: -446px;
+   margin-top: -466px;
    margin-left: 5px;
    position: absolute;
    z-index: 100px;
@@ -80,7 +80,7 @@ body{
 
 .tipoTem3{
    color: #19ff19;
-   margin-top: -406px;
+   margin-top: -426px;
    margin-left: -200px;
    position: absolute;
    z-index: 100px;
@@ -89,7 +89,7 @@ body{
 
 .tipoTem4{
    color: #19ff19;
-   margin-top: -362px;
+   margin-top: -382px;
    margin-left: -60px;
    position: absolute;
    z-index: 100px;
@@ -98,7 +98,7 @@ body{
 
 .tipoTem5{
    color: #19ff19;
-   margin-top: -306px;
+   margin-top: -326px;
    margin-left: -200px;
    position: absolute;
    z-index: 100px;
@@ -107,7 +107,7 @@ body{
 
 .tipoTem6{
    color: #19ff19;
-   margin-top: -280px;
+   margin-top: -300px;
    margin-left: -200px;
    position: absolute;
    z-index: 100px;
@@ -127,5 +127,10 @@ body{
 
    font-size: 30px;
 
+}
+
+.termx{
+
+   margin-top: 120px;
 }
 
