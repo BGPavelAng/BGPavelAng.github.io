@@ -48,6 +48,7 @@
 	opacity: 0;
 	transition: all 1.4s ease;
 	border-radius: 50%;
+	margin-top: 0;
 	border: 4px solid #2f8ce1;
 	margin-left: 40%;
 
@@ -60,47 +61,23 @@
 
 .roadP{
 
-	opacity: 0;
-	transition: all 1.4s ease;
 	border-radius: 50%;
 	border: 4px solid #2f8ce1;
-
-}
-
-.roadP.active{
-	margin-top: 200px;
-	opacity: 1;
+	margin-top: 180px;
+	margin-bottom: 80px;
 }
 
 .dat-sec{
 
 	
 	padding: 30px 0 30px 0;
-	opacity: 0;
-	transition: all 1.4s ease;
-	border: 4px solid #2f8ce1;
-
-}
-
-
-
-.dat-sec.active{
 	margin-top: 50px;
-	opacity: 1;
-	border-radius: 20px;
-	background: rgba(0, 0, 0, 0.4);
 	border: 4px solid #2f8ce1;
 
 }
 
-.dat-sec.active:hover{
 
-	
-	padding-left: 12px;
-	background: linear-gradient(#2f8ce1, #9030e1);
 
-	
-}
 
 p{
 	padding: 10px;
@@ -234,10 +211,6 @@ p:hover{
 	padding: 10px
 	background: #111;
 	border-radius: 20px;
-}
-
-.dat-sec-M:hover{
-	background: linear-gradient(#2f8ce1, #9030e1);
 }
 
 .p-M{
