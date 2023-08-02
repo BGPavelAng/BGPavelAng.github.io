@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+	<title>Stonks</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            <li class="nav-item active"><a class="nav-link text-primary" href="index.html">HOME</a></li>
+            <li class="nav-item active"><a class="nav-link text-primary" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">Shellcodes</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item nav-link text-primary" href="shells.html">Tutorial shellcode</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_win32.html">Tutorial Shellcode Win32</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_win64.html">Tutorial Shellcode Win64</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_linx32.html">Tutorial Shellcode Linux86</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_linx64.html">Tutorial Shellcode Linux64</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_aarch64.html">Tutorial Shellcode aarch64(proximamente)</a> 
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-primary" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          <img class="img-fluid" src="img/brand-sec.jpg">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+	<div class="container">
+		<div class="row mt-5">
+			<div class="col">
+				<h3 style="margin-bottom: 50px;">Stonks</h3>
+
+
+				  	<p>enseguida muestra opciones a seguir.</p>
+
+            <p><img class="img-fluid" src="img/sonkimg.png"></p>
+
+            <p>si seleccionamos la primera opción, nos pide una API, como es un reto podemos pensar en un format string así que probemos.</p>
+
+
+				  	<p><img class="img-fluid" src="img/sonkimg2.png"></p>
+
+            <p>Efectivamente, pero si revisamos de que trata el programa, no necesitamos llegar a algun lado o revelar algo oculto, solo nos pide si es inseguro.</p>
+
+            <p>Analizamos el código para encontrar algo que pueda hacerlo inseguro, pero no hay algo que pueda dar una pista hasta que vemos un read que lee un archivo llamado api pero no hace nada. Lo que significa que el código esta en memoria, así que revisemos con "%x" para analizar los registros guardados.</p>
+
+              <p><img class="img-fluid" src="img/sonkimg3.png"></p>
+
+              <p>Encontramos un patron pero ¿cómo saber si alguno de esos hexadecimales es la api?.</p>
+
+              <p><img class="img-fluid" src="img/sonkimg4.png"></p>
+
+              <p>Pero se encuentra endian, así que hay que darle la vuelta, instalamos binascii con npm y buscamos si tiene relación.</p>
+
+              <p><img class="img-fluid" src="img/sonkimg5.png"></p>
+              <p><img class="img-fluid" src="img/sonkimg6.png"></p>
+
+              <p>Bueno, tiene que ser con 8 bytes así que mejor hagamos un script.</p>
+
+              <p><img class="img-fluid" src="img/sonkimg7.png"></p>
+
+              <p>Listo.</p>
+
+			</div>
+
+		</div>
+	</div>
+
+
+	
+
+	<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
