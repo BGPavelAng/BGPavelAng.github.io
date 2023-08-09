@@ -10,8 +10,6 @@ window.addEventListener('scroll', () => {
 
 		if(winW < winH - wRep){
 			getMov[i].classList.add('active');
-		}else{
-			getMov[i].classList.remove('active');
 		}
 
 	}
