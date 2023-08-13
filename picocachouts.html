@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+  <title>Cache Me Outside</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            <li class="nav-item active"><a class="nav-link text-primary" href="index.html">HOME</a></li>
+            <li class="nav-item active"><a class="nav-link text-primary" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">Shellcodes</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item nav-link text-primary" href="shells.html">Tutorial shellcode</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_win32.html">Tutorial Shellcode Win32</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_win64.html">Tutorial Shellcode Win64</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_linx32.html">Tutorial Shellcode Linux86</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_linx64.html">Tutorial Shellcode Linux64</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_aarch64.html">Tutorial Shellcode aarch64(proximamente)</a> 
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-primary" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          <img class="img-fluid" src="img/brand-sec.jpg">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col">
+        <h3 style="margin-bottom: 50px;">Cache Me Outside</h3>
+
+
+            <p>Esta prueba es sobre malloc. Si no conoces que es te recomiendo que busques primero información sobre malloc, free, tcache, pero más importante sobre como funciona chunk en heap y su diferencia entre buffer.</p>
+            <p>Para esta prueba es bueno que utilices pwninit para enlazar el binario con libc.</p>
+            <p>Bueno, primero que nada veamos como es la estructura de tcache:</p>
+
+            <p><code>typedef struct tcache_entry
+            {<br>
+              struct tcache_entry *next;<br>
+            } tcache_entry;
+
+            <br><br>
+             
+             typedef struct tcache_perthread_struct
+            {<br>
+              char counts[TCACHE_MAX_BINS];<br>
+              tcache_entry *entries[TCACHE_MAX_BINS];<br>
+            } tcache_perthread_struct;</code></p>
+
+            <p>Menciona que va agregando hilos de bloques de cache de un tamaño de 64 cada uno consecutivamente.</p>
+
+            <p>El objetivo es poder encontrar esos bloques, cambiar lo que hay dentro para posteriormente ejecutar X intrucción.</p>
+
+            <p>Para cambiar eso, malloc reserva en heap bloques de espacio dinamico en la pila en la zona head, posteriormente free libera esos espacios para reutilizarlos, pero aquí viene el detalle interesante, free solo libera pero no borra de memoria, así que lo que necesitamos ejecutar aun se encuentra en algun bloque pero hay que encontrarlo.</p>
+
+            <p>Vamos a analizar la app, pero antes hagamos una flag.txt temporal, la frase que le coloqué es "lo lograste". Comencemos con saber cosas básicas.</p>
+
+            <p>file, strings y ltrace.</p>
+
+            <p><img class="img-fluid" src="img/picocache.png"></p>
+            <p><img class="img-fluid" src="img/picocache2.png"></p>
+            <p><img class="img-fluid" src="img/picocache3.png"></p>
+
+            <p>Si ejecutamos el programa y buscamos con ltrace, nos muestra algo interesante.</p>
+
+            <p><img class="img-fluid" src="img/picocache4.png"></p>
+            <p><img class="img-fluid" src="img/picocache5.png"></p>
+
+            <p>Si revisamos el código con gdb podemos ver que hay registros ya establecidos, que podemos encontrar las frases "Congrats" = 0x73746172676e6f43.</p>
+
+            <p><img class="img-fluid" src="img/picocache6.png"></p>
+            <p><img class="img-fluid" src="img/picocache7.png"></p>
+
+            <p>Primero revisamos el código con GDB, y obviamente lo que nos interesa es puts, ya que ahí los registros de malloc ya deben estar en memoria. Ponemos un break y revisamos con gdb los chunks.</p>
+
+            <p><img class="img-fluid" src="img/picocache8.png"></p>
+
+            <p>Ya que encontramos donde está todo, podemos ver las colocaciones que hace malloc.</p>
+            <p>Todo empieza en 0x602010, recordemos algo, 0x10 son 16 en decimal, si obervamos la imagen son efectivamente los datos que muestra el primer bloque y da un dato importante que es un 0x02, eso significa que hay 2 bloques.</p>
+
+            <p><img class="img-fluid" src="img/picocache9.png"></p>
+
+            <p>Buscamos las direcciones y encontramos la dirección que esta en los chunks al final 0x0000000000603890.</p>
+
+            <p><img class="img-fluid" src="img/picocache10.png"></p>
+
+            <p>Veamos el contenido y efectivamente, ahí se encuentran guardados los strings.</p>
+
+            <p><img class="img-fluid" src="img/picocache11.png"></p>
+            <p><img class="img-fluid" src="img/picocache12.png"></p>
+
+            <p>Ok, ya encontramos donde están, vamos a ver que pasa cuando le escribimos datos, algo tiene que cambiar ya que recordemos que free solo libera espacio pero no borra.</p>
+
+            <p><img class="img-fluid" src="img/picocache13.png"></p>
+            <p><img class="img-fluid" src="img/picocache14.png"></p>
+
+            <p>Perfecto, sobreescribió un bloque, veamos en donde se encuentra en memoria usando grep.</p>
+
+            <p><img class="img-fluid" src="img/picocache15.png"></p>
+
+            <p>Ahí podemos ver que se encuentra en "0x6034a0 - 0x6034c5", y tiene permisos de lectura, escritura y el offset es 0x602080.</p>
+
+            <p>Vamos a calcular entonces "602088 - 6034a0 = −1418 (−5144 en decimal)"</p>
+            <p><b>¡¡OJO!!</b></p>
+            <p>Esto 0x602088 sale de donde se muestra la siguiente imagen.</p>
+
+            <p><img class="img-fluid" src="img/picocache16.png"></p>
+
+            <p>Anteriomente era 0x0000000000603890, pero cuando modificamos el bloque, cambió a "0x0000000000603800" y el offset es 0x602080 pero el inicio de "0x603800" comienza despues de 8 bytes, por eso es "0x602088".</p>
+
+            <p>Colocamos los datos de nuevo con la información que acabamos de resolver.</p>
+
+            <p><img class="img-fluid" src="img/picocache17.png"></p>
+
+            <p>Lo ejecutamos en el servidor.</p>
+
+            <p><img class="img-fluid" src="img/picocache18.png"></p>
+
+            <p>Listo.</p>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  
+
+  <footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
