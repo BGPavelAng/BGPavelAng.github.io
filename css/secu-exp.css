@@ -39,18 +39,32 @@
 
 .upEPh{
 
-	padding-top: 100px;
+	padding-top: 80px;
 	opacity: 0;
 	transition: all 1s ease;
 }
 
 .upEPh.active{
 
-	padding-top: 50px;
+	padding-top: 35px;
 	opacity: 1;
 }
 
 .upEPh:hover{
 	background: linear-gradient(#2f8ce1, #9030e1);
 
+}
+
+.cuadr{
+
+	padding: 10px;
+	width: 30px;
+	border: 1px solid #fff;
+	color: white;
+
+	margin-bottom: 20px;
+}
+
+a:link{
+	text-decoration: none;
 }
