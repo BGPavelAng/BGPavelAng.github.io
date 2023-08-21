@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+  <title>Unsubscriptions Are Free</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            <li class="nav-item active"><a class="nav-link text-primary" href="index.html">HOME</a></li>
+            <li class="nav-item active"><a class="nav-link text-primary" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="RPISEC_MBE.html">RPISEC</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="pwnable_kr.html">pwnable</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">Shellcodes</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item nav-link text-primary" href="shells.html">Tutorial shellcode</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_win32.html">Tutorial Shellcode Win32</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_win64.html">Tutorial Shellcode Win64</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_linx32.html">Tutorial Shellcode Linux86</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_linx64.html">Tutorial Shellcode Linux64</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_aarch64.html">Tutorial Shellcode aarch64(proximamente)</a> 
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-primary" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          <img class="img-fluid" src="img/brand-sec.jpg">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col">
+        <h3 style="margin-bottom: 50px;">Unsubscriptions Are Free</h3>
+
+            <p>Esta prueba es relativamente sencilla, casí nos dan todo, solo para ejecutar la vulnerabilidad.</p>
+
+            <p>Abrimos el programa y observamos que es una especie de acceso y registro.</p>
+
+            <p><img class="img-fluid" src="img/unsuregfree.png"></p>
+
+            <p>Al oprimir s, nos dice "OOP! Memory leak...0x80487d6".</p>
+
+            <p><img class="img-fluid" src="img/unsuregfree1_1.png"></p>
+
+            <p>El problema es, ¿para qué funciona?.</p>
+
+            <p>Empezamos a meter pattern de datos en los inputs, pero nada sucede hasta que observemos algo raro. Cuando creamos un usuario, nos dice que podemos mandar un mensaje.</p>
+
+            <p><img class="img-fluid" src="img/unsuregfree2.png"></p>
+
+            <p>Pero cuando nos deslogueamos y tratamos de mandar un mensaje nos marca un error.</p>
+
+            <p><img class="img-fluid" src="img/unsuregfree3.png"></p>
+
+            <p>Ok, ya tenemos una dirección de memoria y un error, ahora... ¿cómo están relacionados y qué podemos hacer?</p>
+
+            <p>Bueno, recordemos una vez más, que malloc crea bloques de memoria ya sea dentro de heap, chunks fuera de heap o crea arenas cuando es demasido el espacio de memoria requerida.</p>
+
+            <p>Al ser muy poco el espacio, todo debe de estár en heap, y memory leak es la dirección de hahaexploitgobrrr donde se encuentra el read de flag.</p>
+
+            <p>Ok, eso siginifica que malloc crea un usuario abriendo un bloque en heap para guardar el nombre.</p>
+
+            <p><img class="img-fluid" src="img/unsuregfree4.png"></p>
+            <p><img class="img-fluid" src="img/unsuregfree5.png"></p>
+            <p><img class="img-fluid" src="img/unsuregfree5-5.png"></p>
+
+            <p>Ahora vamos a desloguearnos y veamos que pasa..</p>
+
+            <p><img class="img-fluid" src="img/unsuregfree6.png"></p>
+
+            <p>Podemos ver que no fue borrado, solo fue liberado para su reutilización.</p>
+
+            <p>Ahora vamos a escribir un "CCCC" en mensaje.</p>
+
+            <p><img class="img-fluid" src="img/unsuregfree7.png"></p>
+
+            <p>Listo, fue reubicado, pero la dirección que colocamos no existe en memoria y se genera un error en el stack.</p>
+
+            <p><img class="img-fluid" src="img/unsuregfree8.png"></p>
+
+            <p>Ahora, ¿qué pasaría si ahí metemos la dirección que nos da al inicio?, veamos.</p>
+
+            <p><img class="img-fluid" src="img/unsuregfree9.png"></p>
+            <p><img class="img-fluid" src="img/unsuregfree10.png"></p>
+
+            <p>Lo logramos, ahora con el servidor.</p>
+
+            <p><img class="img-fluid" src="img/unsuregfree11.png"></p>
+            <p><img class="img-fluid" src="img/unsuregfree12.png"></p>
+
+            <p>Listo.</p>
+
+        
+      </div>
+
+    </div>
+  </div>
+
+
+  
+
+  <footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+</body>
+</html>
