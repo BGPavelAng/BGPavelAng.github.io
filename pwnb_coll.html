@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+  <title>[collision]</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            <li class="nav-item active"><a class="nav-link text-primary" href="index.html">HOME</a></li>
+            <li class="nav-item active"><a class="nav-link text-primary" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="RPISEC_MBE.html">RPISEC</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="pwnable_kr.html">pwnable</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">Shellcodes</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item nav-link text-primary" href="shells.html">Tutorial shellcode</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_win32.html">Tutorial Shellcode Win32</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_win64.html">Tutorial Shellcode Win64</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_linx32.html">Tutorial Shellcode Linux86</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_linx64.html">Tutorial Shellcode Linux64</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_aarch64.html">Tutorial Shellcode aarch64(proximamente)</a> 
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-primary" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block mt-5">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col">
+        <h3 style="margin-bottom: 50px;">[collision]</h3>
+
+
+            <p>Daddy told me about cool MD5 hash collision today.</p>
+            <p>Al parecer ahora nos pide que hagamos una comparativa con 0x21DD09EC.</p>
+
+            <p>El problema es, ¿cómo comparamos 0x21DD09EC cuando el check password solo admite los primeros 5 bytes y los compara, aqupi viene la parte duuhhh!!! de esto, habrá que hacer matematicas.</p>
+
+            <p>Bueno, primero vamos a dividir la cantidad en decimlaes de 0x21DD09EC entre 5 que son la cantidad maxima que nos deja leer... de 0 a 4 que serían 5, por si se preguntaban porque 5 si el for es "i<5" -> "0<5".</p>
+
+            <p>con la calculadora serían 568134124</p>
+
+            <p>568134124 / 5 = 113626824.8</p>
+
+            <p>Ya que lo dividimos nos damos cuenta que no es un entero, así que tendremos que usar un extra para completar los 5, en realidad es como si ocuparamos 20 y medio bytes, así que debemos completarlo, usando uno más y alineamos todo.</p>
+
+            <p>le quitamos el decimal y convertimos en hex = 113626824 -> 6C5CEC8</p>
+
+            <p>listo, tenemos el primer resultado 6C5CEC8 pero falta completar el 5 así que sumamos 4 a 6C5CEC8 y sería 6C5CEC8 + 4 = 6C5CECC</p>
+
+            <p>ahora veamos si funciona, recuerda en little endian...</p>
+
+            <p>./col $(python -c 'print "\xc8\xce\xc5\x06"*4 + "\xcc\xce\xc5\x06"')</p>
+
+            <p>daddy! I just managed to create a hash collision :)</p>
+
+            <p>Listo.</p>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  
+
+  <footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+
+</body>
+</html>
