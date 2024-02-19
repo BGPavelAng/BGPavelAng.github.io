@@ -4,7 +4,7 @@ const tml = document.getElementById('clic');
 tml.addEventListener("click", () =>{
 	document.getElementById('cover').style.display = 'block';
 
-	let count = 7;
+	let count = 6;
 	let countdw = setInterval(function(){
 		count--;
 
