@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+  <title>lab1B</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            <li class="nav-item active"><a class="nav-link text-white" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="RPISEC_MBE.html">RPISEC</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="pwnable_kr.html">pwnable</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">Shellcodes</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item nav-link text-primary" href="shells.html">Tutorial shellcode</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_win32.html">Tutorial Shellcode Win32</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_win64.html">Tutorial Shellcode Win64</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_linx32.html">Tutorial Shellcode Linux86</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_linx64.html">Tutorial Shellcode Linux64</a></li>
+                  <li><a class="dropdown-item nav-link text-primary" href="tutorial_aarch64.html">Tutorial Shellcode aarch64(proximamente)</a> 
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-primary" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col">
+        <h3 style="margin-bottom: 50px;">lab1B</h3>
+
+
+            <p>Para esta prueba  continua el crack, vamos a debuggear.</p>
+            <p>Podemos encontrar varios puts, veamos que dicen.</p>
+            <p><img class="img-fluid" src="img/lab1_sec1.png"></p>
+
+            <p>Ahora encontramos un scanf que coloca un espacio de 4 bytes y debe ser en formato integer..</p>
+            <p><img class="img-fluid" src="img/lab1_sec2.png"></p>
+
+            <p>Perfecto, ahora podemos observar que antes de llamar a la función test, le manda datos, podemos ver como mete en "eax" los datos que le dimos, en este caso serán numeros, después lo coloca en esp junto con otro que es 0x1337d00d.</p>
+            <p><img class="img-fluid" src="img/lab1_sec3.png"></p>
+
+            <p>ahora vamos a analizar test</p>
+            <p><img class="img-fluid" src="img/lab1_sec4.png"></p>
+
+            <p>Esto que vemos es importante, porque guarda los datos que les dimos en los registros eax y edx, luego hace una resta del integer que le dimos a 0x1337d00d, lo guarda en ebp-0xc y luego lo compara con 0x15 y salta a la etiqueta 0x8048bd5 si es mayor y no queremos que eso pase, queremos que continué hasta la función decrypt.</p>
+
+            <p>Vamos a tranformar 0x1337d00d a decimal "322424845" y vamos a ver que pasa colocando un break en test.</p>
+
+            <p><img class="img-fluid" src="img/lab1_sec5.png"></p>
+            <p>Aquí podemos ver que es el mismo numero pero ahora restemos los 0x15 para tener un resultado más cercano al que se busca y podamos observar mejor, porque si restamos 322424845 - 322424845 = 0, y eso no funciona.</p>
+            <p><img class="img-fluid" src="img/lab1_sec6.png"></p>
+
+            <p>322424845 - 21 = 322424824</p>
+
+            <p><img class="img-fluid" src="img/lab1_sec7.png"></p>
+
+            <p>Podemos ver que hay un problema, se compara con 0x15 exacto, así que vamos a restarle 0x14.</p>
+            <p>322424845 - 20 = 322424825</p>
+
+            <p><img class="img-fluid" src="img/lab1_sec8.png"></p>
+
+            <p>Ok, después de "sub eax, edx", vemos que de resultado da 0x14, y tambien vemos que cada vez que se llama a decrypt se coloca 4 bytes que haya en eax, sin embargo, hay un arreglo en eax usando shl, veamos que pasa después.</p>
+
+            <p>Vamos a convertir esa cantidad en decimal, sería 0x149a = 5274 en decimal.</p>
+
+            <p>Ahora colocamos un break en decrypt.</p>
+
+            <p><img class="img-fluid" src="img/lab1_sec9.png"></p>
+
+            <p>Ok, vamos a ver que hay en todos estos punteros usando "nexti"</p>
+
+            <p><img class="img-fluid" src="img/lab1_sec10.png"></p>
+
+            <p>Al parecer está codificado con el siguiente parametro "}|u`sfg~sf{}|a3".</p>
+
+            <p><img class="img-fluid" src="img/lab1_sec11.png"></p>
+
+            <p>Después se obtiene la cantidad de caracteres en total en ese parametro y se colocan en dos registros, pareciera un while de 0 a 15 repeticiones.</p>
+            <p>Luego, hay una comparativa, que si buscamos es un "Congratulations!"</p>
+
+            <p><img class="img-fluid" src="img/lab1_sec12.png"></p>
+
+            <p><img class="img-fluid" src="img/lab1_sec13.png"></p>
+
+            <p>Ok, con esto ya podemos saber que la contraseña es un integer que no supere a 0x15 basandose en 0x1337d00d, después se códifica con "}|u`sfg~sf{}|a3" y si es igual a "Congratulations!", salta a system para obtener la bandera.</p>
+
+            <p>Coloquemos un break en call de strcmp y continuamos con la ejecución.</p>
+
+            <p><img class="img-fluid" src="img/lab1_sec14.png"></p>
+
+            <p>Desafortunadamente no logramos desencriptarlo.</p>
+
+            <p>vamos a bajarle a 0x13</p>
+
+            <p><img class="img-fluid" src="img/lab1_sec15.png"></p>
+
+            <p>Tampoco, vamos por 0x12</p>
+
+            <p><img class="img-fluid" src="img/lab1_sec16.png"></p>
+
+            <p>Listo.</p>
+
+            <p>Esto, en otras circunstancias, sería muy complicado, tuvimos suerte al ser un numero limitado de 21 (0x15), ahora, imaginen si son 20,000, para eso sería mejor hacerlo por fuerza bruta o keygen.</p>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  
+
+  <footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+
+</body>
+</html>
