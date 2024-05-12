@@ -10,7 +10,7 @@ body{
    background: -webkit-linear-gradient(left, #37474F 0%,#37474F 60%, #455A64 80%, #455A64 100%);
    background: -moz-linear-gradient(left, #37474F 0%,#37474F 60%, #455A64 80%, #455A64 100%);
    background: -o-linear-gradient(left, #37474F 0%,#37474F 60%, #455A64 80%, #455A64 100%);
-   padding: 50px 0px 100px 0px;
+  
 }
 
 .form_im{
