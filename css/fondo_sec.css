@@ -106,8 +106,8 @@ ul{ list-style: none; }
 
 ul li.active a{ color: #e20f2f; }
 
-.links a{ text-decoration: none; color: #eee; padding: 0.7rem 0;
-    display: inline-block; font-size: 1.8rem; font-weight: 300;
+.links a{ text-decoration: none; color: #fffefe; padding: 0.7rem 0;
+    display: inline-block; font-size: 1.8rem; font-weight: 600;
     text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
     opacity: 0; transform: translateY(10px);
     animation: hide 0.5s forwards ease;
