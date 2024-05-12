@@ -4,16 +4,15 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="css/fondo.css">
-	<link rel="stylesheet" type="text/css" href="css/fondo_sec.css">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-		<title>HOME</title>
+	<title>HOME</title>
 </head>
 <body>
 
 
 	
-	<div class="container d-none d-sm-none d-md-block">
+	<div class="container d-none d-sm-none d-md-block" style="overflow: hidden;">
         <div class="navbar">
             <div class="menu">
                 <h3>Learn@HACKS</h3>
@@ -66,9 +65,9 @@
         </div>
     </div>
 
-	<header>
-		<nav class="navbar navbar-expand-md navbar-dark d-sm-block d-lg-none">
-			<div class="container-fluid d-sm-block d-lg-none">
+	
+		<nav class="navbar navbar-expand-md navbar-dark  d-sm-block d-md-none">
+			<div class="container-fluid">
 				<a class="navbar-brand text-white" href="secur-home.html">learn@hacks#</a>
 
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
@@ -115,10 +114,22 @@
 				</div>
 		</div>
 	</nav>
-	</header>
 
-	<div class="container-fluid d-sm-block d-lg-none">
-		
+	<div class="container mt-5 d-sm-block d-md-none">
+		<div align="center" class="embed-responsive embed-responsive-16by9">
+    <video autoplay loop class="embed-responsive-item" width="340" height="280">
+        <source src=vid/tun_hk.mp4 type=video/mp4>
+    </video>
+</div>
+
+	<div class="container-fluid d-sm-block d-md-none">
+		<div class="row cover-terc-M">
+			<div class="col-4"></div>
+			<div class="col-4">
+			   	<img class="img-fluid road-m" src="img/sino.jpg">
+			</div>
+			<div class="col-4"></div>
+		</div>
 		<div class="row cover-M-f">
 				<div class="dat-sec-M">
 					<p class="p-M">Esto es importante que lo leas antes de seguir adelante. Hay una gran diferencia entre ciber-delincuente y actividad hacker. La ciber-delincuencia es una actividad castigada por la ley, aquí no encontrarás nada sobre accesos ilegales.</p>
@@ -126,8 +137,14 @@
 		</div>
 	</div>
 
-	<div class="container-fluid d-sm-block d-lg-none">
-		
+	<div class="container-fluid d-sm-block d-md-none">
+		<div class="row cover-terc-Ml">
+			<div class="col-4"></div>
+			<div class="col-4">
+			   	<img class="img-fluid road-m" src="img/si_true.jpg">
+			</div>
+			<div class="col-4"></div>
+		</div>
 		<div class="row cover-M-f">
 				<div class="dat-sec-M">
 					<p class="p-M">Hay una gran diferencia entre ciber-delincuente y actividad hacker. La actividad hacker es muy divertida y entretenida, entre más aprendas mejor seguridad podrás ofrecer e incluso ayudar a comunidades, participar en conferencias, mejorar la tecnología y ganar premios. Por favor, separen las cosas, hay una inmensa diferencia entre delincuente y hacker.</p>
@@ -135,18 +152,17 @@
 		</div>
 	</div>
 
+	
+	
 
 
 
 <!--- scripts -->
 
 	    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-	    <script src="js/revScrll.js"></script>
-	    <script src="js/mov_ini_sec.js"></script>
-	    <script src="js/revScrll-m.js"></script>
-
-<!--- scripts -->
-
+		<script src="js/npage.js"></script>
+		<script src="js/revScrll.js"></script>
+		<script src="js/revScrll-m.js"></script>
 
 </body>
 </html>
