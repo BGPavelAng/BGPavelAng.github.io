@@ -1,6 +1,7 @@
 *{ padding:0; margin: 0; box-sizing: border-box; }
 
 body{ background: -webkit-linear-gradient(right, #000000 0%, #180581 60%, #000000 100%);
+     overflow:hidden;
     }
 
 .container{background-color: #131414;
