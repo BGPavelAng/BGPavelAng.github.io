@@ -121,17 +121,13 @@
     
     gcc -m32 -z execstack -z norelro -fno-stack-protector -o format1 format1.c<br></b></pre>
 
-<p>Exit, solo usa un parámetro que es un estatus, 0 es para salir.</p>
+<p>Vamos a aprender a manipular un printf con ciertos formatos específicos utilizando la tabla de arriba para aprender sobre las vulnerabilidades que pueden presentarse y la importancia de definir bien los formatos de cadena, en este caso será uno sencillo con printf.</p>
 
-<p>Estas funciones tienen su uso en registros, por ejemplo...</p>
+<p>El objetivo de la prueba es cambiar la variable "acceso" que tiene un valor de 0x11223344 y colocarle 0xdeadbeef y para eso tenemos que sobrescribir el stack.</p>
 
-<p>execve = eax<br>
-filename = ebx<br>
-argv = ecx<br>
-envp= edx</p>
+<p>También lo hago para recordar ciertas cosas que suelo olvidar xD.</p>
 
-
-<p>¿Cómo quedaría entonces?</p>
+<p>Vamos empezar buscando lo que hay que hacer en el código.</p>
 
 <p>Ensamblador también se necesita de variables aparte del código, aqui se usan "section .data" y "section .text"... también existe global, etc.</p>
 
