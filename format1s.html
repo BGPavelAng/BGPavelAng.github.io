@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+	<title>Tutorial format string</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            <li class="nav-item active"><a class="nav-link text-primary" href="index.html">HOME</a></li>
+            <li class="nav-item active"><a class="nav-link text-primary" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="RPISEC_MBE.html">RPISEC</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="pwnable_kr.html">pwnable</a></li>
+        </ul>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="shlpage.html">Shellcodes</a>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="tutoriales.html">Tutoriales</a>
+            </li> 
+
+            <li class="nav-item">
+              <a class="nav-link text-primary nav-link-color" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary nav-link-color" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row mt-5">
+      <div class="col">
+
+            <p>Vulnerabilidad Format String.</p>
+
+ <pre class="brush: cpp; title: ; notranslate" title=""><b>
+    %x	Hexadecimal<br>
+    %s	Cadena de caracteres<br>
+    %p	Puntero a direcciones<br>
+    %d	Integer<br>
+    %u	Unsigned Integer<br>
+    %o	Octal<br>
+    %f	Flotante<br>
+    %c	Caracter<br>
+    n	imprimir<br></b></pre> 
+
+<p>Vamos a compilar este código sin algunas protecciones</p>
+
+
+<pre class="brush: cpp; title: ; notranslate" title=""><b>
+    #include <stdlib.h><br>
+    #include <stdio.h><br>
+    #include <string.h><br>
+    
+    
+    int main(int argc, char *argv[])<br>
+    {<br>
+        int acceso = 0x11223344;<br>
+        char buffer[32];<br>
+    
+        fgets(buffer, 32, stdin);<br>
+        printf(buffer);<br>
+    
+        if(acceso == 0xdeadbeef) {<br>
+            printf("lograste la vulnerabilidad de format string\n");<br>
+            return 0;<br>
+        } else {<br>
+             printf("Vuelve a intentar...\n");<br>
+              exit(EXIT_FAILURE);<br>
+        }<br>
+    }<br><br>
+    
+    gcc -m32 -z execstack -z norelro -fno-stack-protector -o format1 format1.c<br></b></pre>
+
+<p>Exit, solo usa un parámetro que es un estatus, 0 es para salir.</p>
+
+<p>Estas funciones tienen su uso en registros, por ejemplo...</p>
+
+<p>execve = eax<br>
+filename = ebx<br>
+argv = ecx<br>
+envp= edx</p>
+
+
+<p>¿Cómo quedaría entonces?</p>
+
+<p>Ensamblador también se necesita de variables aparte del código, aqui se usan "section .data" y "section .text"... también existe global, etc.</p>
+
+<p>Y los registros para ver como utilizar las funciones, se puede encontrar en este archivo llamado...</p> 
+
+<p><b>/usr/src/kernels/$(uname -r)/arch/x86/include/generated/uapi/asm/unistd_32.h</b></p>
+
+<p>El archivo puede variar en su locación, así que es mejor buscarlo con find.</p>
+
+<p>#define __NR_exit 1<br>
+#define __NR_execve 11</p>
+
+<p>Esas dos definiciones son necesarias, vamos a hacer la primera shell.</p>
+
+<pre class="brush: cpp; title: ; notranslate" title=""><b>nasm -felf shell.nasm
+
+section .data
+
+filename db '/bin/ls',0
+excve db '-lah'
+
+section .text
+
+global _start
+
+_start:
+
+mov edx, 0
+mov ecx, excve
+mov ebx, filename
+mov eax, 11
+
+push edx
+push ecx
+push ebx
+
+mov ecx, esp
+
+int 80h
+
+mov ebx, 0
+mov eax, 1
+
+int 80h</b></pre>
+
+<p>¿Qué pasó aquí?, vamos a debuggear.</p>
+
+
+<p>Todo eso lo metemos a la pila, hay que recordar que int 80h ejecuta el syscall de eax, en este momento pusimos 2, el de execve y exit.</p>
+
+<p>En este caso colocamos cada dato en cada registro, pero... ¿porqué poner un push?, para meter en la pila la union de las dos variables.</p>
+
+<p>En ecx, debemos colocar al array, la aplicación y su parámetro, al observar al gdb, podemos ver como metemos a la pila, "ls -lah", si lo vieramos correctamente ahora es así.</p>
+
+
+<p><b>execve = eax<br>
+filename = ebx<br>
+"ls -lah" = ecx<br>
+envp = edx</b></p>
+
+<img class="img-fluid" src="img/shell_0.png"><br><br>
+<img class="img-fluid" src="img/shell_1.png"><br><br>
+<img class="img-fluid" src="img/shell_2.png"><br><br>
+<img class="img-fluid" src="img/shell_3.png"><br><br>
+
+<p>De esa forma se ejecuta la shell... y sale sin problemas, ya que int 80h hace lo mismo con exit... eax, tiene el syscall y ebx tiene el estatus, y listo.</p>
+
+<p>Como sería otra forma de hacerlo... siempre es bueno saber como funcionan lagunas funciones como en este caso... "Call".</p>
+
+<p>Call, tiene algo interesante, cuando se invoca a call, no solo hace un solo movimiento, también se hace un call+1, esto significa que también ejecuta la siguiente intrucción, veamos.</p>
+
+
+<p><b>Nota: Haremos uso de hexadecimales para convertir caracteres, para hacerlo rápido, en linux hay un manual muy bueno, solo hay que escribir en la terminal... "man ascii".</b></p>
+
+Este sería el segundo ejemplo.<br><br>
+
+<pre class="brush: cpp; title: ; notranslate" title=""><b>section .text
+
+global _start
+
+_start:
+
+jmp hacia_call
+
+perfecto:
+
+pop ecx
+mov eax, 11
+mov edx, 0
+
+push 0
+push 0x736c2f
+push 0x6e69622f
+mov ebx, esp
+
+push edx
+push ecx
+push ebx
+
+mov ecx, esp
+
+int 80h
+
+mov ebx, 0
+mov eax, 11
+int 80h
+
+hacia_call:
+
+call perfecto
+db '-lah'</b></pre>
+
+<p>El ejemplo es el mismo, la diferencia es que ahora usamos un método diferente, esta vez utilizamos call.</p>
+
+<p>¿Qué hacemos?, muy sencillo, hacemos un jmp para evitar ejecutar la parte del código que hará la shell, y ponemos un call+1, eso significa que irá hacia una dirección pero se llevara consigo a db '-lah'.</p>
+
+<p>Pop es utilizado para retroceder en la pila, pero también se puede guardar información en algun registro... cuando hacemos call, se guarda en la pila '-lah', al hacer pop ecx, le decimos que saque de la pila esos datos y los guarde en ecx... para quedar así.</p>
+
+<p>execve = eax<br>
+filename = ebx<br>
+argv = ecx<br>
+envp= edx</p>
+
+<p>Lo demás es la repetición de la primera parte del anterior ejemplo, pero esta vez metemos en la pila '/bin/ls', en hexadecimales, y metemos eso en ebx, al final queda igual.</p>
+
+<p>execve = eax<br>
+filename = ebx<br>
+"-lah" = ecx<br>
+envp = edx</p>
+
+<p>Despues...</p>
+
+<p>execve = eax<br>
+filename = ebx<br>
+"/bin/ls -lah" = ecx<br>
+envp = edx</p>
+
+<p>Listo.</p>
+
+<p>Hagamos una shellcode para la consola.</p>
+
+<p>Si ya entendieron el concepto, esto es muy sencillo.</p>
+
+
+<pre class="brush: cpp; title: ; notranslate" title=""><b>section .text
+
+global _start
+
+_start:
+
+xor ecx, ecx
+
+push ecx
+push 0x68732f2f
+push 0x6e69622f
+
+mov ebx, esp
+
+xor eax, eax
+
+push 0xb
+pop eax
+
+int 80h</b></pre>
+
+
+<p>Con xor lo unico que hicimos fue quitar los null, que puedan perjudicar la shell.</p>
+
+
+<p>Vamos a revisar si sirve como shellcode, lo ejecutamos y vemos que hace una nueva shell, si parece que no paso nada, escribe exit y veras como sales de la nueva consola que se hizo, si se cierra la terminal completa significa que algo está mal.</p>
+
+<p>Otra forma de hacerlo es con C</p>
+
+<p><b>for i in objdump -d ./programa|grep '[0-9a-f]:'|grep -v 'file'|cut -f2 -d:|cut -f1-6 -d' '|tr -s ' '|tr '\t' ' '|sed 's/ $//g'|sed 's/ /\\x/g'|paste -d '' -s |sed 's/^/"/'|sed 's/$/"/g'</b></p>
+
+
+<p>Sacamos los opcode y los metemos en un programa en C.</p>
+
+<p><b>objdump -M intel -d programa</b></p>
+
+<img class="img-fluid" src="img/shell_5.png"><br><br>
+
+<p>Hay que recordar que una shell no es siempre igual para cada arquitectura, hay pequeños cambios que pueden hacer o no funcionar la ejecución de la shellcode, a veces hay que investigar diferentes métodos, a veces vienen complicaciones por la diferencia de 32 bits y 64 bits, hay que compilar tanto en ASM como en otro lenguaje en 32bits, para 64 bits no es mucha la diferencia, lo complicado es los null's que pueden interrumpir una ejecución y 64bits puede aumentar esa probabilidad de un null que no permita una ejecución exitosa.</p>
+
+<p>En 64bits puede cambiar, pero solo hay que modificar los registros por rax, rbx, rcx, rdx, y rsp... en push ya no es necesario repartilo en 4 bytes, ya se pueden usar 8 (0x68732f2f6e69622f), etc.
+</p><br>
+
+
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
+      
