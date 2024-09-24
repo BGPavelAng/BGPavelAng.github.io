@@ -82,7 +82,7 @@
 
             <p>Vulnerabilidad Format String.</p>
 
- <pre class="brush: cpp; title: ; notranslate" title=""><b>
+  <p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
     %x	Hexadecimal<br>
     %s	Cadena de caracteres<br>
     %p	Puntero a direcciones<br>
@@ -91,12 +91,12 @@
     %o	Octal<br>
     %f	Flotante<br>
     %c	Caracter<br>
-    n	imprimir<br></b></pre> 
+    n	imprimir<br></b></p> 
 
 <p>Vamos a compilar este código sin algunas protecciones</p>
 
 
-<pre class="brush: cpp; title: ; notranslate" title=""><b>
+ <p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
     
     
     int main(int argc, char *argv[])<br>
@@ -116,7 +116,7 @@
         }<br>
     }<br><br>
     
-    gcc -m32 -z execstack -z norelro -fno-stack-protector -o formato1 formato1.c<br></b></pre>
+    gcc -m32 -z execstack -z norelro -fno-stack-protector -o formato1 formato1.c<br></b></p>
 
 <p>Vamos a aprender a manipular un printf con ciertos formatos específicos utilizando la tabla de arriba para aprender sobre las vulnerabilidades que pueden presentarse y la importancia de definir bien los formatos de cadena, en este caso será uno sencillo con printf.</p>
 
