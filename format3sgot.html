@@ -141,7 +141,7 @@
 
 <img class="img-fluid" src="img/formatstr5_3.png"><br><br>
 
-<p>Podemos ver que exit() es una posibilidad y está en la dirección 0x00403358, vamos a buscarla con GDB, ¿y porqué exit()?, porque no podemos sobrescribir lo que necesitamos como puts o printf, que es lo que no ayudará a meter la dirección ni tampoco gets, porque ahí es donde escribiremos la dirección, lo mejor es exit().</p>
+<p>Podemos ver que exit() es una posibilidad y está en la dirección 0x0804b258, vamos a buscarla con GDB, ¿y porqué exit()?, porque no podemos sobrescribir lo que necesitamos como puts o printf, que es lo que no ayudará a meter la dirección ni tampoco gets, porque ahí es donde escribiremos la dirección, lo mejor es exit().</p>
 
 <p>Listo, ya tenemos el jmp para llegar a la funcion, ahora tenemos que hacer como en format string, codificar la dirección para que printf la sobrescriba en exit() y apunte a expl_got().</p>
 
