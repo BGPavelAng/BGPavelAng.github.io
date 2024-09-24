@@ -80,7 +80,7 @@
     <div class="row mt-5">
       <div class="col">
 
-            <p>Tutorial para Vulnerabilidad "FormatString".</p>
+            <p>Vulnerabilidad Format String.</p>
 
  <pre class="brush: cpp; title: ; notranslate" title=""><b>
     %x	Hexadecimal<br>
@@ -129,191 +129,99 @@
 
 <p>Vamos empezar buscando lo que hay que hacer en el código.</p>
 
-<p>Ensamblador también se necesita de variables aparte del código, aqui se usan "section .data" y "section .text"... también existe global, etc.</p>
+<img class="img-fluid" src="img/formatstr1_1.png"><br><br>
 
-<p>Y los registros para ver como utilizar las funciones, se puede encontrar en este archivo llamado...</p> 
+<p>Como podemos observar, necesitamos sobrescribir acceso, pero para eso necesitamos saber donde está usando GDB.</p> 
 
-<p><b>/usr/src/kernels/$(uname -r)/arch/x86/include/generated/uapi/asm/unistd_32.h</b></p>
+<p>Colocamos un break en main, ejecutamos y vamos avanzando con "nexti" hasta agregar 0x11223344 al stack.</p>
 
-<p>El archivo puede variar en su locación, así que es mejor buscarlo con find.</p>
+<img class="img-fluid" src="img/formatstr2_1.png"><br><br>
+<img class="img-fluid" src="img/formatstr3_1.png"><br><br>
 
-<p>#define __NR_exit 1<br>
-#define __NR_execve 11</p>
+<p>Ahora vamos a revisar el stack, se puede colocar un <b>"x/40wx $esp"</b> y si están utilizando gdb-peda pueden usar un segundo break más adelante o seguir avanzando con "nexti" y utilizar telescope para ver el stack, colocaré tres formas.</p>
 
-<p>Esas dos definiciones son necesarias, vamos a hacer la primera shell.</p>
+<img class="img-fluid" src="img/formatstr4_1.png"><br><br>
+<img class="img-fluid" src="img/formatstr5_1.png"><br><br>
 
-<pre class="brush: cpp; title: ; notranslate" title=""><b>nasm -felf shell.nasm
+<p>Como se puede ver, las dos primeras reflejan que "0x11223344" se encuentra en la dirección 0xffffd22c.</p>
 
-section .data
+<p>La tercera es buscar el registro donde se guardó el valor, en este caso <b>"mov DWORD PTR [ebp-0xc],0x11223344" → “x/x $ebp-0xc” = 0xffffd22c → 0x11223344"</b></p>
 
-filename db '/bin/ls',0
-excve db '-lah'
 
-section .text
+<p>Ok, ya tenemos la dirección a la que tenemos que llegar, ahora vamos a ver como lograremos llegar y de que forma puede haber un printf con vulnerabilidad, tal vez haga uno con GOT que puede ser otra opción.</p>
 
-global _start
+<p>Hay razones por las que siempre hay que definir un printf bien con un formato, veamos.</p>
 
-_start:
+<p>Vemos que si le damos un formato al printf de "printf(buffer)", podemos ver ciertas direcciones al utilizar el formato de punteros.</p>
 
-mov edx, 0
-mov ecx, excve
-mov ebx, filename
-mov eax, 11
+<img class="img-fluid" src="img/formatstr6_1.png"><br><br>
 
-push edx
-push ecx
-push ebx
 
-mov ecx, esp
+<p>Vamos a escribir 4 A's y un formato, usaremos %x para ver si nos muestra esas A's y en donde están.</p>
 
-int 80h
+<img class="img-fluid" src="img/formatstr7_1.png"><br><br>
 
-mov ebx, 0
-mov eax, 1
+<p>Colocamos 10 "%x" y podemos ver que nos muestra donde están esas A's, ya que recordemos que en hexadecimal "A" es "0x41", también lo podemos usar con "%p" para mostrar la dirección donde se encuentran las A's.
+</p>
 
-int 80h</b></pre>
+<img class="img-fluid" src="img/formatstr8_1.png"><br><br>
 
-<p>¿Qué pasó aquí?, vamos a debuggear.</p>
+<p>Eso significa que con 7 es más que suficiente, pero hay una manera de hacer lo mismo más sencillo, para nos tener que escribir varias veces el formato %x y es utilizando "$", veamos.</p>
 
+<img class="img-fluid" src="img/formatstr9_1.png"><br><br>
+<img class="img-fluid" src="img/formatstr10_1.png"><br><br>
 
-<p>Todo eso lo metemos a la pila, hay que recordar que int 80h ejecuta el syscall de eax, en este momento pusimos 2, el de execve y exit.</p>
 
-<p>En este caso colocamos cada dato en cada registro, pero... ¿porqué poner un push?, para meter en la pila la union de las dos variables.</p>
+<p>AAAA%7$x -> esto es equivalente a AAAA%x%x%x%x%x%x%x, pero de esta manera solo se imprime lo que buscamos.</p>
 
-<p>En ecx, debemos colocar al array, la aplicación y su parámetro, al observar al gdb, podemos ver como metemos a la pila, "ls -lah", si lo vieramos correctamente ahora es así.</p>
+<p>Ok, ya tenemos que escribir y donde se coloca eso, ahora hay que decirle que en esa dirección sobrescriba "0x11223344" con "0xdeadbeef", ¿y cómo lo hacemos?.</p>
 
+<p style="color: red;"><b>NOTA: mi computadora tuvo que reiniciarse y cambio la dirección anterior, ahora es 0xffffd23c</b></p>
 
-<p><b>execve = eax<br>
-filename = ebx<br>
-"ls -lah" = ecx<br>
-envp = edx</b></p>
+<p>Debemos hacer que "0xdeadbeef" se sobrescriba dentro de la dirección 0xffffd23c que tiene "0x11223344", hagamos un prueba para ver si se sobrescribe utilizando python.</p>
 
-<img class="img-fluid" src="img/shell_0.png"><br><br>
-<img class="img-fluid" src="img/shell_1.png"><br><br>
-<img class="img-fluid" src="img/shell_2.png"><br><br>
-<img class="img-fluid" src="img/shell_3.png"><br><br>
+<img class="img-fluid" src="img/formatstr11_1.png"><br><br>
 
-<p>De esa forma se ejecuta la shell... y sale sin problemas, ya que int 80h hace lo mismo con exit... eax, tiene el syscall y ebx tiene el estatus, y listo.</p>
+<p>Ok, ahora con gdb, vamos a hacer lo mismo pero pongamos la dirección 0xffffd23c, pero aquí necesitamos escribir en esos bytes usando "n" y pongamos unos break en el printf y después del printf de "0x11223344" para ver si se sobrescribe.</p>
 
-<p>Como sería otra forma de hacerlo... siempre es bueno saber como funcionan lagunas funciones como en este caso... "Call".</p>
+<p><b>$(python2 -c 'print "\x3c\xd2\xff\xff" + "%7$n"')</b></p>
+<img class="img-fluid" src="img/formatstr12_1.png"><br><br>
 
-<p>Call, tiene algo interesante, cuando se invoca a call, no solo hace un solo movimiento, también se hace un call+1, esto significa que también ejecuta la siguiente intrucción, veamos.</p>
+<p>Podemos ver que al no decirle que sobrescribir solo se imprime la cantidad de bytes a escribir, veamos que pasa si ponemos más.</p>
 
+<img class="img-fluid" src="img/formatstr13_1.png"><br><br>
+<img class="img-fluid" src="img/formatstr14_1.png"><br><br>
 
-<p><b>Nota: Haremos uso de hexadecimales para convertir caracteres, para hacerlo rápido, en linux hay un manual muy bueno, solo hay que escribir en la terminal... "man ascii".</b></p>
+<p>Ahora dice que son 8 bytes, ahí ya podemos ver que podemos sobrescribir y ahí colocaremos "0xdeadbeef", pero recordemos que acceso es un integer, así que debemos colocarlo en formato decimal, vamos a convertirlo "0xdeadbeff = 3735928559", pero no podemos poner esa numeración enorme de iteraciones, así que vamos a partir a la mitad "0xdead" + "0xbeef"</p>
 
-Este sería el segundo ejemplo.<br><br>
+<p>Recordemos que el stack es una pila que funciona mediante HIGH Address y LOW Address, lo que significa que "0xdead" sería high y "0xbeef" sería low.</p>
 
-<pre class="brush: cpp; title: ; notranslate" title=""><b>section .text
+<p>Vamos a ponerlo con imágenes para que sea mejor explicativo lo que se acaba de mencionar.</p>
 
-global _start
+<p>Vamos a escribir "beef" -> "48879" - "4" = "48875", 4 son los bytes que acabamos de mencionar que son las direcciones "\x3c\xd2\xff\xff" y lo haremos escribiendo los decimales en formato hexadecimal + los 7 espacios de relleno, pero solo necesitamos 2 bytes que sería <b>"0xdeadbeef" -> 4bytes, "0xdead" -> "0xbeef" -> 2bytes cada uno, para pasar de 4 a 2 debemos utilizar "h" y "n" para sobrescribir, "%7$hn"</b>.</p>
 
-_start:
+<p> <b>$(python2 -c 'print "\x3c\xd2\xff\xff" + "%48875x%7$hn"')</b></p>
 
-jmp hacia_call
 
-perfecto:
+<img class="img-fluid" src="img/formatstr15_1.png"><br><br>
 
-pop ecx
-mov eax, 11
-mov edx, 0
 
-push 0
-push 0x736c2f
-push 0x6e69622f
-mov ebx, esp
+<p>Listo ya tenemos beef en low, vamos por dead en high, para esto vamos a cambiar "4" por los "8" bytes que ahora necesitaremos... "dead" -> "57005" a esto le restamos lo que equivale beef -> "57005 - 48871 = 8126", en el anterior solo usamos 2 de los 4 bytes, vamos a usar los otros 2 bytes de los 4 y para eso ahora será "%8$hn".</p>
 
-push edx
-push ecx
-push ebx
 
-mov ecx, esp
+<p style="color: red;"><b>Nota importante: no olvidar que usamos "48875" donde quitamos solo los 4 primeros bytes, pero ahora debemos volver a calcular y quitar los 8 bytes y por eso ahora es "48879 - 8 = 48871"</b></p>
 
-int 80h
+<p><b>$(python2 -c 'print "\x3c\xd2\xff\xff\x3e\xd2\xff\xff" + "%48871x%7$hn%8126x%8$hn"')</b></p>
 
-mov ebx, 0
-mov eax, 11
-int 80h
+<img class="img-fluid" src="img/formatstr16_1.png"><br><br>
 
-hacia_call:
+<p>Vamos a analizar esto, low = "\x3c\xd2\xff\xff", high es = "\x3e\xd2\xff\xff" -> low es: "%48871x%7$hn" y high es:"%8126x%8$hn"</p>
 
-call perfecto
-db '-lah'</b></pre>
+<p>Lo ejecutamos y veamos que pasa...</p>
 
-<p>El ejemplo es el mismo, la diferencia es que ahora usamos un método diferente, esta vez utilizamos call.</p>
+<img class="img-fluid" src="img/formatstr17_1.png"><br><br>
 
-<p>¿Qué hacemos?, muy sencillo, hacemos un jmp para evitar ejecutar la parte del código que hará la shell, y ponemos un call+1, eso significa que irá hacia una dirección pero se llevara consigo a db '-lah'.</p>
-
-<p>Pop es utilizado para retroceder en la pila, pero también se puede guardar información en algun registro... cuando hacemos call, se guarda en la pila '-lah', al hacer pop ecx, le decimos que saque de la pila esos datos y los guarde en ecx... para quedar así.</p>
-
-<p>execve = eax<br>
-filename = ebx<br>
-argv = ecx<br>
-envp= edx</p>
-
-<p>Lo demás es la repetición de la primera parte del anterior ejemplo, pero esta vez metemos en la pila '/bin/ls', en hexadecimales, y metemos eso en ebx, al final queda igual.</p>
-
-<p>execve = eax<br>
-filename = ebx<br>
-"-lah" = ecx<br>
-envp = edx</p>
-
-<p>Despues...</p>
-
-<p>execve = eax<br>
-filename = ebx<br>
-"/bin/ls -lah" = ecx<br>
-envp = edx</p>
-
-<p>Listo.</p>
-
-<p>Hagamos una shellcode para la consola.</p>
-
-<p>Si ya entendieron el concepto, esto es muy sencillo.</p>
-
-
-<pre class="brush: cpp; title: ; notranslate" title=""><b>section .text
-
-global _start
-
-_start:
-
-xor ecx, ecx
-
-push ecx
-push 0x68732f2f
-push 0x6e69622f
-
-mov ebx, esp
-
-xor eax, eax
-
-push 0xb
-pop eax
-
-int 80h</b></pre>
-
-
-<p>Con xor lo unico que hicimos fue quitar los null, que puedan perjudicar la shell.</p>
-
-
-<p>Vamos a revisar si sirve como shellcode, lo ejecutamos y vemos que hace una nueva shell, si parece que no paso nada, escribe exit y veras como sales de la nueva consola que se hizo, si se cierra la terminal completa significa que algo está mal.</p>
-
-<p>Otra forma de hacerlo es con C</p>
-
-<p><b>for i in objdump -d ./programa|grep '[0-9a-f]:'|grep -v 'file'|cut -f2 -d:|cut -f1-6 -d' '|tr -s ' '|tr '\t' ' '|sed 's/ $//g'|sed 's/ /\\x/g'|paste -d '' -s |sed 's/^/"/'|sed 's/$/"/g'</b></p>
-
-
-<p>Sacamos los opcode y los metemos en un programa en C.</p>
-
-<p><b>objdump -M intel -d programa</b></p>
-
-<img class="img-fluid" src="img/shell_5.png"><br><br>
-
-<p>Hay que recordar que una shell no es siempre igual para cada arquitectura, hay pequeños cambios que pueden hacer o no funcionar la ejecución de la shellcode, a veces hay que investigar diferentes métodos, a veces vienen complicaciones por la diferencia de 32 bits y 64 bits, hay que compilar tanto en ASM como en otro lenguaje en 32bits, para 64 bits no es mucha la diferencia, lo complicado es los null's que pueden interrumpir una ejecución y 64bits puede aumentar esa probabilidad de un null que no permita una ejecución exitosa.</p>
-
-<p>En 64bits puede cambiar, pero solo hay que modificar los registros por rax, rbx, rcx, rdx, y rsp... en push ya no es necesario repartilo en 4 bytes, ya se pueden usar 8 (0x68732f2f6e69622f), etc.
-</p><br>
+<p>Se logró el objetivo de encontrar la vulnerabilidad del formato.</p>
 
 
       </div>
