@@ -83,7 +83,7 @@
 
             <p>Vulnerabilidad Format String 2.</p>
 
- <pre class="brush: cpp; title: ; notranslate" title=""><b>
+ <p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
     %x	Hexadecimal<br>
     %s	Cadena de caracteres<br>
     %p	Puntero a direcciones<br>
@@ -92,12 +92,12 @@
     %o	Octal<br>
     %f	Flotante<br>
     %c	Caracter<br>
-    n	imprimir<br></b></pre> <br>
+    n	imprimir<br></b></p>
 
 <p>Vamos a compilar este código sin algunas protecciones</p>
 
 
-<pre class="brush: cpp; title: ; notranslate" title=""><b>
+ <p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
 
 
         void vuln()<br>
@@ -118,7 +118,7 @@
           vuln();<br>
         }<br><br>
     
-    gcc -m32 -z execstack -z norelro -fno-stack-protector -o formato2 formato2.c<br></b></pre>
+    gcc -m32 -z execstack -z norelro -fno-stack-protector -o formato2 formato2.c<br></b></p>
 
 <p>Otro ejemplo de format string pero ahora solo vamos a agregar un integer, es más sencillo pero es otra forma de practicar lo aprendido.</p>
 
