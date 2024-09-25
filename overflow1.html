@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+	<title>Buffer overflow 1</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            
+            <li class="nav-item active"><a class="nav-link text-primary" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="RPISEC_MBE.html">RPISEC</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="pwnable_kr.html">pwnable</a></li>
+        </ul>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="shlpage.html">Shellcodes</a>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="tutoriales.html">Tutoriales</a>
+            </li> 
+
+            <li class="nav-item">
+              <a class="nav-link text-primary nav-link-color" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary nav-link-color" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row mt-5">
+      <div class="col">
+
+            <p>Buffer overflow 1</p>
+            
+            
+             <p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+            
+            
+              int main(int argc, char *argv []){<br>
+
+                char buffer [256];<br>
+                strcpy(buffer, argv[1]);<br>
+                return 0;<br>
+              }
+              <br>
+                
+              gcc -m32 -mpreferred-stack-boundary=2 -fno-stack-protector -z execstack overflow.c -o overflow<br><br></p>
+
+<p>Algunas veces es necesario desactivar selinux con setenforce 0, no es siempre, pero te resuelve algunos problemas, pero repito, no es necesario si no haz presentado algun problema extraño.</p>
+<p>Vamos a explicar una representación de la memoria antes para entender que está pasando.</p>
+
+<img class="img-fluid" src="img/overflow1_1.png"><br><br>
+
+<p>Ok, vamos a explicar la imagen de arriba, merece la pena por si no entiendes qué es eso.</p>
+
+<p style="padding: 10px; border: 2px solid rgb(136, 134, 134); background-color: rgba(173, 173, 173, 0.3);">
+
+  <b>SECCIÓN CÓDIGO</b><br><br>
+
+Aquí es donde está el código del programa.<br><br>
+
+<b>SECCIÓN DE INICIALIZADOS</b><br><br>
+
+Aquí es donde están las variables inicializadas, por ejemplo.<br><br>
+
+int variable = 1234;<br><br>
+
+<b>SECCIÓN DE NO INICIALIZADOS</b><br><br>
+
+Aquí es donde están las variables no inicializadas, por ejemplo.<br><br>
+
+int variable;<br><br>
+
+<b>SECCIÓN HEAP</b><br><br>
+
+Aquí es donde se hacen las reservas de memoria, puede ser que se reserve memoria directamente si es poca lo que se necesita, o puede ser que se coloquen varios segmentos de memoria si se necesitan más o los famosos segmentos "arena" cuando se necesita bastante más memoria, por ejemplo, malloc, calloc, vamos a explicarlos.<br><br>
+
+int memoria = (int*)malloc(5 * sizeof(int));<br><br>
+
+memoria -> [20 bytes] -> un espacio de 20 bytes<br><br>
+
+int memoria = (int*)calloc(5, sizeof(int));<br><br>
+
+memoria -> [4][4][4][4][4] -> 5 espacios de 4 bytes<br><br>
+
+<b>SECCIÓN DE STACK</b><br><br>
+
+Aquí entran los registros temporales que se van moviendo con LIFO, "last in, first out", es como si fueramos colocando varios bloques, la diferencia es que los bloques aquí los vamos colocando abajo, y el primero de arriba es el que sale de la pila.<br><br>
+</p>
+
+<p>Ahora vamos a detectar el buffer overflow con el código de arriba.</p> 
+<p>Vamos a hacerlo usando python2, puedes usar el python3 pero a veces hay algunos problemas con esa versión a la hora de usar bytes, pero igual lo puedes intentar.</p>
+
+<img class="img-fluid" src="img/overflow2_1.png"><br><br>
+<img class="img-fluid" src="img/overflow3_1.png"><br><br>
+
+<p>Podemos ver que es vulnerable con 260 bytes, que sería 256 del buffer y 4 de return pero no olvidemos ebp serían otros 4, vamos a analizarlo con GDB, lo más probable es que sean 264.</p>
+
+<img class="img-fluid" src="img/overflow4_1.png"><br><br>
+
+<p>Vemos como se genera un strcpy() al abrir un espacio de 256 (0x100), y luego copia ese bloque en otro nuevo.</p>
+
+<p><b>char* strcpy(char* destination, const char* source);</b></p>
+
+<p>Vamos a provocar el fallo de segmento sobrescribiendo el stack.</p>
+
+<p><b>r $(python2 -c 'print "A"*264')</b></p>
+
+<img class="img-fluid" src="img/overflow5_1.png"><br><br>
+<img class="img-fluid" src="img/overflow6_1.png"><br><br>
+<img class="img-fluid" src="img/overflow7_1.png"><br><br>
+<img class="img-fluid" src="img/overflow8_1.png"><br><br>
+
+<p>Vemos que se produce un overflow en $ebp, pero no sobreescribe EIP que es un puntero a la siguiente instrucción.</p>
+
+<p>Primero pongamos un break después de strcpy, para verificar en que dirección se guarda el overflow "AAAA", que sería "0x41414141", y para diferenciar en donde se sobrescribe ret para saltar a un bloque de memoria, vamos a colocar "BBBB", que sería, "0x42424242", pero por la siguiente imagen se podrán dar cuenta que se sobrescribe hasta que ponemos "CCCC". </p>
+
+<p><b>r $(python2 -c 'print "A"*264 + "CCCC"')</b></p>
+
+<img class="img-fluid" src="img/overflow9_1.png"><br><br>
+<img class="img-fluid" src="img/overflow10_1.png"><br><br>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+  Vemos que se sobreescribe ret, vamos a simular una shell con INT 3 que sería una interrupción, en hex sería "0xcc", hagamos una shell de 25 bytes, debería quedar:<br><br>
+   "264 - 25 = "A"*235 + "\xcc"*25 + "\x4c\xd1\xff\xff" -> 264 bytes"<br>
+</p>
+
+<img class="img-fluid" src="img/overflow11_1.png"><br><br>
+
+<p>Aparece que hubo un error en la caja de segmentos, vamos a bajar 4 bytes para tratar de acomodar los datos, ya sea restar o sumar, pero vamos a donde debería estar 0x424242</p>
+
+<p><b>r $(python2 -c 'print "\x90"*239 + "\xcc"*25 + "\x39\xd1\xff\xff"')</b></p>
+
+<img class="img-fluid" src="img/overflow12_1.png"><br><br>
+
+<p>Listo, conseguimos <b>SIGTRAP</b> que sería la señal de interrupción, sin embargo, hay un detalle importante, podemos ver como no parece ser el inicio, así que bajemos los bytes.</p>
+
+<img class="img-fluid" src="img/overflow13_1.png"><br><br>
+<img class="img-fluid" src="img/overflow14_1.png"><br><br>
+
+<p>¿Porqué es importante?, si no queda al inicio, una shellcode podría quedar mal, ya que empezará desde una zona donde la shellcode quedaría incompleta y nunca se ejecutará.</p>
+
+<p>Ya solo restaría que coloquen una shell y vayan moviendo las direcciónes o bytes para que se ejecute.</p>
+
+<p>Nota: Puede cambiar en ciertas ocasiones, por ejemplo, en otro sistema linux el resultado cambio, a diferencia del anterior que se usaron 264 + 4 byte para RET, aquí solo se necesitaron 260 + 4 bytes para RET</p>
+
+<img class="img-fluid" src="img/overflow15_1.png"><br><br>
+<img class="img-fluid" src="img/overflow16_1.png"><br><br>
+<img class="img-fluid" src="img/overflow17_1.png"><br><br>
+
+<p>Listo.</p>
+
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
+      
