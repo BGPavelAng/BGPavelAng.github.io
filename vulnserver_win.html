@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+	<title>vulnserver - windows</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            
+            <li class="nav-item active"><a class="nav-link text-primary" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="RPISEC_MBE.html">RPISEC</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="pwnable_kr.html">pwnable</a></li>
+        </ul>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="shlpage.html">Shellcodes</a>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="tutoriales.html">Tutoriales</a>
+            </li> 
+
+            <li class="nav-item">
+              <a class="nav-link text-primary nav-link-color" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary nav-link-color" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row mt-5">
+      <div class="col">
+
+            <p>vulnserver windows</p>
+            
+            
+            
+<p>Vamos a hacer la prueba de vulnserver, pero lo haremos rápido y sin tantas herramientas. Con esto no insinuó que todo lo que ya hay en internet no sirva, pero veras como no es necesario usar para todo metasploit, ni haremos un gran script en python ni nada confuso, es solo para entender y ya.</p>
+
+<p>Hagamos algo básico, crear el overflow, vamos a usar un debugger, pero usemos x32dbg y ya al ultimo utilizaremos immunity para usar mona.py</p>
+
+<p>En la imagen podemos ver como encontramos la comparativa de TRUN y hay un espacio reservado con malloc de 3000 bytes, ese sería el espacio reservado para almacenar los datos recibidos.</p>
+
+<img class="img-fluid" src="img/vulnserver_1.png"><br><br>
+
+<p>Sí bajamos un poco más, hay algo interesante, que para poder continuar con la ejecución se hace una comparativa con 2E -> "." al inicio y si es verdadero continua sino prácticamente aparece TRUNC COMPLETE.</p>
+
+<img class="img-fluid" src="img/vulnserver_2.png"><br><br>
+ 
+<p>Vamos a mandar "." + "A"*3000 a ver que pasa.</p>
+
+<img class="img-fluid" src="img/vulnserver_3.png"><br><br>
+
+<p>Listo, ya logramos hacer el overflow, pero ahora vamos a ver que sobreescribe EIP, podrías usar pattern o podrías intentar calcular malloc con lo que utiliza memset que serían 3000 - 1048 = 1952 en total, de ahí puedes ir calculando y subiendo poco a poco y con 2010 logramos vulnerarlo.</p>
+
+<p>Ahora vamos a buscar donde se sobrescribe EIP, eso es más sencillo.</p>
+
+<img class="img-fluid" src="img/vulnserver_4.png"><br><br>
+<img class="img-fluid" src="img/vulnserver_5.png"><br><br>
+
+<p>Como vemos en la imagen podemos ver que son 2010 y separando "2006 + BBBB", sobrescribimos bien EIP, ya solo falta encontrar un jmp ESP para inyectar código.</p>
+
+<p>Vamos ahora a utilizar immunity Debugger para usar mona.py. Primero debemos encontrar módulos vulnerables que no tengan protección.</p>
+
+<img class="img-fluid" src="img/vulnserver_6.png"><br><br>
+
+<p>En la imagen vemos que essfunc.dll es vulnerable, vamos a buscar un JMP ESP para encontrar una forma de ejecutar el código.</p>
+
+<img class="img-fluid" src="img/vulnserver_7.png"><br><br>
+
+<p>Pero antes vamos a asegurarnos que ESP si se sobrescriba con los datos siguientes -> "CCCC". Damos en follow Dump sobre ESP y vemos a continuación.</p>
+
+<img class="img-fluid" src="img/vulnserver_8.png"><br><br>
+<img class="img-fluid" src="img/vulnserver_9.png"><br><br>
+
+<p>Efectivamente, ESP esta sobreescrito, ahora ya tenemos el JMP ESP y el lugar donde vamos a inyectar el código.</p>
+
+<p>Pero primero hagamos un código para no depender de programas como metasploit, vamos a hacer una shell para ejecutar calc.exe... haremos un código en C para extraer direcciones y un código en ASM para tener la shellcode.</p>
+
+<p>Primero el código de C, es solo para tener la dirección de WinExec y ExitProcess.</p>
+<img class="img-fluid" src="img/vulnserver_10.png"><br><br>
+
+<p>Ahora en ASM vamos a hacer una shellcode usando las direcciones dadas con C.</p>
+<img class="img-fluid" src="img/vulnserver_11.png"><br><br>
+
+<p>Vamos a compilarlo desde linux para ejecutarlo desde la termial usando python.</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+            
+  nasm -felf32 calc.asm -o calc.o<br>
+  ld -m elf_i386 -o calc calc.o
+</p>
+
+<p>Sacamos los opcodes.</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">objdump -M intel -d calc | grep '[0-9a-f]:'|grep -v 'file'|cut -f2 -d:|cut -f1-6 -d' '|tr -s ' '|tr '\t' ' '|sed 's/ $//g'|sed 's/ /\\x/g'|paste -d '' -s |sed 's/^/"/'|sed 's/$/"/g'</p>
+
+<img class="img-fluid" src="img/vulnserver_12.png"><br><br>
+
+<p>Y así quedaría la shellcode, ahora vamos a meterla en python usando directamente la terminal.</p>
+  
+<p>Pero paciencia, antes de terminar el tutorial vamos a colocar un break en la dirección que nos dio mona.py del jmp solo para verificar que realmente está enviando datos a esp.</p>
+
+<img class="img-fluid" src="img/vulnserver_13.png"><br><br>
+<img class="img-fluid" src="img/vulnserver_14.png"><br><br>
+<img class="img-fluid" src="img/vulnserver_15.png"><br><br>
+<img class="img-fluid" src="img/vulnserver_16.png"><br><br>
+
+<p>Ok, ahora solo queda meter el parametro, jmp esp y la shellcode, veamos si se abre la calculadora.</p>
+
+<img class="img-fluid" src="img/vulnserver_17.png"><br><br>
+<img class="img-fluid" src="img/vulnserver_18.png"><br><br>
+
+<p>Listo, solo con eso terminar la prueba.</p>
+
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
+      
