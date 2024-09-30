@@ -166,6 +166,61 @@ sysctl -w kernel.randomize_va_space=2<br>
 
 <p>Listo, solo era que se necesitaba alinear bien "%37270" -> "%37269" y ya, se activa la función.</p>
 
+<p>Encontré un código parecido, vamos a resolverlo pero no usemos pwntool para entender mejor que hacemos.</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+            
+            
+  void shell() {<br>
+    system("/bin/sh");<br>
+}<br>
+
+void vuln() {<br>
+    char buffer[512];<br>
+    fgets(buffer, sizeof(buffer), stdin);<br>
+    printf(buffer);<br>
+    exit(1);<br>
+}<br>
+
+void deadcode() {<br>
+    char *information = "The execution flow was redirected!";<br>
+    printf(information);<br>
+    exit(1);<br>
+}<br>
+
+int main(int argc, char **argv) {<br>
+    vuln();<br>
+}
+<br></p>
+
+<p>Repetimos lo mismo, hagamos el procedimiento de detectar la vulnerabilidad y acortar para facilitar el trabajo.</p>
+
+<img class="img-fluid" src="img/formatstr9_4.png"><br><br>
+
+<p>Listo, ahora usemos masamunpex para verificar un jump usando GOT.</p>
+
+<img class="img-fluid" src="img/formatstr10_4.png"><br><br>
+
+<p>Ok, ahora veamos si se sobrescribe usando la tecnica de formatstring.</p>
+
+<img class="img-fluid" src="img/formatstr11_4.png"><br><br>
+
+<p>Ahora, vamos a ver la dirección a reemplazar, que sería la dirección de shell <- "0x08049196", y vemos que repetimos lo mismo, no necesitamos reemplazar "0x0804", solo "0x9196" -> "37270", vamos a hacerlo.</p>
+
+<img class="img-fluid" src="img/formatstr12_4.png"><br><br>
+<img class="img-fluid" src="img/formatstr13_4.png"><br><br>
+
+<p>Listo, activamos la shell dentro de la función shell. Pero hay un problema y es que no podemos hacer uso.</p>
+
+<img class="img-fluid" src="img/formatstr14_4.png"><br><br>
+
+<p>Podemos hacer algo para poner una especie de bloqueo para utilizarlo, pero para eso debemos guardar los datos en un archivo y activarlo usando cat, veamos.</p>
+
+<img class="img-fluid" src="img/formatstr15_4.png"><br><br>
+<img class="img-fluid" src="img/formatstr16_4.png"><br><br>
+
+<p>Listo.</p>
+
       </div>
 
     </div>
