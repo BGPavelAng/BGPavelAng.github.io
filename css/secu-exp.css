@@ -35,11 +35,10 @@
 
 .upEPh{
 
-	padding-top: 10px;
-
+	padding: 10px 100px 10px 100px;
 	transition: all 1s ease;
-
 	border-radius: 50px;
+	
 }
 
 .upEPh:hover{
@@ -49,6 +48,7 @@
 
 ul{
 	list-style: none;
+	padding-top: 40px;
 }
 
 .cuadr{
