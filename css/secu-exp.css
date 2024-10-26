@@ -2,10 +2,6 @@
 	background: #090d00;
 }
 
-.text-color{
-	color: #33;
-}
-
 .navbar{
 	box-shadow: 0 8px 6px -6px #999;
 	-webkit-box-shadow: 0 8px -6px #999;
@@ -39,14 +35,20 @@
 
 .upEPh{
 
-	padding-top: 100px;
+	padding-top: 10px;
 
 	transition: all 1s ease;
+
+	border-radius: 50px;
 }
 
 .upEPh:hover{
 	background: linear-gradient(#2f8ce1, #9030e1);
 
+}
+
+ul{
+	list-style: none;
 }
 
 .cuadr{
