@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+	<title>vulnserver - windows</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            
+            <li class="nav-item active"><a class="nav-link text-primary" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="RPISEC_MBE.html">RPISEC</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="pwnable_kr.html">pwnable</a></li>
+        </ul>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="shlpage.html">Shellcodes</a>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="tutoriales.html">Tutoriales</a>
+            </li> 
+
+            <li class="nav-item">
+              <a class="nav-link text-primary nav-link-color" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary nav-link-color" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row mt-5">
+      <div class="col">
+
+            <p>vulnserver GTER</p>
+            
+            
+            
+<p>Vamos a realizar el ejercicio vulnserver GTER.</p>
+
+<p>Primero vamos a buscar en el icóno de strings para encontrar la dirección de GTER.</p>
+
+<img class="img-fluid" src="vid/vuln_gter1.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter2.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter3.png"><br><br>
+
+<p>Vamos a seguir la dirección, antes tengo que decir que utiiliza x32dbg pero pronto cambiaremos a immunity.</p>
+
+<p>Podemos ver como encontramos GTER, y encontramos algo interesante, que es malloc, y tiene un espacio de "B4 -> 180"</p>
+
+<img class="img-fluid" src="vid/vuln_gter4.png"><br><br>
+
+<p>Vamos a mandar los datos que hemos encontrado.</p>
+
+<img class="img-fluid" src="vid/vuln_gter5.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter6.png"><br><br>
+ 
+<p>Ok, logramos sobrescribir EIP, pero vamos a encontrar la cantidad exacta, podemos hacerlo manualmente, pero hagamos un pattern_create y vamos a mandarlo.</p>
+
+<img class="img-fluid" src="vid/vuln_gter7.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter8.png"><br><br>
+
+<p>Vamos a dumpear ESP para ver el resultado.</p>
+
+<img class="img-fluid" src="vid/vuln_gter9.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter10.png"><br><br>
+
+<p>Ya tenemos los datos mandados, vamos a encontrar la posición.</p>
+
+<img class="img-fluid" src="vid/vuln_gter11.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter12.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter13.png"><br><br>
+
+<p>Listo, son 155, en otras palabras, 151 + 4(EIP).</p>
+
+<p>Ok, esta comprobado, vamos a usar Immunity y usemos mona.py, vamos a encontrar los módulos que puedan no estar protegidos y un jmp a esp para poder saltar a alguna shell.</p>
+
+<img class="img-fluid" src="vid/vuln_gter14.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter15.png"><br><br>
+
+<p>Encontramos que 0x625011AF es vulnerable.</p>
+
+<p>Ok, vamos a darle en "enter expression to follow" esa misma dirección y ponemos un break y observemos el resultado.</p>
+
+<img class="img-fluid" src="vid/vuln_gter16.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter18.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter17.png"><br><br>
+
+<p>Podemos ver como se detiene justo donde lo necesitamos y efectivamente coloca en EIP el jmp, damos en seguir para ver a donde nos manda.</p>
+
+<img class="img-fluid" src="vid/vuln_gter19.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter20.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter21.png"><br><br>
+
+<p>(Hasta aquí es importante, para que podamos realizar el segundo método y es muy necesario que recuerdes esto o regreses al inicio para que entiendas mejor)</p>
+
+<p>Ok, ya que la cantidad de 0x43's que podemos insertar es poca y una shell que usaremos no entra, tendremos que hacer dos trucos, vamos por el primero que es meter la shell al inicio del buffer y brincar o regresar al inicio de buffer para ejecutar la shell.</p>
+
+<img class="img-fluid" src="vid/vuln_gter22.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter23.png"><br><br>
+
+<p>Como podemos ver en la anterior imagen, el inicio de los 43's se encuentra en "0x0103f9cc", de ahí tenemos que regresar al inicio del buffer, que serían las A (0x41).</p>
+
+<p>Para eso nos posicionamos sobre "0x0103f9cc" y con la opción de Assamble colocamos la dirección de inicio de los 41's que sería "0x0103f933" y colocamos "JMP 0x0103f933"</p>
+
+<img class="img-fluid" src="vid/vuln_gter24.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter25.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter26.png"><br><br>
+
+<p>Y vemos como nos aparece cual sería el salto "E9 62FFFFFF". Vamos a mandarlo, pero hagamos una interrupción para detenerlo y podemos darle seguimiento, así que antes colocamos un "\xcc", como en la imagen.</p>
+
+<img class="img-fluid" src="vid/vuln_gter27.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter28.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter29.png"><br><br>
+
+<p>lo mandamos y vemos como se coloca exactamente donde lo necesitamos y hay un JMP, vamos a darle un next y vemos como nos manda al casi al inicio de 0x41, vamos a alinearlo.</p>
+
+<img class="img-fluid" src="vid/vuln_gter30.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter31.png"><br><br>
+
+<p>Pero hay un problema, que siempre es molesto pero hay una solución, el problema es que no siempre es bueno colocar código para inyectar al inicio, porque puede modificarse algo en memoria que haga que no funcione, no siempre es predecible donde va a caer el jump, así que hagamos un NOP Sled colocando al inicio unos nops "\x90" y veamos el resultado.</p>
+
+<img class="img-fluid" src="vid/vuln_gter32.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter33.png"><br><br>
+
+<p>Podemos ver que se colocan los nops, pero esto es lo que mencionaba, no se puede predecir lo que sucedió, así que vamos a reacomodar el jmp al inicio del buffer.</p>
+
+<img class="img-fluid" src="vid/vuln_gter34.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter35.png"><br><br>
+  
+<p>Listo, justo donde lo queríamos.</p>
+<p>Ahora tenemos que calcular, tenemos 151 bytes que enviar, menos los 10 de nops, menos los 35 para ejecutar calc.exe</p>
+<p>151 - 10 = 141 - 35 = 106</p>
+<p>luego el jmp a esp más una interrupción solo para mostrar que funciona, esto se puede eliminar, no es necesario, después el jmp al inicio del buffer y bytes basura para completar el overflow.</p>
+
+<img class="img-fluid" src="vid/vuln_gter36.png"><br><br>
+
+<p>Lo mandamos y obtenemos la interrupción de "0xcc", al parecer está funcionando, vamos a darle seguir, y ya estamos al inicio, los nops nos ayudaron y continuará el código, vamos a darle seguir paso a paso.</p>
+
+<img class="img-fluid" src="vid/vuln_gter37.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter38.png"><br><br>
+
+<p>Podemos ver como esta colocado "calc.exe" y "WinExec", así que ya vamos darle continuar.</p>
+
+<img class="img-fluid" src="vid/vuln_gter39.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter40.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter41.png"><br><br>
+
+<p>Listo, tenemos la calculadora ejecutada.</p>
+
+<h2>SEGUNDO MÉTODO</h2>
+
+<p>Vamos por el segundo método de GTER, vamos a continuar desde lo señalado del primer método, ve para allá o si ya lo leíste continuemos desde aquí para no repetir lo que ya sabemos a hacer, no buscaremos un jmp al incio del buffer, hagamos otra cosa diferente.</p>
+
+<img class="img-fluid" src="vid/vuln_gter42.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter43.png"><br><br>
+
+<p>Podemos ver como mandamos los bytes necesarios para hacer un overflow, pero veamos algo interesante, el contenido del buffer se coloca en EAX. Eso significa que si quitamos "GTER " de eax, que serían 5 bytes, el espacio también cuenta -> " " y luego colocamos un jmp a eax para meter la dirección de eax en esp, prácticamente el código se ejecutaría.</p>
+
+<img class="img-fluid" src="vid/vuln_gter44.png"><br><br>
+
+<p>podemos utilizar msf-nasm_shell o hacer el archivo asm y conseguir los opcode con objdump, de preferencia haganlo manual para entender como funciona, sino las preguntas del "porque" nunca terminan.</p>
+
+<p>Primero vamos a mover eax a esp</p>
+
+<p>mov esp, eax -> 89C4</p>
+
+<img class="img-fluid" src="vid/vuln_gter46.png"><br><br>
+
+<p>ahora quitemos "GTER "</p>
+
+<p>add eax, 0x5 -> 83C005</p>
+
+<img class="img-fluid" src="vid/vuln_gter45.png"><br><br>
+
+<p>Perfecto, eax ya solo tienen los 0x41 o A's, ahora necesitamos decirle que salte a eax donde estará la shellcode</p>
+
+<p>jmp eax -> FFE0</p>
+
+<img class="img-fluid" src="vid/vuln_gter47.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter48.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter49.png"><br><br>
+
+<p>Ok, ya vimos que metemos eax a esp, modificamos eax quitando "GTER " y al final le decimos que tiene que brincar al inicio del buffer que como dijimos al principio estaba en EAX</p>
+
+<p>Ahora repitamos lo mismo que el método primero, vamos a colocar un nop slide, despues colocamos la shell de calc.exe, rellenamos con junk y dejamos que haga su función nuevamente.</p>
+
+
+<img class="img-fluid" src="vid/vuln_gter51.png"><br><br>
+<img class="img-fluid" src="vid/vuln_gter52.png"><br><br>
+      
+</div>
+
+    </div>
+  </div>
+  <footer class=" footer bg-light">
+    <div class="container-fluid mt-3">
+      <p class="mt-2">Aprende algo nuevo todos los días. Good luck!</p>
+    </div>
+  </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>      
+</body>
+</html>
+      
